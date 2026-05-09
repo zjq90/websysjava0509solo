@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>成本详情</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2"><i class="fa fa-calculator mr-2 text-info"></i>成本详情</h1>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">基本信息</h6>
+                    <span class="badge" 
+                          th:classappend="${costRecord.category == 'BREEDING'} ? 'badge-primary' : 
+                                            ${costRecord.category == 'FIELD_INPUT'} ? 'badge-success' : 
+                                            ${costRecord.category == 'PROCESSING'} ? 'badge-info' : 
+                                            ${costRecord.category == 'PACKAGING_LOGISTICS'} ? 'badge-warning' : 'badge-secondary'"
+                          th:text="${costRecord.category.description}">育种成本</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>成本单号：</strong><span th:text="${costRecord.costNo}">-</span></div>
+                        <div class="col-md-4"><strong>费用名称：</strong><span th:text="${costRecord.expenseName}">-</span></div>
+                        <div class="col-md-4"><strong>费用日期：</strong><span th:text="${costRecord.expenseDate}">-</span></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>关联品种：</strong><span th:text="${costRecord.variety != null} ? ${costRecord.variety.varietyName} : '-'">-</span></div>
+                        <div class="col-md-4"><strong>供应商：</strong><span th:text="${costRecord.supplier != null} ? ${costRecord.supplier.customerName} : '-'">-</span></div>
+                        <div class="col-md-4"><strong>经办人：</strong><span th:text="${costRecord.handler}">-</span></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>区域：</strong><span th:text="${costRecord.area}">-</span></div>
+                        <div class="col-md-4"><strong>批次号：</strong><span th:text="${costRecord.batchNo}">-</span></div>
+                        <div class="col-md-4"><strong>备注：</strong><span th:text="${costRecord.remark}">-</span></div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <small class="text-muted">数量</small>
+                            <p class="h4" th:text="${costRecord.quantity != null} ? ${costRecord.quantity + ' ' + costRecord.unit} : '-'">-</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <small class="text-muted">单价</small>
+                            <p class="h4" th:text="${costRecord.unitPrice != null} ? '¥' + ${#numbers.formatDecimal(costRecord.unitPrice, 1, 2)} : '-'">-</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <small class="text-muted">总金额</small>
+                            <p class="h4 font-weight-bold text-danger" th:text="'¥' + ${#numbers.formatDecimal(costRecord.totalAmount, 1, 2)}">¥0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a th:href="@{/cost/edit/{id}(id=${costRecord.id})}" class="btn btn-primary">
+                    <i class="fa fa-edit mr-1"></i>编辑
+                </a>
+                <a href="/cost" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left mr-1"></i>返回列表
+                </a>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>账款详情</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2">
+                    <i class="fa" th:classappend="${finance.financeType == 'PAYABLE'} ? 'fa-credit-card text-danger' : 'fa-money text-primary'" mr-2></i>
+                    账款详情
+                </h1>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">账款信息</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6"><strong>账款编号：</strong><span th:text="${finance.financeNo}">-</span></div>
+                                <div class="col-md-6"><strong>类型：</strong><span th:text="${finance.financeType.description}">-</span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6"><strong>客户/供应商：</strong><span th:text="${finance.customer.customerName}">-</span></div>
+                                <div class="col-md-6">
+                                    <strong>状态：</strong>
+                                    <span class="badge" 
+                                          th:classappend="${finance.status == 'SETTLED'} ? 'badge-success' : 
+                                                            ${finance.status == 'PARTIAL_SETTLED'} ? 'badge-warning' : 'badge-danger'"
+                                          th:text="${finance.status.description}">-</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6"><strong>账款日期：</strong><span th:text="${finance.financeDate}">-</span></div>
+                                <div class="col-md-6"><strong>到期日期：</strong><span th:text="${finance.dueDate}">-</span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6"><strong>摘要：</strong><span th:text="${finance.summary}">-</span></div>
+                                <div class="col-md-6"><strong>备注：</strong><span th:text="${finance.remark}">-</span></div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <small class="text-muted">总金额</small>
+                                        <p class="h4 font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(finance.totalAmount, 1, 2)}">¥0.00</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <small class="text-muted">已收/已付</small>
+                                        <p class="h4 font-weight-bold text-success" th:text="'¥' + ${#numbers.formatDecimal(finance.paidAmount, 1, 2)}">¥0.00</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <small class="text-muted">剩余金额</small>
+                                        <p class="h4 font-weight-bold text-danger" th:text="'¥' + ${#numbers.formatDecimal(finance.remainingAmount, 1, 2)}">¥0.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow mb-4" th:if="${finance.order != null}">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-link mr-1"></i>关联订单</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>订单编号：</strong><span th:text="${finance.order.orderNo}">-</span></p>
+                            <p><strong>订单日期：</strong><span th:text="${finance.order.orderDate}">-</span></p>
+                            <p><strong>订单金额：</strong><span th:text="'¥' + ${#numbers.formatDecimal(finance.order.netAmount, 1, 2)}">-</span></p>
+                            <a th:href="@{/order/view/{id}(id=${finance.order.id})}" class="btn btn-sm btn-outline-info">
+                                <i class="fa fa-eye mr-1"></i>查看订单详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">收付款记录</h6>
+                            <a th:href="@{/finance/payment/{id}(id=${finance.id})}" 
+                               class="btn btn-sm btn-success"
+                               th:if="${finance.status != 'SETTLED'}">
+                                <i class="fa fa-plus mr-1"></i>收款/付款
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>方式</th>
+                                        <th>金额</th>
+                                        <th>经办人</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(payments)}">
+                                        <td colspan="4" class="text-center py-3 text-muted">暂无记录</td>
+                                    </tr>
+                                    <tr th:each="p : ${payments}">
+                                        <td th:text="${p.paymentDate}">2026-05-01</td>
+                                        <td th:text="${p.paymentMethod}">银行</td>
+                                        <td class="text-success" th:text="'¥' + ${#numbers.formatDecimal(p.amount, 1, 2)}">¥0.00</td>
+                                        <td th:text="${p.handler}">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <a href="/finance" class="btn btn-secondary btn-block">
+                        <i class="fa fa-arrow-left mr-1"></i>返回列表
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>按客户分析</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2"><i class="fa fa-users mr-2 text-primary"></i>按客户利润分析</h1>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card card-stat card-stat-success">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <small class="text-muted">客户数量</small>
+                                <p class="h3 font-weight-bold" th:text="${customerCount}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stat card-stat-primary">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <small class="text-muted">有交易客户</small>
+                                <p class="h3 font-weight-bold" th:text="${activeCustomerCount}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stat card-stat-info">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <small class="text-muted">总利润</small>
+                                <p class="h3 font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(totalProfit, 1, 2)}">¥0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stat card-stat-warning">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <small class="text-muted">平均利润/客户</small>
+                                <p class="h3 font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(avgProfit, 1, 2)}">¥0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">客户利润详情</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>排名</th>
+                                    <th>客户名称</th>
+                                    <th>客户类型</th>
+                                    <th>区域</th>
+                                    <th>销售额</th>
+                                    <th>销售成本</th>
+                                    <th>利润</th>
+                                    <th>利润率</th>
+                                    <th>利润占比</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(profits)}">
+                                    <td colspan="9" class="text-center py-4 text-muted">暂无数据</td>
+                                </tr>
+                                <tr th:each="p, stat : ${profits}">
+                                    <td>
+                                        <span class="badge" 
+                                              th:classappend="${stat.index == 0} ? 'badge-warning' : 
+                                                              ${stat.index == 1} ? 'badge-secondary' : 
+                                                              ${stat.index == 2} ? 'badge-danger' : 'badge-light'"
+                                              th:text="${stat.index + 1}">1</span>
+                                    </td>
+                                    <td th:text="${p.customerName}">客户</td>
+                                    <td th:text="${p.customerType}">类型</td>
+                                    <td th:text="${p.region}">区域</td>
+                                    <td th:text="'¥' + ${#numbers.formatDecimal(p.salesAmount, 1, 2)}">¥0</td>
+                                    <td th:text="'¥' + ${#numbers.formatDecimal(p.salesCost, 1, 2)}">¥0</td>
+                                    <td th:class="${p.profit >= 0} ? 'text-success font-weight-bold' : 'text-danger font-weight-bold'"
+                                        th:text="'¥' + ${#numbers.formatDecimal(p.profit, 1, 2)}">¥0</td>
+                                    <td th:class="${p.margin >= 0} ? 'text-success' : 'text-danger'"
+                                        th:text="${#numbers.formatDecimal(p.margin, 1, 2)} + '%'">0%</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1 mr-2" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" th:style="'width:' + ${p.profitPercentage} + '%'"></div>
+                                            </div>
+                                            <span th:text="${#numbers.formatDecimal(p.profitPercentage, 1, 1)} + '%'">0%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="/profit" class="btn btn-secondary">
+                <i class="fa fa-arrow-left mr-1"></i>返回分析首页
+            </a>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

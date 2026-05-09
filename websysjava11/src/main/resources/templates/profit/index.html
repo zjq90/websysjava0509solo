@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>利润分析</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2"><i class="fa fa-chart-line mr-2 text-success"></i>利润分析</h1>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <a href="/profit/variety" class="card card-clickable">
+                        <div class="card-body text-center py-5">
+                            <i class="fa fa-leaf fa-4x mb-3 text-success"></i>
+                            <h4 class="mb-2">按品种分析</h4>
+                            <p class="text-muted mb-0">分析各品种的销售收入、成本和利润情况</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <a href="/profit/customer" class="card card-clickable">
+                        <div class="card-body text-center py-5">
+                            <i class="fa fa-users fa-4x mb-3 text-primary"></i>
+                            <h4 class="mb-2">按客户分析</h4>
+                            <p class="text-muted mb-0">分析各客户的贡献值，识别高价值客户</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <a href="/profit/region" class="card card-clickable">
+                        <div class="card-body text-center py-5">
+                            <i class="fa fa-map-marker-alt fa-4x mb-3 text-info"></i>
+                            <h4 class="mb-2">按区域分析</h4>
+                            <p class="text-muted mb-0">分析各区域销售表现和利润分布</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">按品种利润Top 5</h6>
+                        </div>
+                        <div class="card-body">
+                            <div th:each="item, stat : ${topVarieties}">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span th:text="${item.varietyName}">品种</span>
+                                    <span class="font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(item.profit, 1, 2)}">¥0</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 20px;">
+                                    <div class="progress-bar bg-success" 
+                                         th:style="'width:' + ${item.profitPercentage} + '%'">
+                                        <span th:text="${#numbers.formatDecimal(item.profitPercentage, 1, 1)} + '%'">50%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">按客户利润Top 5</h6>
+                        </div>
+                        <div class="card-body">
+                            <div th:each="item, stat : ${topCustomers}">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span th:text="${item.customerName}">客户</span>
+                                    <span class="font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(item.profit, 1, 2)}">¥0</span>
+                                </div>
+                                <div class="progress mb-3" style="height: 20px;">
+                                    <div class="progress-bar bg-primary" 
+                                         th:style="'width:' + ${item.profitPercentage} + '%'">
+                                        <span th:text="${#numbers.formatDecimal(item.profitPercentage, 1, 1)} + '%'">50%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

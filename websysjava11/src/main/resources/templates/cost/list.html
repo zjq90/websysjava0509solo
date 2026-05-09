@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>成本核算</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+                <h1 class="h2"><i class="fa fa-calculator mr-2 text-info"></i>成本核算</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <a href="/cost/add" class="btn btn-primary">
+                        <i class="fa fa-plus mr-1"></i>新增成本
+                    </a>
+                </div>
+            </div>
+            
+            <div th:replace="fragments/layout :: messages"></div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card card-stat card-stat-primary">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <small class="text-muted">总成本</small>
+                                <p class="h3 font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(totalAll, 1, 2)}">¥0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div th:each="cost : ${costSummary}" class="col-md-4 mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="small" th:text="${cost.categoryName}">类别</span>
+                                        <span class="small text-muted" th:text="${'¥' + #numbers.formatDecimal(cost.totalAmount, 1, 2) + ' (' + cost.percentage + '%)'}">¥0.00 (0%)</span>
+                                    </div>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar" 
+                                             th:classappend="${costStat.index} == 0 ? 'bg-primary' : 
+                                                              ${costStat.index} == 1 ? 'bg-success' : 
+                                                              ${costStat.index} == 2 ? 'bg-info' : 
+                                                              ${costStat.index} == 3 ? 'bg-warning' : 'bg-secondary'"
+                                             th:style="'width:' + ${cost.percentage} + '%'"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <div class="btn-group">
+                        <a href="/cost" class="btn btn-sm btn-outline-secondary" th:classappend="${selectedCategory == null} ? 'active' : ''">全部</a>
+                        <a th:each="cat : ${categories}" 
+                           th:href="@{/cost(category=${cat.name})}"
+                           class="btn btn-sm btn-outline-secondary"
+                           th:classappend="${selectedCategory == cat.name} ? 'active' : ''"
+                           th:text="${cat.description}">类别</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>成本单号</th>
+                                    <th>类别</th>
+                                    <th>费用名称</th>
+                                    <th>品种</th>
+                                    <th>日期</th>
+                                    <th>数量</th>
+                                    <th>单价</th>
+                                    <th>总金额</th>
+                                    <th>区域</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(costRecords)}">
+                                    <td colspan="10" class="text-center py-4 text-muted">暂无数据</td>
+                                </tr>
+                                <tr th:each="record : ${costRecords}">
+                                    <td th:text="${record.costNo}">COST001</td>
+                                    <td>
+                                        <span class="badge status-badge"
+                                              th:classappend="${record.category == 'BREEDING'} ? 'badge-primary' : 
+                                                              ${record.category == 'FIELD_INPUT'} ? 'badge-success' : 
+                                                              ${record.category == 'PROCESSING'} ? 'badge-info' : 
+                                                              ${record.category == 'PACKAGING_LOGISTICS'} ? 'badge-warning' : 'badge-secondary'"
+                                              th:text="${record.category.description}">育种成本</span>
+                                    </td>
+                                    <td th:text="${record.expenseName}">费用名称</td>
+                                    <td th:text="${record.variety != null} ? ${record.variety.varietyName} : '-'">品种</td>
+                                    <td th:text="${record.expenseDate}">2026-05-01</td>
+                                    <td th:text="${record.quantity != null} ? ${record.quantity + ' ' + record.unit} : '-'">数量</td>
+                                    <td th:text="${record.unitPrice != null} ? '¥' + ${#numbers.formatDecimal(record.unitPrice, 1, 2)} : '-'">¥0.00</td>
+                                    <td class="font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(record.totalAmount, 1, 2)}">¥0.00</td>
+                                    <td th:text="${record.area != null} ? ${record.area} : '-'">区域</td>
+                                    <td>
+                                        <a th:href="@{/cost/view/{id}(id=${record.id})}" class="btn btn-sm btn-outline-info">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a th:href="@{/cost/edit/{id}(id=${record.id})}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a th:href="@{/cost/delete/{id}(id=${record.id})}" 
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('确定要删除吗？')">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${!isFiltered}" th:replace="fragments/layout :: pagination('/cost', ${currentPage}, ${totalPages}, ${totalItems}, ${size})"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

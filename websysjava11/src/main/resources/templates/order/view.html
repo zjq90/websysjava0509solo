@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>订单详情</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2">
+                    <i class="fa" th:classappend="${order.orderType == 'PURCHASE'} ? 'fa-truck text-warning' : 'fa-shopping-cart text-success'" mr-2></i>
+                    订单详情
+                </h1>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">基本信息</h6>
+                            <div>
+                                <span class="badge" 
+                                      th:classappend="${order.orderStatus == 'PENDING'} ? 'badge-warning' : 
+                                                        ${order.orderStatus == 'CONFIRMED'} ? 'badge-primary' : 
+                                                        ${order.orderStatus == 'SHIPPED'} ? 'badge-info' : 
+                                                        ${order.orderStatus == 'COMPLETED'} ? 'badge-success' : 'badge-secondary'"
+                                      th:text="${order.orderStatus.description}">待审核</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>订单编号：</strong><span th:text="${order.orderNo}">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>订单类型：</strong>
+                                    <span th:text="${order.orderType == 'SALES'} ? '销售订单' : '采购订单'">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>订单日期：</strong><span th:text="${order.orderDate}">-</span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>客户/供应商：</strong><span th:text="${order.customer.customerName}">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>发货/到货日期：</strong><span th:text="${order.deliveryDate}">-</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>制单人：</strong><span th:text="${order.creator}">-</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>备注：</strong><span th:text="${order.remark}">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">订单明细</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>行号</th>
+                                        <th>品种</th>
+                                        <th>数量</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item, iter : ${order.orderItems}">
+                                        <td th:text="${iter.count}">1</td>
+                                        <td th:text="${item.variety.varietyName}">品种</td>
+                                        <td th:text="${item.quantity}">0</td>
+                                        <td th:text="${item.variety.unit}">公斤</td>
+                                        <td th:text="'¥' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">¥0.00</td>
+                                        <td th:text="'¥' + ${#numbers.formatDecimal(item.lineTotal, 1, 2)}">¥0.00</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-secondary">
+                                        <td colspan="5" class="text-right"><strong>合计：</strong></td>
+                                        <td th:text="'¥' + ${#numbers.formatDecimal(order.totalAmount, 1, 2)}">¥0.00</td>
+                                    </tr>
+                                    <tr th:if="${order.discountAmount != null and order.discountAmount.compareTo(0) > 0}">
+                                        <td colspan="5" class="text-right"><strong>折扣：</strong></td>
+                                        <td class="text-danger" th:text="'-¥' + ${#numbers.formatDecimal(order.discountAmount, 1, 2)}">-¥0.00</td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <td colspan="5" class="text-right"><strong>实付金额：</strong></td>
+                                        <td class="font-weight-bold" th:text="'¥' + ${#numbers.formatDecimal(order.netAmount, 1, 2)}">¥0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card shadow mb-4" th:if="${order.finance != null}">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-link mr-1"></i>关联财务账款</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>财务单号：</strong><span th:text="${order.finance.financeNo}">-</span></p>
+                            <p><strong>类型：</strong><span th:text="${order.finance.financeType.description}">-</span></p>
+                            <p><strong>账款金额：</strong><span th:text="'¥' + ${#numbers.formatDecimal(order.finance.totalAmount, 1, 2)}">-</span></p>
+                            <p><strong>已收/已付：</strong><span th:text="'¥' + ${#numbers.formatDecimal(order.finance.paidAmount, 1, 2)}">-</span></p>
+                            <p><strong>剩余金额：</strong><span class="text-danger" th:text="'¥' + ${#numbers.formatDecimal(order.finance.remainingAmount, 1, 2)}">-</span></p>
+                            <p>
+                                <strong>状态：</strong>
+                                <span class="badge" 
+                                      th:classappend="${order.finance.status == 'SETTLED'} ? 'badge-success' : 
+                                                        ${order.finance.status == 'PARTIAL_SETTLED'} ? 'badge-warning' : 'badge-danger'"
+                                      th:text="${order.finance.status.description}">-</span>
+                            </p>
+                            <a th:href="@{/finance/view/{id}(id=${order.finance.id})}" class="btn btn-sm btn-outline-info btn-block">
+                                <i class="fa fa-eye mr-1"></i>查看账款详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-cog mr-1"></i>状态操作</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a th:href="@{/order/status/{id}/{status}(id=${order.id}, status='CONFIRMED')}" class="list-group-item list-group-item-action"
+                                   th:if="${order.orderStatus == 'PENDING'}">
+                                    <i class="fa fa-check text-primary mr-2"></i>确认订单
+                                </a>
+                                <a th:href="@{/order/status/{id}/{status}(id=${order.id}, status='SHIPPED')}" class="list-group-item list-group-item-action"
+                                   th:if="${order.orderStatus == 'CONFIRMED'}">
+                                    <i class="fa fa-truck text-info mr-2"></i>发货/入库
+                                </a>
+                                <a th:href="@{/order/status/{id}/{status}(id=${order.id}, status='COMPLETED')}" class="list-group-item list-group-item-action"
+                                   th:if="${order.orderStatus == 'SHIPPED'}">
+                                    <i class="fa fa-flag text-success mr-2"></i>完成订单
+                                </a>
+                                <a th:href="@{/order/status/{id}/{status}(id=${order.id}, status='CANCELLED')}" class="list-group-item list-group-item-action text-danger"
+                                   th:if="${order.orderStatus == 'PENDING' or order.orderStatus == 'CONFIRMED'}">
+                                    <i class="fa fa-ban mr-2"></i>取消订单
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="/order" class="btn btn-secondary btn-block">
+                        <i class="fa fa-arrow-left mr-1"></i>返回列表
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

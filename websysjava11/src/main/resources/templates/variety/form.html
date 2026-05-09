@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>品种表单</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2">
+                    <i class="fa fa-seedling mr-2 text-success"></i>
+                    <span th:text="${variety.id} ? '编辑品种' : '新增品种'">新增品种</span>
+                </h1>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <form th:action="@{/variety/save}" th:object="${variety}" method="post">
+                        <input type="hidden" th:field="*{id}" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>品种编号 <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{varietyCode}" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>品种名称 <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{varietyName}" class="form-control" required />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>品种类别</label>
+                                    <select th:field="*{category}" class="form-control">
+                                        <option value="">请选择</option>
+                                        <option value="水稻">水稻</option>
+                                        <option value="小麦">小麦</option>
+                                        <option value="玉米">玉米</option>
+                                        <option value="蔬菜">蔬菜</option>
+                                        <option value="水果">水果</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>单位 <span class="text-danger">*</span></label>
+                                    <select th:field="*{unit}" class="form-control" required>
+                                        <option value="公斤">公斤</option>
+                                        <option value="吨">吨</option>
+                                        <option value="袋">袋</option>
+                                        <option value="箱">箱</option>
+                                        <option value="件">件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>是否启用</label>
+                                    <select th:field="*{enabled}" class="form-control">
+                                        <option th:value="true">启用</option>
+                                        <option th:value="false">禁用</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>标准销售价格</label>
+                                    <input type="number" step="0.01" th:field="*{standardPrice}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>单位标准成本</label>
+                                    <input type="number" step="0.01" th:field="*{standardCost}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>描述信息</label>
+                            <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-save mr-1"></i>保存
+                            </button>
+                            <a href="/variety" class="btn btn-secondary">
+                                <i class="fa fa-times mr-1"></i>取消
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

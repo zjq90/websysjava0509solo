@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>测试功能</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3">
+                <h1 class="h2"><i class="fa fa-flask mr-2 text-warning"></i>测试功能</h1>
+            </div>
+            
+            <div th:replace="fragments/layout :: messages"></div>
+            
+            <div class="alert alert-info">
+                <i class="fa fa-info-circle mr-2"></i>
+                本页面用于生成测试数据，方便快速验证系统各功能模块。生成的数据将存储在H2内存数据库中。
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-database mr-1"></i>数据统计</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <tr><th>品种数</th><td th:text="${stats.varietyCount}">0</td></tr>
+                                <tr><th>客户/供应商数</th><td th:text="${stats.customerCount}">0</td></tr>
+                                <tr><th>订单数</th><td th:text="${stats.orderCount}">0</td></tr>
+                                <tr><th>财务账款数</th><td th:text="${stats.financeCount}">0</td></tr>
+                                <tr><th>成本记录数</th><td th:text="${stats.costCount}">0</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-cog mr-1"></i>数据生成</h6>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/test/generate}" method="post">
+                                <div class="form-group">
+                                    <label>生成销售订单数量</label>
+                                    <input type="number" name="salesCount" class="form-control" value="10" min="0" max="100" />
+                                </div>
+                                <div class="form-group">
+                                    <label>生成采购订单数量</label>
+                                    <input type="number" name="purchaseCount" class="form-control" value="5" min="0" max="100" />
+                                </div>
+                                <div class="form-group">
+                                    <label>生成成本记录数量</label>
+                                    <input type="number" name="costCount" class="form-control" value="20" min="0" max="100" />
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fa fa-magic mr-1"></i>一键生成测试数据
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-play-circle mr-1"></i>功能测试入口</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="/variety" class="btn btn-outline-success btn-block">
+                                <i class="fa fa-leaf mr-1"></i>品种管理
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/customer" class="btn btn-outline-primary btn-block">
+                                <i class="fa fa-users mr-1"></i>客户管理
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/order" class="btn btn-outline-info btn-block">
+                                <i class="fa fa-shopping-cart mr-1"></i>订单管理
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/finance" class="btn btn-outline-danger btn-block">
+                                <i class="fa fa-money mr-1"></i>财务管理
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/cost" class="btn btn-outline-secondary btn-block">
+                                <i class="fa fa-calculator mr-1"></i>成本核算
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/profit" class="btn btn-outline-warning btn-block">
+                                <i class="fa fa-chart-line mr-1"></i>利润分析
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/h2-console" target="_blank" class="btn btn-outline-dark btn-block">
+                                <i class="fa fa-database mr-1"></i>H2控制台
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="/" class="btn btn-outline-primary btn-block">
+                                <i class="fa fa-home mr-1"></i>返回首页
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-list-check mr-1"></i>测试流程建议</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-2">进销存与财务联动测试</h6>
+                            <ol class="small text-muted">
+                                <li>创建一个新的销售订单（状态为待审核）</li>
+                                <li>查看订单详情，确认尚未生成财务账款</li>
+                                <li>点击"确认订单"按钮</li>
+                                <li>查看财务管理，确认自动生成了应收账款</li>
+                                <li>对该账款进行收款操作</li>
+                                <li>验证账款状态变化为部分结清/已结清</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-2">成本与利润分析测试</h6>
+                            <ol class="small text-muted">
+                                <li>在成本核算中录入各类成本记录</li>
+                                <li>按品种/区域关联成本记录</li>
+                                <li>进入利润分析模块</li>
+                                <li>查看按品种、客户、区域的利润分析</li>
+                                <li>验证利润计算是否正确（销售-成本）</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>

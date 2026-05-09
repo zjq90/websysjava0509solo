@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head">
+    <title>财务账款管理</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/layout :: sidebar"></nav>
+        
+        <main role="main" class="col-md-10 ml-sm-auto px-4 main-content">
+            <div class="pt-3 pb-2 mb-3 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+                <h1 class="h2">
+                    <i class="fa" th:classappend="${selectedType == 'PAYABLE'} ? 'fa-credit-card text-danger' : 'fa-money text-primary'" mr-2></i>
+                    <span th:text="${selectedType == 'PAYABLE'} ? '应付账款' : (selectedType == 'RECEIVABLE' ? '应收账款' : '财务账款')}">财务账款</span>
+                </h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a href="/finance/receivable" class="btn btn-outline-secondary" th:classappend="${selectedType == 'RECEIVABLE'} ? 'active' : ''">应收账款</a>
+                        <a href="/finance/payable" class="btn btn-outline-secondary" th:classappend="${selectedType == 'PAYABLE'} ? 'active' : ''">应付账款</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div th:replace="fragments/layout :: messages"></div>
+            
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>账款编号</th>
+                                    <th>类型</th>
+                                    <th>客户/供应商</th>
+                                    <th>账款日期</th>
+                                    <th>到期日期</th>
+                                    <th>总金额</th>
+                                    <th>已收/已付</th>
+                                    <th>剩余金额</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(finances)}">
+                                    <td colspan="10" class="text-center py-4 text-muted">暂无数据</td>
+                                </tr>
+                                <tr th:each="finance : ${finances}">
+                                    <td th:text="${finance.financeNo}">AR20260501</td>
+                                    <td>
+                                        <span class="badge status-badge" 
+                                              th:classappend="${finance.financeType == 'RECEIVABLE'} ? 'badge-primary' : 'badge-danger'"
+                                              th:text="${finance.financeType == 'RECEIVABLE'} ? '应收' : '应付'}">应收</span>
+                                    </td>
+                                    <td th:text="${finance.customer.customerName}">客户名称</td>
+                                    <td th:text="${finance.financeDate}">2026-05-01</td>
+                                    <td th:text="${finance.dueDate}">2026-05-31</td>
+                                    <td th:text="'¥' + ${#numbers.formatDecimal(finance.totalAmount, 1, 2)}">¥0.00</td>
+                                    <td th:text="'¥' + ${#numbers.formatDecimal(finance.paidAmount, 1, 2)}">¥0.00</td>
+                                    <td class="text-danger" th:text="'¥' + ${#numbers.formatDecimal(finance.remainingAmount, 1, 2)}">¥0.00</td>
+                                    <td>
+                                        <span class="badge status-badge" 
+                                              th:classappend="${finance.status == 'SETTLED'} ? 'badge-success' : 
+                                                                ${finance.status == 'PARTIAL_SETTLED'} ? 'badge-warning' : 'badge-danger'"
+                                              th:text="${finance.status.description}">未结清</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/finance/view/{id}(id=${finance.id})}" class="btn btn-sm btn-outline-info">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a th:href="@{/finance/payment/{id}(id=${finance.id})}" 
+                                           class="btn btn-sm btn-outline-success"
+                                           th:if="${finance.status != 'SETTLED'}">
+                                            <i class="fa fa-money"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${!isFiltered}" th:replace="fragments/layout :: pagination('/finance', ${currentPage}, ${totalPages}, ${totalItems}, ${size})"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script th:replace="fragments/layout :: scripts"></script>
+</body>
+</html>
