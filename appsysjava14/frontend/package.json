@@ -1,0 +1,20 @@
+{
+  "name": "field-collection-app",
+  "version": "1.0.0",
+  "description": "农业育种试验数据采集系统 - 移动端App",
+  "main": "main.js",
+  "scripts": {
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "dev:h5": "uni",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "build:h5": "uni build"
+  },
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "~4.5.0",
+    "cross-env": "^7.0.3"
+  }
+}
