@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试工具 - Web平台管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <style>
+        body { padding-top: 56px; }
+        .sidebar { min-height: calc(100vh - 56px); }
+        .tool-card { transition: all 0.3s; }
+        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="index.html">
+        <i class="fas fa-chart-line mr-2"></i>Web平台管理系统
+    </a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home mr-2"></i>首页
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard-config.html">
+                            <i class="fas fa-cog mr-2"></i>看板配置
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mobile-dashboard.html">
+                            <i class="fas fa-mobile-alt mr-2"></i>移动端看板
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat-items.html">
+                            <i class="fas fa-list mr-2"></i>统计项管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="business-data.html">
+                            <i class="fas fa-database mr-2"></i>经营数据
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="users.html">
+                            <i class="fas fa-users mr-2"></i>用户管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="test-tools.html">
+                            <i class="fas fa-flask mr-2"></i>测试工具
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-flask text-primary mr-2"></i>测试工具</h1>
+                <button class="btn btn-outline-info" onclick="loadStatus()">
+                    <i class="fas fa-sync-alt mr-1"></i> 刷新状态
+                </button>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <strong>注意：</strong>本页面提供的功能仅供测试使用，请勿在生产环境中使用！
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card tool-card bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">管理员用户</h5>
+                            <p class="display-4 mb-0" id="statAdminUsers">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card tool-card bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-list fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">统计项</h5>
+                            <p class="display-4 mb-0" id="statStatItems">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card tool-card bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-database fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">经营数据</h5>
+                            <p class="display-4 mb-0" id="statBusinessData">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card tool-card bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-cog fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">用户配置</h5>
+                            <p class="display-4 mb-0" id="statUserConfigs">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0"><i class="fas fa-plus-circle text-success mr-2"></i>数据生成</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6>生成经营数据</h6>
+                                <div class="form-row align-items-end">
+                                    <div class="col-md-6">
+                                        <label>生成天数</label>
+                                        <input type="number" class="form-control" id="genDays" value="30" min="1" max="365">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-success btn-block" onclick="generateBusinessData()">
+                                            <i class="fas fa-magic mr-1"></i> 生成数据
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="text-muted">将随机生成指定天数的经营测试数据</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6>生成单日数据</h6>
+                                <div class="form-row align-items-end">
+                                    <div class="col-md-6">
+                                        <label>选择日期</label>
+                                        <input type="date" class="form-control" id="genDate">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-info btn-block" onclick="generateOneDayData()">
+                                            <i class="fas fa-calendar-day mr-1"></i> 生成
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h6>模拟实时数据更新</h6>
+                                <button class="btn btn-warning" onclick="updateRandomData()">
+                                    <i class="fas fa-random mr-1"></i> 随机更新今日数据
+                                </button>
+                                <small class="text-muted ml-2">模拟实时数据变化效果</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0"><i class="fas fa-trash text-danger mr-2"></i>数据清理</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6>清除经营数据</h6>
+                                <p class="text-muted">将清除所有的经营数据记录</p>
+                                <button class="btn btn-outline-danger" onclick="clearBusinessData()">
+                                    <i class="fas fa-database mr-1"></i> 清除经营数据
+                                </button>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6>初始化用户配置</h6>
+                                <div class="form-row align-items-end">
+                                    <div class="col-md-6">
+                                        <label>用户ID</label>
+                                        <select class="form-control" id="initUserId">
+                                            <option value="1">用户 1 (admin)</option>
+                                            <option value="2">用户 2 (manager)</option>
+                                            <option value="3">用户 3 (ceo)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-primary btn-block" onclick="initUserConfig()">
+                                            <i class="fas fa-cog mr-1"></i> 初始化配置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h6>一键重置所有数据</h6>
+                                <p class="text-danger">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                    <strong>警告：</strong>这将删除所有数据！
+                                </p>
+                                <button class="btn btn-danger" onclick="resetAllData()">
+                                    <i class="fas fa-undo mr-1"></i> 重置所有数据
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-code text-secondary mr-2"></i>API 测试</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>方法</th>
+                                    <th>接口</th>
+                                    <th>描述</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge badge-success">GET</span></td>
+                                    <td><code>/api/stat-items</code></td>
+                                    <td>获取所有统计项</td>
+                                    <td><button class="btn btn-sm btn-outline-primary" onclick="testApi('/api/stat-items')">测试</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-success">GET</span></td>
+                                    <td><code>/api/stat-items/enabled</code></td>
+                                    <td>获取启用的统计项</td>
+                                    <td><button class="btn btn-sm btn-outline-primary" onclick="testApi('/api/stat-items/enabled')">测试</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-success">GET</span></td>
+                                    <td><code>/api/users</code></td>
+                                    <td>获取所有用户</td>
+                                    <td><button class="btn btn-sm btn-outline-primary" onclick="testApi('/api/users')">测试</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-success">GET</span></td>
+                                    <td><code>/api/dashboard/data/1</code></td>
+                                    <td>获取用户1的看板数据</td>
+                                    <td><button class="btn btn-sm btn-outline-primary" onclick="testApi('/api/dashboard/data/1')">测试</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-success">GET</span></td>
+                                    <td><code>/api/test/status</code></td>
+                                    <td>获取数据库状态</td>
+                                    <td><button class="btn btn-sm btn-outline-primary" onclick="testApi('/api/test/status')">测试</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="apiResult" class="d-none">
+                        <hr>
+                        <h6>API响应结果：</h6>
+                        <pre class="bg-light p-3 rounded" id="apiResultContent"></pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_BASE = '/api';
+
+    function getToday() {
+        const d = new Date();
+        return d.toISOString().split('T')[0];
+    }
+
+    function loadStatus() {
+        $.ajax({
+            url: `${API_BASE}/test/status`,
+            method: 'GET',
+            success: function(res) {
+                if (res.code === 200) {
+                    const data = res.data;
+                    $('#statAdminUsers').text(data.adminUsers || 0);
+                    $('#statStatItems').text(data.statItems || 0);
+                    $('#statBusinessData').text(data.businessData || 0);
+                    $('#statUserConfigs').text(data.userConfigs || 0);
+                }
+            }
+        });
+    }
+
+    function generateBusinessData() {
+        const days = $('#genDays').val();
+        if (!confirm(`确定要生成 ${days} 天的经营数据吗？`)) return;
+
+        $.ajax({
+            url: `${API_BASE}/test/generate-business-data?days=${days}`,
+            method: 'POST',
+            success: function(res) {
+                alert(res.message);
+                loadStatus();
+            }
+        });
+    }
+
+    function generateOneDayData() {
+        const date = $('#genDate').val();
+        if (!date) { alert('请选择日期'); return; }
+
+        $.ajax({
+            url: `${API_BASE}/test/generate-one-day?date=${date}`,
+            method: 'POST',
+            success: function(res) {
+                alert(res.message);
+                loadStatus();
+            }
+        });
+    }
+
+    function updateRandomData() {
+        $.ajax({
+            url: `${API_BASE}/test/update-random-data`,
+            method: 'POST',
+            success: function(res) {
+                alert(res.message);
+                loadStatus();
+            }
+        });
+    }
+
+    function clearBusinessData() {
+        if (!confirm('确定要清除所有经营数据吗？')) return;
+        $.ajax({
+            url: `${API_BASE}/test/clear-business-data`,
+            method: 'POST',
+            success: function(res) {
+                alert(res.message);
+                loadStatus();
+            }
+        });
+    }
+
+    function initUserConfig() {
+        const userId = $('#initUserId').val();
+        $.ajax({
+            url: `${API_BASE}/test/init-user-config/${userId}`,
+            method: 'POST',
+            success: function(res) {
+                alert('用户配置初始化完成');
+                loadStatus();
+            }
+        });
+    }
+
+    function resetAllData() {
+        if (!confirm('警告：这将删除所有数据！确定要继续吗？')) return;
+        if (!confirm('再次确认：数据删除后无法恢复！')) return;
+
+        $.ajax({
+            url: `${API_BASE}/test/reset-all`,
+            method: 'POST',
+            success: function(res) {
+                alert(res.message + ' 请重启应用以重新初始化数据。');
+                loadStatus();
+            }
+        });
+    }
+
+    function testApi(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function(res) {
+                $('#apiResult').removeClass('d-none');
+                $('#apiResultContent').text(JSON.stringify(res, null, 2));
+            },
+            error: function(xhr) {
+                $('#apiResult').removeClass('d-none');
+                $('#apiResultContent').text('错误: ' + xhr.status + ' ' + xhr.statusText);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('#genDate').val(getToday());
+        loadStatus();
+    });
+</script>
+</body>
+</html>

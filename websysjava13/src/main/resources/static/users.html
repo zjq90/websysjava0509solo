@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - Web平台管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <style>
+        body { padding-top: 56px; }
+        .sidebar { min-height: calc(100vh - 56px); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="index.html">
+        <i class="fas fa-chart-line mr-2"></i>Web平台管理系统
+    </a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home mr-2"></i>首页
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard-config.html">
+                            <i class="fas fa-cog mr-2"></i>看板配置
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mobile-dashboard.html">
+                            <i class="fas fa-mobile-alt mr-2"></i>移动端看板
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stat-items.html">
+                            <i class="fas fa-list mr-2"></i>统计项管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="business-data.html">
+                            <i class="fas fa-database mr-2"></i>经营数据
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="users.html">
+                            <i class="fas fa-users mr-2"></i>用户管理
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="test-tools.html">
+                            <i class="fas fa-flask mr-2"></i>测试工具
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pt-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-users text-primary mr-2"></i>用户管理</h1>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" onclick="openAddModal()">
+                    <i class="fas fa-plus mr-1"></i> 新增用户
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>姓名</th>
+                            <th>邮箱</th>
+                            <th>电话</th>
+                            <th>角色</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editForm">
+                <input type="hidden" id="formId">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">新增用户</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>用户名 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="formUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码 <span id="pwdRequired" class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="formPassword" placeholder="留空表示不修改">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>姓名</label>
+                            <input type="text" class="form-control" id="formRealName">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>角色</label>
+                            <select class="form-control" id="formRole">
+                                <option value="ADMIN">管理员</option>
+                                <option value="MANAGER">运营经理</option>
+                                <option value="CEO">总经理</option>
+                                <option value="USER">普通用户</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>邮箱</label>
+                            <input type="email" class="form-control" id="formEmail">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>电话</label>
+                            <input type="text" class="form-control" id="formPhone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select class="form-control" id="formStatus">
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/validation.js"></script>
+<script>
+    const API_BASE = '/api';
+
+    function loadData() {
+        $.ajax({
+            url: `${API_BASE}/users`,
+            method: 'GET',
+            success: function(res) {
+                renderTable(res.data || []);
+            }
+        });
+    }
+
+    function renderTable(users) {
+        const $tbody = $('#userTableBody');
+        $tbody.empty();
+
+        users.forEach(user => {
+            const tr = `
+                <tr>
+                    <td>${user.id}</td>
+                    <td><code>${user.username}</code></td>
+                    <td>${user.realName || '-'}</td>
+                    <td>${user.email || '-'}</td>
+                    <td>${user.phone || '-'}</td>
+                    <td>${getRoleLabel(user.role)}</td>
+                    <td>${user.status === 1 ? '<span class="badge badge-success">启用</span>' : '<span class="badge badge-danger">禁用</span>'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="openEditModal(${user.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem(${user.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            $tbody.append(tr);
+        });
+    }
+
+    function getRoleLabel(role) {
+        const labels = { ADMIN: '<span class="badge badge-primary">管理员</span>', MANAGER: '<span class="badge badge-info">运营经理</span>', CEO: '<span class="badge badge-warning">总经理</span>', USER: '<span class="badge badge-secondary">普通用户</span>' };
+        return labels[role] || role;
+    }
+
+    function clearFormValidation() {
+        $('#editForm').find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
+        $('#editForm').find('.invalid-feedback').remove();
+    }
+
+    function openAddModal() {
+        clearFormValidation();
+        $('#modalTitle').text('新增用户');
+        $('#editForm')[0].reset();
+        $('#formId').val('');
+        $('#pwdRequired').show();
+        $('#formUsername').attr('disabled', false).attr('required', true).attr('data-validate', 'username');
+        $('#formPassword').attr('required', true).attr('data-validate', 'password');
+    }
+
+    function openEditModal(id) {
+        clearFormValidation();
+        $.ajax({
+            url: `${API_BASE}/users/${id}`,
+            method: 'GET',
+            success: function(res) {
+                if (res.code === 200) {
+                    const user = res.data;
+                    $('#modalTitle').text('编辑用户');
+                    $('#formId').val(user.id);
+                    $('#formUsername').val(user.username).attr('disabled', true).removeAttr('data-validate');
+                    $('#formRealName').val(user.realName || '');
+                    $('#formEmail').val(user.email || '');
+                    $('#formPhone').val(user.phone || '');
+                    $('#formRole').val(user.role || 'USER');
+                    $('#formStatus').val(user.status);
+                    $('#formPassword').val('').attr('required', false).attr('data-validate', 'password');
+                    $('#pwdRequired').hide();
+                    $('#editModal').modal('show');
+                }
+            }
+        });
+    }
+
+    function validateUserForm() {
+        const id = $('#formId').val();
+        const isEdit = !!id;
+        
+        const username = $('#formUsername').val();
+        const password = $('#formPassword').val();
+        const email = $('#formEmail').val();
+        const phone = $('#formPhone').val();
+
+        clearFormValidation();
+        let isValid = true;
+
+        if (!isEdit) {
+            const usernameResult = Validation.validateUsername(username, { required: true });
+            if (!usernameResult.valid) {
+                Validation.showError($('#formUsername'), usernameResult.message);
+                isValid = false;
+            } else {
+                Validation.showSuccess($('#formUsername'));
+            }
+        }
+
+        if (password || !isEdit) {
+            const pwdResult = Validation.validatePassword(password, { required: !isEdit });
+            if (!pwdResult.valid) {
+                Validation.showError($('#formPassword'), pwdResult.message);
+                isValid = false;
+            } else if (password) {
+                Validation.showSuccess($('#formPassword'));
+            }
+        }
+
+        if (email) {
+            const emailResult = Validation.validateEmail(email, { required: false });
+            if (!emailResult.valid) {
+                Validation.showError($('#formEmail'), emailResult.message);
+                isValid = false;
+            } else {
+                Validation.showSuccess($('#formEmail'));
+            }
+        }
+
+        if (phone) {
+            const phoneResult = Validation.validatePhone(phone, { required: false });
+            if (!phoneResult.valid) {
+                Validation.showError($('#formPhone'), phoneResult.message);
+                isValid = false;
+            } else {
+                Validation.showSuccess($('#formPhone'));
+            }
+        }
+
+        return isValid;
+    }
+
+    function saveItem() {
+        if (!validateUserForm()) {
+            return;
+        }
+
+        const data = {
+            username: $('#formUsername').val(),
+            password: $('#formPassword').val(),
+            realName: $('#formRealName').val(),
+            email: $('#formEmail').val(),
+            phone: $('#formPhone').val(),
+            role: $('#formRole').val(),
+            status: parseInt($('#formStatus').val())
+        };
+
+        const id = $('#formId').val();
+        const method = id ? 'PUT' : 'POST';
+        if (id) data.id = parseInt(id);
+
+        $.ajax({
+            url: `${API_BASE}/users`,
+            method: method,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(res) {
+                if (res.code === 200) {
+                    $('#editModal').modal('hide');
+                    $('#formUsername').attr('disabled', false);
+                    loadData();
+                } else {
+                    alert('保存失败: ' + res.message);
+                }
+            },
+            error: function(xhr) {
+                try {
+                    const err = JSON.parse(xhr.responseText);
+                    alert('保存失败: ' + (err.message || '未知错误'));
+                } catch(e) {
+                    alert('保存失败: 网络错误');
+                }
+            }
+        });
+    }
+
+    function deleteItem(id) {
+        if (confirm('确定要删除这个用户吗？')) {
+            $.ajax({
+                url: `${API_BASE}/users/${id}`,
+                method: 'DELETE',
+                success: function(res) {
+                    if (res.code === 200) {
+                        loadData();
+                    }
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        loadData();
+        
+        Validation.bindPhoneInput($('#formPhone'));
+
+        $('#editForm').submit(function(e) {
+            e.preventDefault();
+            saveItem();
+        });
+
+        $('#formUsername').on('blur', function() {
+            if (!$('#formId').val()) {
+                const result = Validation.validateUsername($(this).val(), { required: true });
+                if (!result.valid) {
+                    Validation.showError($(this), result.message);
+                } else {
+                    Validation.showSuccess($(this));
+                }
+            }
+        });
+
+        $('#formPassword').on('blur', function() {
+            const isEdit = !!$('#formId').val();
+            const value = $(this).val();
+            if (value || !isEdit) {
+                const result = Validation.validatePassword(value, { required: !isEdit });
+                if (!result.valid) {
+                    Validation.showError($(this), result.message);
+                } else if (value) {
+                    Validation.showSuccess($(this));
+                }
+            }
+        });
+
+        $('#formEmail').on('blur', function() {
+            const value = $(this).val();
+            if (value) {
+                const result = Validation.validateEmail(value, { required: false });
+                if (!result.valid) {
+                    Validation.showError($(this), result.message);
+                } else {
+                    Validation.showSuccess($(this));
+                }
+            }
+        });
+
+        $('#formPhone').on('blur', function() {
+            const value = $(this).val();
+            if (value) {
+                const result = Validation.validatePhone(value, { required: false });
+                if (!result.valid) {
+                    Validation.showError($(this), result.message);
+                } else {
+                    Validation.showSuccess($(this));
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
