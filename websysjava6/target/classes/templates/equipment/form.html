@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head(${equipment.id == null ? '新增设备' : '编辑设备'})">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard"><i class="fas fa-industry"></i> 生产管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products"><i class="fas fa-box"></i> 产品管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans"><i class="fas fa-calendar-alt"></i> 生产计划</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans/schedule"><i class="fas fa-project-diagram"></i> 可视化排产</a></li>
+                <li class="nav-item"><a class="nav-link" href="/processing"><i class="fas fa-cogs"></i> 加工流程</a></li>
+                <li class="nav-item"><a class="nav-link" href="/parameters"><i class="fas fa-sliders-h"></i> 工艺参数</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/equipment"><i class="fas fa-tools"></i> 设备管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/equipment-records"><i class="fas fa-database"></i> 设备数据</a></li>
+                <li class="nav-item"><a class="nav-link" href="/test-data"><i class="fas fa-flask"></i> 测试数据</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10 content-wrapper">
+            <h2 class="mb-4" th:text="${equipment.id == null ? '新增设备' : '编辑设备'}">
+                <i class="fas fa-plus"></i> 新增设备
+            </h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/equipment/save}" method="post" th:object="${equipment}">
+                        <input type="hidden" th:field="*{id}" />
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>设备编号 <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{equipmentCode}" class="form-control" required="required" placeholder="如：EQ001" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>设备名称 <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{equipmentName}" class="form-control" required="required" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>设备类型</label>
+                                    <select th:field="*{equipmentType}" class="form-control">
+                                        <option value="">请选择</option>
+                                        <option value="CLEANER">清选机</option>
+                                        <option value="COATER">包衣机</option>
+                                        <option value="PACKAGER">包装机</option>
+                                        <option value="INSPECTOR">检测仪</option>
+                                        <option value="CONVEYOR">输送机</option>
+                                        <option value="OTHER">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>型号</label>
+                                    <input type="text" th:field="*{model}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>制造商</label>
+                                    <input type="text" th:field="*{manufacturer}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>安装位置</label>
+                                    <input type="text" th:field="*{location}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>IP地址</label>
+                                    <input type="text" th:field="*{ipAddress}" class="form-control" placeholder="用于设备通信" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>端口号</label>
+                                    <input type="number" th:field="*{port}" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>负责人</label>
+                                    <input type="text" th:field="*{responsiblePerson}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>设备状态</label>
+                            <select th:field="*{status}" class="form-control">
+                                <option value="OFFLINE">离线</option>
+                                <option value="IDLE">空闲</option>
+                                <option value="RUNNING">运行中</option>
+                                <option value="MAINTENANCE">维护中</option>
+                                <option value="FAULT">故障</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>设备描述</label>
+                            <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> 保存
+                            </button>
+                            <a href="/equipment" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> 返回
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

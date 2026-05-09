@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('仪表盘')">
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard">
+        <i class="fas fa-industry"></i> 生产管理系统
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- 侧边栏 -->
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/dashboard">
+                        <i class="fas fa-tachometer-alt"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">
+                        <i class="fas fa-box"></i> 产品管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/plans">
+                        <i class="fas fa-calendar-alt"></i> 生产计划
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/plans/schedule">
+                        <i class="fas fa-project-diagram"></i> 可视化排产
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/processing">
+                        <i class="fas fa-cogs"></i> 加工流程
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/parameters">
+                        <i class="fas fa-sliders-h"></i> 工艺参数
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/equipment">
+                        <i class="fas fa-tools"></i> 设备管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/equipment-records">
+                        <i class="fas fa-database"></i> 设备数据
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/test-data">
+                        <i class="fas fa-flask"></i> 测试数据
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="col-md-10 content-wrapper">
+            <h2 class="mb-4">
+                <i class="fas fa-tachometer-alt"></i> 仪表盘
+            </h2>
+
+            <!-- 统计卡片 -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5 class="card-title">生产计划</h5>
+                                    <h2 class="card-text" id="planCount">-</h2>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <i class="fas fa-calendar-alt fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5 class="card-title">在线设备</h5>
+                                    <h2 class="card-text" id="equipmentCount">-</h2>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <i class="fas fa-tools fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5 class="card-title">产品数量</h5>
+                                    <h2 class="card-text" id="productCount">-</h2>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <i class="fas fa-box fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5 class="card-title">加工记录</h5>
+                                    <h2 class="card-text" id="processingCount">-</h2>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <i class="fas fa-cogs fa-3x opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷操作 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-bolt"></i> 快捷操作</h5>
+                </div>
+                <div class="card-body">
+                    <a href="/plans/add" class="btn btn-primary mr-2">
+                        <i class="fas fa-plus"></i> 新建生产计划
+                    </a>
+                    <a href="/plans/schedule" class="btn btn-success mr-2">
+                        <i class="fas fa-calendar"></i> 可视化排产
+                    </a>
+                    <a href="/processing/add" class="btn btn-warning mr-2">
+                        <i class="fas fa-play"></i> 开始加工
+                    </a>
+                    <a href="/equipment" class="btn btn-info mr-2">
+                        <i class="fas fa-tools"></i> 设备监控
+                    </a>
+                    <a href="/test-data" class="btn btn-secondary">
+                        <i class="fas fa-flask"></i> 测试数据
+                    </a>
+                </div>
+            </div>
+
+            <!-- 功能说明 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-info-circle"></i> 系统功能说明</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-calendar-alt text-primary"></i> 生产计划管理</h6>
+                            <p class="text-muted small">支持多品种、多批次并行生产调度，可视化排产功能让生产安排一目了然。</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-cogs text-success"></i> 加工流程管理</h6>
+                            <p class="text-muted small">记录清选、包衣、分装等各工序的加工情况，留存完整的生产工艺参数。</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-tools text-warning"></i> 设备数据互通</h6>
+                            <p class="text-muted small">通过API接口与自动化设备系统互联，实时保存设备生产记录和运行状态。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 模拟统计数据
+    $(document).ready(function() {
+        $('#planCount').text('8');
+        $('#equipmentCount').text('12');
+        $('#productCount').text('15');
+        $('#processingCount').text('45');
+    });
+</script>
+</body>
+</html>

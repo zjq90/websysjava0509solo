@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('产品管理')">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard"><i class="fas fa-industry"></i> 生产管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/products"><i class="fas fa-box"></i> 产品管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans"><i class="fas fa-calendar-alt"></i> 生产计划</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans/schedule"><i class="fas fa-project-diagram"></i> 可视化排产</a></li>
+                <li class="nav-item"><a class="nav-link" href="/processing"><i class="fas fa-cogs"></i> 加工流程</a></li>
+                <li class="nav-item"><a class="nav-link" href="/parameters"><i class="fas fa-sliders-h"></i> 工艺参数</a></li>
+                <li class="nav-item"><a class="nav-link" href="/equipment"><i class="fas fa-tools"></i> 设备管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/equipment-records"><i class="fas fa-database"></i> 设备数据</a></li>
+                <li class="nav-item"><a class="nav-link" href="/test-data"><i class="fas fa-flask"></i> 测试数据</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10 content-wrapper">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-box"></i> 产品管理</h2>
+                <a href="/products/add" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 新增产品
+                </a>
+            </div>
+            
+            <div th:if="${success}" class="alert alert-success alert-flash" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger alert-flash" th:text="${error}"></div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>产品编号</th>
+                                <th>产品名称</th>
+                                <th>规格型号</th>
+                                <th>产品类型</th>
+                                <th>单位</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th class="table-action">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${products.isEmpty()}">
+                                <td colspan="8" class="text-center text-muted">暂无数据</td>
+                            </tr>
+                            <tr th:each="product : ${products}">
+                                <td th:text="${product.productCode}"></td>
+                                <td th:text="${product.productName}"></td>
+                                <td th:text="${product.specification ?: '-'}"></td>
+                                <td th:text="${product.productType ?: '-'}"></td>
+                                <td th:text="${product.unit ?: '-'}"></td>
+                                <td>
+                                    <span class="badge" 
+                                          th:class="${product.status == 'ACTIVE'} ? 'badge-success' : 'badge-secondary'"
+                                          th:text="${product.status == 'ACTIVE'} ? '激活' : '停用'">
+                                    </span>
+                                </td>
+                                <td th:text="${#temporals.format(product.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td class="table-action">
+                                    <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-info btn-action">
+                                        <i class="fas fa-edit"></i> 编辑
+                                    </a>
+                                    <a th:href="@{/products/toggle/{id}(id=${product.id})}" class="btn btn-sm btn-warning btn-action">
+                                        <i class="fas fa-exchange-alt"></i>
+                                        <span th:text="${product.status == 'ACTIVE'} ? '停用' : '激活'"></span>
+                                    </a>
+                                    <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                                       class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('确认删除？')">
+                                        <i class="fas fa-trash"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div th:if="${totalPages > 1}" class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="text-muted">
+                            共 <span th:text="${totalElements}">0</span> 条记录，第 <span th:text="${currentPage + 1}">1</span>/<span th:text="${totalPages}">1</span> 页
+                        </div>
+                        <nav>
+                            <ul class="pagination mb-0">
+                                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/products(page=0, size=${pageSize})}">首页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/products(page=${currentPage - 1}, size=${pageSize})}">上一页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/products(page=${currentPage + 1}, size=${pageSize})}">下一页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/products(page=${totalPages - 1}, size=${pageSize})}">末页</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

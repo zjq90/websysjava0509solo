@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('手动录入设备数据')">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard"><i class="fas fa-industry"></i> 生产管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products"><i class="fas fa-box"></i> 产品管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans"><i class="fas fa-calendar-alt"></i> 生产计划</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans/schedule"><i class="fas fa-project-diagram"></i> 可视化排产</a></li>
+                <li class="nav-item"><a class="nav-link" href="/processing"><i class="fas fa-cogs"></i> 加工流程</a></li>
+                <li class="nav-item"><a class="nav-link" href="/parameters"><i class="fas fa-sliders-h"></i> 工艺参数</a></li>
+                <li class="nav-item"><a class="nav-link" href="/equipment"><i class="fas fa-tools"></i> 设备管理</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/equipment-records"><i class="fas fa-database"></i> 设备数据</a></li>
+                <li class="nav-item"><a class="nav-link" href="/test-data"><i class="fas fa-flask"></i> 测试数据</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10 content-wrapper">
+            <h2 class="mb-4"><i class="fas fa-plus"></i> 手动录入设备数据</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/equipment-records/save}" method="post" th:object="${record}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>设备 <span class="text-danger">*</span></label>
+                                    <select name="equipmentId" class="form-control" required="required">
+                                        <option value="">请选择设备</option>
+                                        <option th:each="eq : ${equipments}" 
+                                                th:value="${eq.id}" 
+                                                th:text="${eq.equipmentCode + ' - ' + eq.equipmentName}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>运行状态</label>
+                                    <select th:field="*{runStatus}" class="form-control">
+                                        <option value="OFFLINE">离线</option>
+                                        <option value="IDLE">空闲</option>
+                                        <option value="RUNNING">运行</option>
+                                        <option value="PAUSED">暂停</option>
+                                        <option value="FAULT">故障</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>当前速度</label>
+                                    <input type="number" th:field="*{currentSpeed}" class="form-control" step="0.0001" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>产量</label>
+                                    <input type="number" th:field="*{productionOutput}" class="form-control" step="0.0001" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>运行时长(分钟)</label>
+                                    <input type="number" th:field="*{runDuration}" class="form-control" step="0.01" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>温度(℃)</label>
+                                    <input type="number" th:field="*{temperature}" class="form-control" step="0.01" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>压力(MPa)</label>
+                                    <input type="number" th:field="*{pressure}" class="form-control" step="0.01" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>告警信息</label>
+                            <textarea th:field="*{alarmMessage}" class="form-control" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> 保存
+                            </button>
+                            <a href="/equipment-records" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> 返回
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('设备管理')">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/dashboard"><i class="fas fa-industry"></i> 生产管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> 仪表盘</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products"><i class="fas fa-box"></i> 产品管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans"><i class="fas fa-calendar-alt"></i> 生产计划</a></li>
+                <li class="nav-item"><a class="nav-link" href="/plans/schedule"><i class="fas fa-project-diagram"></i> 可视化排产</a></li>
+                <li class="nav-item"><a class="nav-link" href="/processing"><i class="fas fa-cogs"></i> 加工流程</a></li>
+                <li class="nav-item"><a class="nav-link" href="/parameters"><i class="fas fa-sliders-h"></i> 工艺参数</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/equipment"><i class="fas fa-tools"></i> 设备管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="/equipment-records"><i class="fas fa-database"></i> 设备数据</a></li>
+                <li class="nav-item"><a class="nav-link" href="/test-data"><i class="fas fa-flask"></i> 测试数据</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10 content-wrapper">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-tools"></i> 设备管理</h2>
+                <a href="/equipment/add" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 新增设备
+                </a>
+            </div>
+            
+            <div th:if="${success}" class="alert alert-success alert-flash" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger alert-flash" th:text="${error}"></div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>设备编号</th>
+                                <th>设备名称</th>
+                                <th>类型</th>
+                                <th>型号</th>
+                                <th>位置</th>
+                                <th>IP地址</th>
+                                <th>负责人</th>
+                                <th>状态</th>
+                                <th class="table-action">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${equipments.isEmpty()}">
+                                <td colspan="9" class="text-center text-muted">暂无数据</td>
+                            </tr>
+                            <tr th:each="eq : ${equipments}">
+                                <td th:text="${eq.equipmentCode}"></td>
+                                <td th:text="${eq.equipmentName}"></td>
+                                <td>
+                                    <span class="badge badge-info" th:text="${eq.equipmentType == 'CLEANER' ? '清选机' : (eq.equipmentType == 'COATER' ? '包衣机' : (eq.equipmentType == 'PACKAGER' ? '包装机' : (eq.equipmentType == 'INSPECTOR' ? '检测仪' : (eq.equipmentType == 'CONVEYOR' ? '输送机' : eq.equipmentType))))}">
+                                    </span>
+                                </td>
+                                <td th:text="${eq.model ?: '-'}"></td>
+                                <td th:text="${eq.location ?: '-'}"></td>
+                                <td th:text="${eq.ipAddress ?: '-'}"></td>
+                                <td th:text="${eq.responsiblePerson ?: '-'}"></td>
+                                <td>
+                                    <span class="badge status-badge" 
+                                          th:class="${eq.status == 'RUNNING' ? 'badge-success' : (eq.status == 'IDLE' ? 'badge-primary' : (eq.status == 'MAINTENANCE' ? 'badge-warning' : (eq.status == 'FAULT' ? 'badge-danger' : 'badge-secondary')))}"
+                                          th:text="${eq.status == 'OFFLINE' ? '离线' : (eq.status == 'IDLE' ? '空闲' : (eq.status == 'RUNNING' ? '运行中' : (eq.status == 'MAINTENANCE' ? '维护中' : '故障')))}">
+                                    </span>
+                                </td>
+                                <td class="table-action">
+                                    <a th:href="@{/equipment/edit/{id}(id=${eq.id})}" class="btn btn-sm btn-info btn-action">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/equipment-records(equipmentId=${eq.id})}" class="btn btn-sm btn-primary btn-action" title="查看数据">
+                                        <i class="fas fa-database"></i>
+                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a th:href="@{/equipment/status/{id}/IDLE(id=${eq.id})}" class="dropdown-item">设为空闲</a>
+                                            <a th:href="@{/equipment/status/{id}/RUNNING(id=${eq.id})}" class="dropdown-item">设为运行</a>
+                                            <a th:href="@{/equipment/status/{id}/MAINTENANCE(id=${eq.id})}" class="dropdown-item">设为维护</a>
+                                            <a th:href="@{/equipment/status/{id}/OFFLINE(id=${eq.id})}" class="dropdown-item">设为离线</a>
+                                        </div>
+                                    </div>
+                                    <a th:href="@{/equipment/delete/{id}(id=${eq.id})}" 
+                                       class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('确认删除？')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div th:if="${totalPages > 1}" class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="text-muted">
+                            共 <span th:text="${totalElements}">0</span> 条记录，第 <span th:text="${currentPage + 1}">1</span>/<span th:text="${totalPages}">1</span> 页
+                        </div>
+                        <nav>
+                            <ul class="pagination mb-0">
+                                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/equipment(status=${currentStatus}, page=0, size=${pageSize})}">首页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/equipment(status=${currentStatus}, page=${currentPage - 1}, size=${pageSize})}">上一页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/equipment(status=${currentStatus}, page=${currentPage + 1}, size=${pageSize})}">下一页</a>
+                                </li>
+                                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/equipment(status=${currentStatus}, page=${totalPages - 1}, size=${pageSize})}">末页</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
