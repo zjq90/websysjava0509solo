@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>气象数据表单</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .form-group label { font-weight: 500; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather" class="active"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header" th:text="${weather.id != null} ? '编辑气象数据' : '新增气象数据'"></div>
+                <div class="card-body">
+                    <form id="form">
+                        <input type="hidden" id="id" th:value="${weather.id}">
+                        <div class="row">
+                            <div class="col-md-4"><div class="form-group"><label>记录日期 *</label>
+                                <input type="date" class="form-control" id="recordDate" th:value="${weather.recordDate}" required></div></div>
+                            <div class="col-md-4"><div class="form-group"><label>地点 *</label>
+                                <input type="text" class="form-control" id="location" th:value="${weather.location}" required></div></div>
+                            <div class="col-md-4"><div class="form-group"><label>数据来源</label>
+                                <input type="text" class="form-control" id="dataSource" th:value="${weather.dataSource}"></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><div class="form-group"><label>平均气温(℃)</label>
+                                <input type="number" step="0.1" class="form-control" id="avgTemperature" th:value="${weather.avgTemperature}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>最高气温(℃)</label>
+                                <input type="number" step="0.1" class="form-control" id="maxTemperature" th:value="${weather.maxTemperature}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>最低气温(℃)</label>
+                                <input type="number" step="0.1" class="form-control" id="minTemperature" th:value="${weather.minTemperature}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>相对湿度(%)</label>
+                                <input type="number" step="0.1" class="form-control" id="avgHumidity" th:value="${weather.avgHumidity}"></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><div class="form-group"><label>降雨量(mm)</label>
+                                <input type="number" step="0.1" class="form-control" id="rainfall" th:value="${weather.rainfall}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>日照时数(h)</label>
+                                <input type="number" step="0.1" class="form-control" id="sunshineHours" th:value="${weather.sunshineHours}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>平均风速(m/s)</label>
+                                <input type="number" step="0.1" class="form-control" id="avgWindSpeed" th:value="${weather.avgWindSpeed}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>气压(hPa)</label>
+                                <input type="number" step="0.1" class="form-control" id="airPressure" th:value="${weather.airPressure}"></div></div>
+                        </div>
+                        <div class="form-group text-right">
+                            <a href="/weather" class="btn btn-secondary mr-2"><i class="fa fa-arrow-left"></i> 返回</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+        var id = $('#id').val();
+        var data = {
+            recordDate: $('#recordDate').val(),
+            location: $('#location').val(),
+            dataSource: $('#dataSource').val(),
+            avgTemperature: parseFloat($('#avgTemperature').val()) || null,
+            maxTemperature: parseFloat($('#maxTemperature').val()) || null,
+            minTemperature: parseFloat($('#minTemperature').val()) || null,
+            avgHumidity: parseFloat($('#avgHumidity').val()) || null,
+            rainfall: parseFloat($('#rainfall').val()) || null,
+            sunshineHours: parseFloat($('#sunshineHours').val()) || null,
+            avgWindSpeed: parseFloat($('#avgWindSpeed').val()) || null,
+            airPressure: parseFloat($('#airPressure').val()) || null
+        };
+        var url = '/weather/api', method = 'POST';
+        if (id) { url = '/weather/api/' + id; method = 'PUT'; }
+        $.ajax({ url, type: method, contentType: 'application/json', data: JSON.stringify(data),
+            success: function(r) { if (r.success) { alert('保存成功！'); window.location.href = '/weather'; } else alert(r.message); }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>育种项目表单</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .btn-primary:hover { background-color: #218838; border-color: #218838; }
+        .form-group label { font-weight: 500; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects" class="active"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header" th:text="${project.id != null} ? '编辑育种项目' : '新增育种项目'">
+                </div>
+                <div class="card-body">
+                    <form id="projectForm">
+                        <input type="hidden" id="projectId" th:value="${project.id}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="projectCode">项目编号 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="projectCode" th:value="${project.projectCode}"
+                                           placeholder="例如：PRJ2024001" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="projectName">项目名称 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="projectName" th:value="${project.projectName}"
+                                           placeholder="请输入项目名称" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cropType">作物类型 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="cropType" th:value="${project.cropType}"
+                                           placeholder="例如：水稻、小麦、玉米" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="responsiblePerson">负责人 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="responsiblePerson" th:value="${project.responsiblePerson}"
+                                           placeholder="请输入负责人姓名" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="contactPhone">联系电话</label>
+                                    <input type="text" class="form-control" id="contactPhone" th:value="${project.contactPhone}"
+                                           placeholder="请输入联系电话">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="startDate">开始日期 <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="startDate" th:value="${project.startDate}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="endDate">结束日期</label>
+                                    <input type="date" class="form-control" id="endDate" th:value="${project.endDate}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="status">项目状态 <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="status" required>
+                                        <option value="进行中" th:selected="${project.status == '进行中'}">进行中</option>
+                                        <option value="已完成" th:selected="${project.status == '已完成'}">已完成</option>
+                                        <option value="已暂停" th:selected="${project.status == '已暂停'}">已暂停</option>
+                                        <option value="已取消" th:selected="${project.status == '已取消'}">已取消</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="breedingGoal">育种目标</label>
+                            <textarea class="form-control" id="breedingGoal" rows="3" th:text="${project.breedingGoal}"
+                                      placeholder="请描述育种目标"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">项目描述</label>
+                            <textarea class="form-control" id="description" rows="3" th:text="${project.description}"
+                                      placeholder="请输入项目详细描述"></textarea>
+                        </div>
+                        <div class="form-group text-right">
+                            <a href="/projects" class="btn btn-secondary mr-2"><i class="fa fa-arrow-left"></i> 返回列表</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#projectForm').on('submit', function(e) {
+            e.preventDefault();
+            saveProject();
+        });
+    });
+
+    function saveProject() {
+        var projectId = $('#projectId').val();
+        var project = {
+            projectCode: $('#projectCode').val(),
+            projectName: $('#projectName').val(),
+            cropType: $('#cropType').val(),
+            breedingGoal: $('#breedingGoal').val(),
+            responsiblePerson: $('#responsiblePerson').val(),
+            contactPhone: $('#contactPhone').val(),
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val() || null,
+            status: $('#status').val(),
+            description: $('#description').val()
+        };
+
+        var url = '/projects/api';
+        var method = 'POST';
+        if (projectId) {
+            url = '/projects/api/' + projectId;
+            method = 'PUT';
+        }
+
+        $.ajax({
+            url: url,
+            type: method,
+            contentType: 'application/json',
+            data: JSON.stringify(project),
+            success: function(result) {
+                if (result.success) {
+                    alert('保存成功！');
+                    window.location.href = '/projects';
+                } else {
+                    alert('保存失败：' + result.message);
+                }
+            },
+            error: function(xhr) {
+                alert('保存失败，请稍后重试！');
+            }
+        });
+    }
+</script>
+</body>
+</html>

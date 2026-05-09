@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环境因素分析</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .analysis-card { padding: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 8px; }
+        .analysis-item { padding: 10px 0; border-bottom: 1px dashed #a5d6a7; }
+        .stat-box { background: #fff; padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-box .num { font-size: 28px; font-weight: bold; color: #28a745; }
+        .stat-box .label { color: #666; font-size: 13px; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis" class="active"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart"></i> 环境因素对育种影响分析
+                </div>
+                <div class="card-body">
+                    <div class="form-inline mb-4">
+                        <div class="form-group mr-2">
+                            <label class="mr-2">选择试验地点:</label>
+                            <select class="form-control" id="locationSelect">
+                                <option value="">请选择地点</option>
+                                <option th:each="loc : ${locations}" th:value="${loc}" th:text="${loc}"></option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="analyze()"><i class="fa fa-search"></i> 开始分析</button>
+                    </div>
+
+                    <div id="analysisResult" style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-md-3"><div class="stat-box">
+                                <div class="num" id="statYield">-</div>
+                                <div class="label">平均亩产(kg)</div>
+                            </div></div>
+                            <div class="col-md-3"><div class="stat-box">
+                                <div class="num" id="statTemp">-</div>
+                                <div class="label">平均气温(℃)</div>
+                            </div></div>
+                            <div class="col-md-3"><div class="stat-box">
+                                <div class="num" id="statRain">-</div>
+                                <div class="label">累计降雨(mm)</div>
+                            </div></div>
+                            <div class="col-md-3"><div class="stat-box">
+                                <div class="num" id="statPh">-</div>
+                                <div class="label">平均pH值</div>
+                            </div></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-cloud"></i> 气象数据分析</div>
+                                    <div class="card-body">
+                                        <p><strong>平均气温:</strong> <span id="weatherTemp">-</span> ℃</p>
+                                        <p><strong>累计降雨:</strong> <span id="weatherRain">-</span> mm</p>
+                                        <p><strong>平均日照:</strong> <span id="weatherSun">-</span> 小时/天</p>
+                                        <p><strong>气象记录数:</strong> <span id="weatherCount">-</span> 条</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-map"></i> 土壤数据分析</div>
+                                    <div class="card-body">
+                                        <p><strong>平均pH值:</strong> <span id="soilPh">-</span></p>
+                                        <p><strong>平均有机质:</strong> <span id="soilOM">-</span> g/kg</p>
+                                        <p><strong>土壤记录数:</strong> <span id="soilCount">-</span> 条</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4">
+                            <div class="card-header"><i class="fa fa-lightbulb-o"></i> 分析建议</div>
+                            <div class="card-body analysis-card" id="analysisList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function analyze() {
+        var location = $('#locationSelect').val();
+        if (!location) { alert('请选择试验地点！'); return; }
+        $.get('/analysis/data?location=' + location, function(data) {
+            $('#analysisResult').show();
+            $('#statYield').text(data.averageYield ? data.averageYield.toFixed(1) : '-');
+            $('#statTemp').text(data.weather.averageTemperature ? data.weather.averageTemperature.toFixed(1) : '-');
+            $('#statRain').text(data.weather.totalRainfall ? data.weather.totalRainfall.toFixed(1) : '-');
+            $('#statPh').text(data.soil.averagePh ? data.soil.averagePh.toFixed(1) : '-');
+            $('#weatherTemp').text(data.weather.averageTemperature ? data.weather.averageTemperature.toFixed(1) : '-');
+            $('#weatherRain').text(data.weather.totalRainfall ? data.weather.totalRainfall.toFixed(1) : '-');
+            $('#weatherSun').text(data.weather.averageSunshine ? data.weather.averageSunshine.toFixed(1) : '-');
+            $('#weatherCount').text(data.weather.recordCount);
+            $('#soilPh').text(data.soil.averagePh ? data.soil.averagePh.toFixed(1) : '-');
+            $('#soilOM').text(data.soil.averageOrganicMatter ? data.soil.averageOrganicMatter.toFixed(1) : '-');
+            $('#soilCount').text(data.soil.recordCount);
+            var html = '';
+            data.analysis.forEach(function(item) {
+                html += '<div class="analysis-item"><i class="fa fa-info-circle text-success"></i> ' + item + '</div>';
+            });
+            $('#analysisList').html(html);
+        });
+    }
+</script>
+</body>
+</html>

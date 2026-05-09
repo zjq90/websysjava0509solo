@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲本表单</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .btn-primary:hover { background-color: #218838; border-color: #218838; }
+        .form-group label { font-weight: 500; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents" class="active"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header" th:text="${parent.id != null} ? '编辑亲本' : '新增亲本'"></div>
+                <div class="card-body">
+                    <form id="parentForm">
+                        <input type="hidden" id="parentId" th:value="${parent.id}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>亲本编号 *</label>
+                                    <input type="text" class="form-control" id="parentCode" th:value="${parent.parentCode}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>品种名称 *</label>
+                                    <input type="text" class="form-control" id="varietyName" th:value="${parent.varietyName}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>亲本类型 *</label>
+                                    <select class="form-control" id="parentType" required>
+                                        <option value="父本" th:selected="${parent.parentType == '父本'}">父本</option>
+                                        <option value="母本" th:selected="${parent.parentType == '母本'}">母本</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>作物类型 *</label>
+                                    <input type="text" class="form-control" id="cropType" th:value="${parent.cropType}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>来源地</label>
+                                    <input type="text" class="form-control" id="origin" th:value="${parent.origin}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>世代</label>
+                                    <input type="text" class="form-control" id="generation" th:value="${parent.generation}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>产量潜力 (kg/亩)</label>
+                                    <input type="number" step="0.01" class="form-control" id="yieldPotential" th:value="${parent.yieldPotential}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>生育期 (天)</label>
+                                    <input type="number" class="form-control" id="growthPeriod" th:value="${parent.growthPeriod}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>收集日期</label>
+                                    <input type="date" class="form-control" id="collectionDate" th:value="${parent.collectionDate}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>主要性状特征</label>
+                            <textarea class="form-control" id="traits" rows="2" th:text="${parent.traits}"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>抗病性</label>
+                                    <input type="text" class="form-control" id="diseaseResistance" th:value="${parent.diseaseResistance}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>抗逆性</label>
+                                    <input type="text" class="form-control" id="stressTolerance" th:value="${parent.stressTolerance}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <a href="/parents" class="btn btn-secondary mr-2"><i class="fa fa-arrow-left"></i> 返回</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('#parentForm').on('submit', function(e) {
+        e.preventDefault();
+        var id = $('#parentId').val();
+        var data = {
+            parentCode: $('#parentCode').val(),
+            varietyName: $('#varietyName').val(),
+            parentType: $('#parentType').val(),
+            cropType: $('#cropType').val(),
+            origin: $('#origin').val(),
+            generation: $('#generation').val(),
+            traits: $('#traits').val(),
+            diseaseResistance: $('#diseaseResistance').val(),
+            stressTolerance: $('#stressTolerance').val(),
+            yieldPotential: parseFloat($('#yieldPotential').val()) || null,
+            growthPeriod: parseInt($('#growthPeriod').val()) || null,
+            collectionDate: $('#collectionDate').val() || null,
+            storageLocation: '',
+            remarks: ''
+        };
+        var url = '/parents/api', method = 'POST';
+        if (id) { url = '/parents/api/' + id; method = 'PUT'; }
+        $.ajax({ url, type: method, contentType: 'application/json', data: JSON.stringify(data),
+            success: function(r) { if (r.success) { alert('保存成功！'); window.location.href = '/parents'; } else alert(r.message); },
+            error: function() { alert('保存失败！'); }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>育种与田间管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #28a745 !important;
+        }
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: #ffffff;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+        .sidebar a i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .content-area {
+            padding: 20px;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #28a745;
+            font-weight: bold;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .stat-icon {
+            font-size: 40px;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .welcome-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .feature-card {
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+        <i class="fa fa-leaf"></i> 育种与田间管理系统
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/" class="active"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+
+        <div class="col-md-10 content-area">
+            <div class="welcome-section">
+                <h2><i class="fa fa-leaf"></i> 欢迎使用育种与田间管理系统</h2>
+                <p class="mt-3">本系统为农业育种研究提供全面的信息化管理解决方案，包括育种项目管理、亲本记录、杂交组合、田间试验数据采集以及环境因素分析等功能。</p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon"><i class="fa fa-folder-open"></i></div>
+                        <div class="stat-number" id="projectCount">0</div>
+                        <div class="stat-label">育种项目</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon"><i class="fa fa-seedling"></i></div>
+                        <div class="stat-number" id="parentCount">0</div>
+                        <div class="stat-label">亲本记录</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon"><i class="fa fa-link"></i></div>
+                        <div class="stat-number" id="combinationCount">0</div>
+                        <div class="stat-label">杂交组合</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card bg-white">
+                        <div class="stat-icon"><i class="fa fa-flask"></i></div>
+                        <div class="stat-number" id="experimentCount">0</div>
+                        <div class="stat-label">田间试验</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-header">
+                            <i class="fa fa-folder-open"></i> 育种项目管理
+                        </div>
+                        <div class="card-body">
+                            <p>管理育种项目立项、进度跟踪、负责人安排等，全面掌握项目动态。</p>
+                            <a href="/projects" class="btn btn-primary btn-sm">进入管理 <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-header">
+                            <i class="fa fa-link"></i> 杂交组合管理
+                        </div>
+                        <div class="card-body">
+                            <p>记录亲本杂交信息，跟踪后代性状表现，筛选优良组合。</p>
+                            <a href="/combinations" class="btn btn-primary btn-sm">进入管理 <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-header">
+                            <i class="fa fa-bar-chart"></i> 环境因素分析
+                        </div>
+                        <div class="card-body">
+                            <p>结合气象、土壤数据分析环境因素对育种的影响，提供科学建议。</p>
+                            <a href="/analysis" class="btn btn-primary btn-sm">开始分析 <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <i class="fa fa-info-circle"></i> 系统功能说明
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>核心功能</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-check text-success"></i> 育种项目立项与进度管理</li>
+                                <li><i class="fa fa-check text-success"></i> 亲本材料记录与性状管理</li>
+                                <li><i class="fa fa-check text-success"></i> 杂交组合配置与后代跟踪</li>
+                                <li><i class="fa fa-check text-success"></i> 田间试验数据采集</li>
+                                <li><i class="fa fa-check text-success"></i> 抗病性、产量表现记录</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>环境分析</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-check text-success"></i> 气象数据录入与管理</li>
+                                <li><i class="fa fa-check text-success"></i> 土壤检测数据管理</li>
+                                <li><i class="fa fa-check text-success"></i> 温度、降雨、日照分析</li>
+                                <li><i class="fa fa-check text-success"></i> 土壤肥力评估</li>
+                                <li><i class="fa fa-check text-success"></i> 环境因素综合分析</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        loadStats();
+    });
+
+    function loadStats() {
+        $.get('/projects/api', function(data) {
+            $('#projectCount').text(data.length);
+        });
+        $.get('/parents/api', function(data) {
+            $('#parentCount').text(data.length);
+        });
+        $.get('/combinations/api', function(data) {
+            $('#combinationCount').text(data.length);
+        });
+        $.get('/experiments/api', function(data) {
+            $('#experimentCount').text(data.length);
+        });
+    }
+</script>
+</body>
+</html>

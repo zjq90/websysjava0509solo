@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统测试功能</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .test-result { margin-top: 15px; padding: 15px; border-radius: 5px; }
+        .test-success { background-color: #d4edda; color: #155724; }
+        .test-error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test" class="active"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-cogs"></i> 系统测试功能</div>
+                <div class="card-body">
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> 此页面提供系统功能测试和测试数据生成功能，方便进行开发和测试。</div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">API接口测试</div>
+                                <div class="card-body">
+                                    <button class="btn btn-primary btn-block mb-2" onclick="testApi('projects')">测试育种项目API</button>
+                                    <button class="btn btn-primary btn-block mb-2" onclick="testApi('parents')">测试亲本记录API</button>
+                                    <button class="btn btn-primary btn-block mb-2" onclick="testApi('combinations')">测试杂交组合API</button>
+                                    <button class="btn btn-primary btn-block mb-2" onclick="testApi('experiments')">测试田间试验API</button>
+                                    <button class="btn btn-primary btn-block mb-2" onclick="testApi('weather')">测试气象数据API</button>
+                                    <button class="btn btn-primary btn-block" onclick="testApi('soil')">测试土壤数据API</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">功能测试</div>
+                                <div class="card-body">
+                                    <button class="btn btn-success btn-block mb-2" onclick="testStatus()">测试系统状态</button>
+                                    <button class="btn btn-warning btn-block mb-2" onclick="generateTestData()">生成测试数据</button>
+                                    <button class="btn btn-info btn-block mb-2" onclick="testCrud()">CRUD功能测试</button>
+                                    <div id="testResult"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header">测试结果</div>
+                        <div class="card-body">
+                            <div id="testOutput" class="test-result" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function showResult(success, message) {
+        var $el = $('#testOutput');
+        $el.show().removeClass('test-success test-error').addClass(success ? 'test-success' : 'test-error');
+        $el.html('<i class="fa ' + (success ? 'fa-check-circle' : 'fa-times-circle') + '"></i> ' + message);
+    }
+
+    function testStatus() {
+        $.get('/test/api/status', function(data) {
+            showResult(true, '系统状态: ' + data.status + '<br>消息: ' + data.message);
+        }).fail(function() { showResult(false, '系统状态测试失败！'); });
+    }
+
+    function testApi(type) {
+        $.get('/' + type + '/api', function(data) {
+            showResult(true, type + ' API测试成功！返回 ' + data.length + ' 条记录。');
+        }).fail(function() { showResult(false, type + ' API测试失败！'); });
+    }
+
+    function generateTestData() {
+        if (!confirm('确定要生成测试数据吗？')) return;
+        var testData = [
+            { type: 'projects', url: '/projects/api', data: { projectCode: 'PRJ-TEST-001', projectName: '小麦高产品种选育', cropType: '小麦', breedingGoal: '选育高产、抗病小麦品种', responsiblePerson: '张研究员', contactPhone: '13800138001', startDate: '2024-01-15', status: '进行中' }},
+            { type: 'projects', url: '/projects/api', data: { projectCode: 'PRJ-TEST-002', projectName: '水稻抗逆品种选育', cropType: '水稻', breedingGoal: '选育抗逆、优质水稻品种', responsiblePerson: '李研究员', contactPhone: '13800138002', startDate: '2024-02-20', status: '进行中' }},
+            { type: 'parents', url: '/parents/api', data: { parentCode: 'PAR-TEST-001', varietyName: '济麦22', parentType: '父本', cropType: '小麦', origin: '山东', generation: '稳定系', yieldPotential: 650.0, growthPeriod: 235, diseaseResistance: '抗锈病' }},
+            { type: 'parents', url: '/parents/api', data: { parentCode: 'PAR-TEST-002', varietyName: '周麦18', parentType: '母本', cropType: '小麦', origin: '河南', generation: '稳定系', yieldPotential: 600.0, growthPeriod: 232, diseaseResistance: '抗白粉病' }},
+            { type: 'combinations', url: '/combinations/api', data: { combinationCode: 'COM-TEST-001', combinationName: '济麦22×周麦18', crossDate: '2024-04-15', crossMethod: '人工去雄杂交', generation: 'F1', seedCount: 500, seedSetRate: 85.5, status: '进行中' }},
+            { type: 'experiments', url: '/experiments/api', data: { experimentCode: 'EXP-TEST-001', experimentName: '2024年小麦品比试验', location: '河南郑州试验站', year: 2024, plantHeight: 85.5, earLength: 10.2, thousandGrainWeight: 45.8, yieldPerMu: 620.5, powderyMildewResistance: '中抗', rustResistance: '抗', lodgingResistance: '强', status: '已完成' }},
+            { type: 'weather', url: '/weather/api', data: { recordDate: '2024-04-15', location: '河南郑州试验站', avgTemperature: 18.5, maxTemperature: 25.3, minTemperature: 12.8, avgHumidity: 65.0, rainfall: 12.5, sunshineHours: 7.5, avgWindSpeed: 2.3, dataSource: '自动气象站' }},
+            { type: 'soil', url: '/soil/api', data: { recordDate: '2024-04-15', location: '河南郑州试验站', soilType: '壤土', soilTexture: '中壤', phValue: 7.2, organicMatter: 18.5, totalNitrogen: 1.25, availablePhosphorus: 25.8, availablePotassium: 150.2, dataSource: '实验室检测' }}
+        ];
+        var completed = 0;
+        testData.forEach(function(item) {
+            $.ajax({ url: item.url, type: 'POST', contentType: 'application/json', data: JSON.stringify(item.data),
+                complete: function() {
+                    completed++;
+                    if (completed >= testData.length) {
+                        showResult(true, '测试数据生成完成！共生成 ' + testData.length + ' 条测试数据，请前往各功能模块查看。');
+                    }
+                }
+            });
+        });
+    }
+
+    function testCrud() {
+        var testProject = { projectCode: 'CRUD-TEST', projectName: 'CRUD测试项目', cropType: '测试作物', breedingGoal: 'CRUD功能测试', responsiblePerson: '测试员', startDate: '2024-01-01', status: '进行中' };
+        $.ajax({ url: '/projects/api', type: 'POST', contentType: 'application/json', data: JSON.stringify(testProject),
+            success: function(createRes) {
+                if (!createRes.success) { showResult(false, '创建失败'); return; }
+                var id = createRes.data.id;
+                createRes.data.projectName = 'CRUD测试项目-已更新';
+                $.ajax({ url: '/projects/api/' + id, type: 'PUT', contentType: 'application/json', data: JSON.stringify(createRes.data),
+                    success: function(updateRes) {
+                        if (!updateRes.success) { showResult(false, '更新失败'); return; }
+                        $.ajax({ url: '/projects/api/' + id, type: 'DELETE',
+                            success: function(deleteRes) {
+                                if (deleteRes.success) {
+                                    showResult(true, 'CRUD功能测试全部通过！(创建→更新→删除)');
+                                } else { showResult(false, '删除失败'); }
+                            }
+                        });
+                    }
+                });
+            },
+            error: function() { showResult(false, 'CRUD测试失败'); }
+        });
+    }
+</script>
+</body>
+</html>

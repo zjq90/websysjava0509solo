@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>土壤数据表单</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar-brand { font-weight: bold; color: #28a745 !important; }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #343a40; padding-top: 20px; }
+        .sidebar a { color: #ffffff; padding: 10px 15px; display: block; text-decoration: none; }
+        .sidebar a:hover, .sidebar a.active { background-color: #28a745; color: #ffffff; }
+        .sidebar a i { width: 20px; margin-right: 10px; }
+        .content-area { padding: 20px; }
+        .card { border: none; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background-color: #ffffff; border-bottom: 2px solid #28a745; font-weight: bold; }
+        .btn-primary { background-color: #28a745; border-color: #28a745; }
+        .form-group label { font-weight: 500; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"><i class="fa fa-leaf"></i> 育种与田间管理系统</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            <a href="/"><i class="fa fa-home"></i> 首页</a>
+            <a href="/projects"><i class="fa fa-folder-open"></i> 育种项目</a>
+            <a href="/parents"><i class="fa fa-seedling"></i> 亲本记录</a>
+            <a href="/combinations"><i class="fa fa-link"></i> 杂交组合</a>
+            <a href="/experiments"><i class="fa fa-flask"></i> 田间试验</a>
+            <a href="/weather"><i class="fa fa-cloud"></i> 气象数据</a>
+            <a href="/soil" class="active"><i class="fa fa-map"></i> 土壤数据</a>
+            <a href="/analysis"><i class="fa fa-bar-chart"></i> 环境分析</a>
+            <a href="/test"><i class="fa fa-cogs"></i> 测试功能</a>
+        </div>
+        <div class="col-md-10 content-area">
+            <div class="card">
+                <div class="card-header" th:text="${soil.id != null} ? '编辑土壤数据' : '新增土壤数据'"></div>
+                <div class="card-body">
+                    <form id="form">
+                        <input type="hidden" id="id" th:value="${soil.id}">
+                        <div class="row">
+                            <div class="col-md-4"><div class="form-group"><label>记录日期 *</label>
+                                <input type="date" class="form-control" id="recordDate" th:value="${soil.recordDate}" required></div></div>
+                            <div class="col-md-4"><div class="form-group"><label>地点 *</label>
+                                <input type="text" class="form-control" id="location" th:value="${soil.location}" required></div></div>
+                            <div class="col-md-4"><div class="form-group"><label>土壤类型</label>
+                                <input type="text" class="form-control" id="soilType" th:value="${soil.soilType}"></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><div class="form-group"><label>pH值</label>
+                                <input type="number" step="0.01" class="form-control" id="phValue" th:value="${soil.phValue}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>有机质(g/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="organicMatter" th:value="${soil.organicMatter}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>全氮(g/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="totalNitrogen" th:value="${soil.totalNitrogen}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>有效磷(mg/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="availablePhosphorus" th:value="${soil.availablePhosphorus}"></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"><div class="form-group"><label>速效钾(mg/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="availablePotassium" th:value="${soil.availablePotassium}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>全磷(g/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="totalPhosphorus" th:value="${soil.totalPhosphorus}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>全钾(g/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="totalPotassium" th:value="${soil.totalPotassium}"></div></div>
+                            <div class="col-md-3"><div class="form-group"><label>碱解氮(mg/kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="alkalineHydrolyzableN" th:value="${soil.alkalineHydrolyzableN}"></div></div>
+                        </div>
+                        <div class="form-group text-right">
+                            <a href="/soil" class="btn btn-secondary mr-2"><i class="fa fa-arrow-left"></i> 返回</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+        var id = $('#id').val();
+        var data = {
+            recordDate: $('#recordDate').val(),
+            location: $('#location').val(),
+            soilType: $('#soilType').val(),
+            phValue: parseFloat($('#phValue').val()) || null,
+            organicMatter: parseFloat($('#organicMatter').val()) || null,
+            totalNitrogen: parseFloat($('#totalNitrogen').val()) || null,
+            availablePhosphorus: parseFloat($('#availablePhosphorus').val()) || null,
+            availablePotassium: parseFloat($('#availablePotassium').val()) || null,
+            totalPhosphorus: parseFloat($('#totalPhosphorus').val()) || null,
+            totalPotassium: parseFloat($('#totalPotassium').val()) || null,
+            alkalineHydrolyzableN: parseFloat($('#alkalineHydrolyzableN').val()) || null
+        };
+        var url = '/soil/api', method = 'POST';
+        if (id) { url = '/soil/api/' + id; method = 'PUT'; }
+        $.ajax({ url, type: method, contentType: 'application/json', data: JSON.stringify(data),
+            success: function(r) { if (r.success) { alert('保存成功！'); window.location.href = '/soil'; } else alert(r.message); }
+        });
+    });
+</script>
+</body>
+</html>
