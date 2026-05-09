@@ -1,0 +1,90 @@
+{
+  "pages": [
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "生产批次管理",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/batch/detail",
+      "style": {
+        "navigationBarTitleText": "批次详情"
+      }
+    },
+    {
+      "path": "pages/batch/add",
+      "style": {
+        "navigationBarTitleText": "新建批次"
+      }
+    },
+    {
+      "path": "pages/scan/scan",
+      "style": {
+        "navigationBarTitleText": "扫码查询"
+      }
+    },
+    {
+      "path": "pages/inspection/inspection",
+      "style": {
+        "navigationBarTitleText": "质检录入"
+      }
+    },
+    {
+      "path": "pages/report/report",
+      "style": {
+        "navigationBarTitleText": "加工报告"
+      }
+    },
+    {
+      "path": "pages/alerts/alerts",
+      "style": {
+        "navigationBarTitleText": "预警通知"
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "生产批次管理",
+    "navigationBarBackgroundColor": "#409EFF",
+    "backgroundColor": "#F5F7FA"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#409EFF",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "批次"
+      },
+      {
+        "pagePath": "pages/scan/scan",
+        "text": "扫码"
+      },
+      {
+        "pagePath": "pages/alerts/alerts",
+        "text": "预警"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  }
+}
