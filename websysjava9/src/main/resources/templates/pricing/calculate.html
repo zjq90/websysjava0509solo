@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head('价格计算')"></head>
+<body>
+<div th:replace="fragments/navbar::navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="fragments/sidebar::sidebar('pricing-calc')"></div>
+        </div>
+        <div class="col-md-10">
+            <div class="main-content">
+                <div th:replace="fragments/alerts::alerts"></div>
+                
+                <h2 class="mb-4"><i class="fas fa-calculator"></i> 价格计算测试</h2>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>计算参数</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="/price-strategies/calculate" method="post">
+                                    <div class="form-group">
+                                        <label>选择客户 <span class="text-danger">*</span></label>
+                                        <select name="customerId" class="form-control" required>
+                                            <option value="">请选择客户</option>
+                                            <option th:each="c : ${customers}" 
+                                                    th:value="${c.id}"
+                                                    th:text="${c.code + ' - ' + c.name + ' (' + c.type.description + ' - ' + c.level.description + ')'}"></option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>选择产品 <span class="text-danger">*</span></label>
+                                        <select name="productId" class="form-control" required>
+                                            <option value="">请选择产品</option>
+                                            <option th:each="p : ${products}" 
+                                                    th:value="${p.id}"
+                                                    th:text="${p.code + ' - ' + p.name + ' (基础价: ' + #numbers.formatCurrency(p.basePrice) + ')'}"></option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>购买数量 <span class="text-danger">*</span></label>
+                                        <input type="number" name="quantity" class="form-control" min="1" value="1" required>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="fas fa-calculator"></i> 计算价格
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>计算结果</h5>
+                            </div>
+                            <div class="card-body">
+                                <div th:if="${calculatedPrice == null}" class="text-center text-muted py-4">
+                                    请选择客户、产品和数量后点击计算
+                                </div>
+                                <div th:if="${calculatedPrice != null}">
+                                    <table class="table table-borderless">
+                                        <tr><th style="width: 120px;">客户</th><td th:text="${customer.name}"></td></tr>
+                                        <tr><th>产品</th><td th:text="${product.name}"></td></tr>
+                                        <tr><th>数量</th><td th:text="${quantity}"></td></tr>
+                                        <tr><th>基础价格</th>
+                                            <td class="text-muted text-decoration-line-through"
+                                                th:text="${#numbers.formatCurrency(basePrice)}"></td>
+                                        </tr>
+                                        <tr class="table-success">
+                                            <th>计算价格</th>
+                                            <td class="h4 text-success" th:text="${#numbers.formatCurrency(calculatedPrice)}"></td>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th>总金额</th>
+                                            <td class="h4 text-primary" th:text="${#numbers.formatCurrency(totalAmount)}"></td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div th:if="${calculatedPrice.compareTo(basePrice) != 0}" 
+                                         class="alert alert-success mt-3">
+                                        <i class="fas fa-info-circle"></i> 
+                                        该客户享受优惠价格！
+                                        <span th:if="${calculatedPrice.compareTo(basePrice) < 0}">
+                                            优惠了 <span th:text="${#numbers.formatCurrency(basePrice.subtract(calculatedPrice))}"></span>/件
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

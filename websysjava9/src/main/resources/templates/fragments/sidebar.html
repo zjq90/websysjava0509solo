@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="sidebar(activeMenu)" class="sidebar">
+    <nav class="nav flex-column">
+        <a class="nav-link" th:classappend="${activeMenu == 'dashboard'} ? 'active'" href="/">
+            <i class="fas fa-tachometer-alt"></i> 仪表盘
+        </a>
+        <a class="nav-link" th:classappend="${activeMenu == 'orders'} ? 'active'" href="/orders">
+            <i class="fas fa-shopping-cart"></i> 订单管理
+        </a>
+        <a class="nav-link" th:classappend="${activeMenu == 'customers'} ? 'active'" href="/customers">
+            <i class="fas fa-users"></i> 客户管理
+        </a>
+        <a class="nav-link" th:classappend="${activeMenu == 'products'} ? 'active'" href="/products">
+            <i class="fas fa-boxes"></i> 产品管理
+        </a>
+        <a class="nav-link" th:classappend="${activeMenu == 'pricing'} ? 'active'" href="/price-strategies">
+            <i class="fas fa-tags"></i> 价格策略
+        </a>
+        <a class="nav-link" th:classappend="${activeMenu == 'pricing-calc'} ? 'active'" href="/price-strategies/calculate">
+            <i class="fas fa-calculator"></i> 价格计算
+        </a>
+    </nav>
+</div>
+</body>
+</html>

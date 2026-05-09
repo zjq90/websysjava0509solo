@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head('客户详情')"></head>
+<body>
+<div th:replace="fragments/navbar::navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="fragments/sidebar::sidebar('customers')"></div>
+        </div>
+        <div class="col-md-10">
+            <div class="main-content">
+                <div th:replace="fragments/alerts::alerts"></div>
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-user"></i> 客户详情</h2>
+                    <div>
+                        <a th:href="@{/customers/{id}/edit(id=${customer.id})}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> 编辑
+                        </a>
+                        <a href="/customers" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> 返回
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th style="width: 120px;">客户编码</th>
+                                        <td th:text="${customer.code}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>客户名称</th>
+                                        <td th:text="${customer.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>客户类型</th>
+                                        <td th:text="${customer.type.description}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>客户等级</th>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:class="${customer.level.name() == 'CORE'} ? 'badge-danger' : 
+                                                                      (${customer.level.name() == 'GOOD'} ? 'badge-warning' : 'badge-secondary')"
+                                                  th:text="${customer.level.description}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>联系人</th>
+                                        <td th:text="${customer.contactPerson}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>联系电话</th>
+                                        <td th:text="${customer.phone}">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th style="width: 120px;">电子邮箱</th>
+                                        <td th:text="${customer.email}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>所在区域</th>
+                                        <td th:text="${customer.province + ' ' + customer.city}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>详细地址</th>
+                                        <td th:text="${customer.address}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>客户标签</th>
+                                        <td th:text="${customer.tags}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>状态</th>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:class="${customer.active} ? 'badge-success' : 'badge-secondary'"
+                                                  th:text="${customer.active} ? '启用' : '禁用'"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>创建时间</th>
+                                        <td th:text="${#temporals.format(customer.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div th:if="${customer.remark}">
+                            <hr>
+                            <h6>备注</h6>
+                            <p th:text="${customer.remark}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

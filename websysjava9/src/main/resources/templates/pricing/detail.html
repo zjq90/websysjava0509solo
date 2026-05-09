@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head('价格策略详情')"></head>
+<body>
+<div th:replace="fragments/navbar::navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="fragments/sidebar::sidebar('pricing')"></div>
+        </div>
+        <div class="col-md-10">
+            <div class="main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-tag"></i> 价格策略详情</h2>
+                    <div>
+                        <a th:href="@{/price-strategies/{id}/edit(id=${strategy.id})}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> 编辑
+                        </a>
+                        <a href="/price-strategies" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> 返回
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr><th style="width: 120px;">策略名称</th><td th:text="${strategy.name}"></td></tr>
+                                    <tr><th>价格类型</th><td th:text="${strategy.priceType.description}"></td></tr>
+                                    <tr><th>优先级</th><td><span class="badge badge-info" th:text="${strategy.priority}"></span></td></tr>
+                                    <tr><th>状态</th>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:class="${strategy.active} ? 'badge-success' : 'badge-secondary'"
+                                                  th:text="${strategy.active} ? '启用' : '禁用'"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr><th style="width: 120px;">固定价格</th>
+                                        <td th:if="${strategy.priceType.name() == 'FIXED'}"
+                                            th:text="${#numbers.formatCurrency(strategy.fixedPrice)}"></td>
+                                        <td th:if="${strategy.priceType.name() != 'FIXED'}">-</td>
+                                    </tr>
+                                    <tr><th>折扣比例</th>
+                                        <td th:if="${strategy.priceType.name() == 'DISCOUNT'}"
+                                            th:text="${(strategy.discountRate.multiply(new java.math.BigDecimal(100))).intValue() + '%'}"></td>
+                                        <td th:if="${strategy.priceType.name() != 'DISCOUNT'}">-</td>
+                                    </tr>
+                                    <tr><th>最小起订量</th><td th:text="${strategy.minQuantity != null ? strategy.minQuantity : '不限制'}"></td></tr>
+                                    <tr><th>创建时间</th><td th:text="${#temporals.format(strategy.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>适用范围</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr><th style="width: 120px;">适用产品</th>
+                                        <td th:text="${strategy.product != null ? strategy.product.name : '全部产品'}"></td>
+                                    </tr>
+                                    <tr><th>适用区域</th><td th:text="${strategy.region != null ? strategy.region : '全国通用'}"></td></tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr><th style="width: 120px;">指定客户</th>
+                                        <td th:text="${strategy.customer != null ? strategy.customer.name : '不指定'}"></td>
+                                    </tr>
+                                    <tr><th>客户等级</th><td th:text="${strategy.customerLevel != null ? strategy.customerLevel.description : '不限制'}"></td></tr>
+                                    <tr><th>客户类型</th><td th:text="${strategy.customerType != null ? strategy.customerType.description : '不限制'}"></td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div th:if="${strategy.description}">
+                            <hr>
+                            <h6>策略说明</h6>
+                            <p th:text="${strategy.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

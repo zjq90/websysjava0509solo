@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header::head('产品详情')"></head>
+<body>
+<div th:replace="fragments/navbar::navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 px-0">
+            <div th:replace="fragments/sidebar::sidebar('products')"></div>
+        </div>
+        <div class="col-md-10">
+            <div class="main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-box"></i> 产品详情</h2>
+                    <div>
+                        <a th:href="@{/products/{id}/edit(id=${product.id})}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> 编辑
+                        </a>
+                        <a href="/products" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> 返回
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h5>基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th style="width: 120px;">产品编码</th>
+                                        <td th:text="${product.code}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品名称</th>
+                                        <td th:text="${product.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品类别</th>
+                                        <td th:text="${product.category}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品规格</th>
+                                        <td th:text="${product.specification}">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>产品单位</th>
+                                        <td th:text="${product.unit}">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th style="width: 120px;">基础价格</th>
+                                        <td th:text="${#numbers.formatCurrency(product.basePrice)}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>库存数量</th>
+                                        <td th:text="${product.stockQuantity}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>状态</th>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:class="${product.active} ? 'badge-success' : 'badge-secondary'"
+                                                  th:text="${product.active} ? '启用' : '禁用'"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>创建时间</th>
+                                        <td th:text="${#temporals.format(product.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div th:if="${product.description}">
+                            <hr>
+                            <h6>产品描述</h6>
+                            <p th:text="${product.description}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
