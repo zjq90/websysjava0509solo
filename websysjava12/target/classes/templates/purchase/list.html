@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('采购管理')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('purchases')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-truck"></i> 采购管理</h4>
+        <a th:href="@{/purchases/add}" class="btn btn-primary">
+            <i class="fa fa-plus"></i> 新建采购
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <form class="form-inline" th:action="@{/purchases}" method="get">
+                <label class="mr-2">开始日期:</label>
+                <input type="date" class="form-control mr-2" name="startDate" th:value="${startDate}">
+                <label class="mr-2">结束日期:</label>
+                <input type="date" class="form-control mr-2" name="endDate" th:value="${endDate}">
+                <button type="submit" class="btn btn-primary mr-2">
+                    <i class="fa fa-search"></i> 查询
+                </button>
+                <a th:href="@{/purchases}" class="btn btn-secondary">
+                    <i class="fa fa-refresh"></i> 重置
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>采购单号</th>
+                            <th>产品</th>
+                            <th>供应商</th>
+                            <th>数量</th>
+                            <th>单价</th>
+                            <th>总金额</th>
+                            <th>采购日期</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${purchases}">
+                            <td th:text="${p.purchaseNo}">CG001</td>
+                            <td th:text="${p.product.productName}">产品</td>
+                            <td th:text="${p.supplier != null ? p.supplier.supplierName : '-'}">供应商</td>
+                            <td th:text="${p.quantity}">10</td>
+                            <td>¥<span th:text="${#numbers.formatDecimal(p.unitPrice, 1, 2)}">0.00</span></td>
+                            <td>¥<span th:text="${#numbers.formatDecimal(p.totalAmount, 1, 2)}">0.00</span></td>
+                            <td th:text="${#temporals.format(p.purchaseDate, 'yyyy-MM-dd HH:mm')}">时间</td>
+                            <td>
+                                <span class="badge badge-success" th:text="${p.status}">已入库</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/purchases/edit/{id}(id=${p.id})}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a th:href="@{/purchases/delete/{id}(id=${p.id})}" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('确定要删除该采购单吗？')">
+                                    <i class="fa fa-trash"></i> 删除
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(purchases)}">
+                            <td colspan="9" class="text-center">暂无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('供应商管理')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('suppliers')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-user-circle"></i> 供应商管理</h4>
+        <a th:href="@{/suppliers/add}" class="btn btn-primary">
+            <i class="fa fa-plus"></i> 添加供应商
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <form class="form-inline" th:action="@{/suppliers}" method="get">
+                <div class="form-group mr-2">
+                    <input type="text" class="form-control" name="keyword" placeholder="搜索供应商名称" th:value="${keyword}">
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">
+                    <i class="fa fa-search"></i> 搜索
+                </button>
+                <a th:href="@{/suppliers}" class="btn btn-secondary">
+                    <i class="fa fa-refresh"></i> 重置
+                </a>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>供应商名称</th>
+                            <th>联系人</th>
+                            <th>电话</th>
+                            <th>地址</th>
+                            <th>邮箱</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${suppliers}">
+                            <td th:text="${s.id}">1</td>
+                            <td th:text="${s.supplierName}">供应商</td>
+                            <td th:text="${s.contact}">联系人</td>
+                            <td th:text="${s.phone}">电话</td>
+                            <td th:text="${s.address}">地址</td>
+                            <td th:text="${s.email}">邮箱</td>
+                            <td>
+                                <a th:href="@{/suppliers/edit/{id}(id=${s.id})}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a th:href="@{/suppliers/delete/{id}(id=${s.id})}" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('确定要删除该供应商吗？')">
+                                    <i class="fa fa-trash"></i> 删除
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(suppliers)}">
+                            <td colspan="7" class="text-center">暂无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

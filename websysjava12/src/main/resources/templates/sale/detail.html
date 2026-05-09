@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('销售单详情')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('sales')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-shopping-cart"></i> 销售单详情</h4>
+        <a th:href="@{/sales}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> 返回列表
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">基本信息</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="120">销售单号:</th>
+                            <td th:text="${sale.saleNo}">XS001</td>
+                        </tr>
+                        <tr>
+                            <th>客户:</th>
+                            <td th:text="${sale.customer != null ? sale.customer.customerName : '零售客户'}">客户</td>
+                        </tr>
+                        <tr>
+                            <th>销售日期:</th>
+                            <td th:text="${#temporals.format(sale.saleDate, 'yyyy-MM-dd HH:mm')}">时间</td>
+                        </tr>
+                        <tr>
+                            <th>状态:</th>
+                            <td><span class="badge badge-success" th:text="${sale.status}">已完成</span></td>
+                        </tr>
+                        <tr>
+                            <th>备注:</th>
+                            <td th:text="${sale.remark}">无</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">金额统计</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <h6 class="text-muted">总金额</h6>
+                            <h2 class="text-primary">¥<span th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}">0.00</span></h2>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="text-muted">总成本</h6>
+                            <h4 class="text-warning">¥<span th:text="${#numbers.formatDecimal(sale.totalCost, 1, 2)}">0.00</span></h4>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="text-muted">利润</h6>
+                            <h4 class="text-success">¥<span th:text="${#numbers.formatDecimal(sale.profit, 1, 2)}">0.00</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">销售明细</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>产品名称</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>成本价</th>
+                        <th>金额</th>
+                        <th>成本</th>
+                        <th>利润</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${sale.saleItems}">
+                        <td th:text="${item.product.productName}">产品</td>
+                        <td th:text="${item.quantity}">1</td>
+                        <td>¥<span th:text="${#numbers.formatDecimal(item.unitPrice, 1, 2)}">0.00</span></td>
+                        <td>¥<span th:text="${#numbers.formatDecimal(item.costPrice, 1, 2)}">0.00</span></td>
+                        <td>¥<span th:text="${#numbers.formatDecimal(item.amount, 1, 2)}">0.00</span></td>
+                        <td>¥<span th:text="${#numbers.formatDecimal(item.cost, 1, 2)}">0.00</span></td>
+                        <td class="text-success">¥<span th:text="${#numbers.formatDecimal(item.profit, 1, 2)}">0.00</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

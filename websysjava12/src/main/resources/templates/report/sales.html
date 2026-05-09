@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('销售报表')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('reports')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-bar-chart"></i> 销售报表</h4>
+        <a th:href="@{/reports}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> 返回
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <form class="form-inline" th:action="@{/reports/sales}" method="get">
+                <label class="mr-2">开始日期:</label>
+                <input type="date" class="form-control mr-2" name="startDate" th:value="${#temporals.format(startDate, 'yyyy-MM-dd')}">
+                <label class="mr-2">结束日期:</label>
+                <input type="date" class="form-control mr-2" name="endDate" th:value="${#temporals.format(endDate, 'yyyy-MM-dd')}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-search"></i> 查询
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card p-4">
+                <h6 class="text-white-50 mb-1">销售总额</h6>
+                <h3 class="mb-0">¥<span th:text="${#numbers.formatDecimal(totalSales, 1, 2)}">0.00</span></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card green p-4">
+                <h6 class="text-white-50 mb-1">利润总额</h6>
+                <h3 class="mb-0">¥<span th:text="${#numbers.formatDecimal(totalProfit, 1, 2)}">0.00</span></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card blue p-4">
+                <h6 class="text-white-50 mb-1">订单数量</h6>
+                <h3 class="mb-0"><span th:text="${orderCount}">0</span></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card orange p-4">
+                <h6 class="text-white-50 mb-1">利润率</h6>
+                <h3 class="mb-0"><span th:text="${#numbers.formatDecimal(profitMargin, 1, 2)}">0</span>%</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">按分类销售统计</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr><th>分类</th><th>销售额</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${salesByCategory}">
+                                <td th:text="${item[0] ?: '未分类'}">分类</td>
+                                <td>¥<span th:text="${#numbers.formatDecimal(item[1] != null ? item[1] : 0, 1, 2)}">0.00</span></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(salesByCategory)}">
+                                <td colspan="2" class="text-center">暂无数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">产品销售排行</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr><th>产品</th><th>销量</th><th>销售额</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item, stat : ${productSales}">
+                                <td th:text="${item[1] ?: '未知产品'}">产品</td>
+                                <td th:text="${item[2] ?: 0}">0</td>
+                                <td>¥<span th:text="${#numbers.formatDecimal(item[3] != null ? item[3] : 0, 1, 2)}">0.00</span></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(productSales)}">
+                                <td colspan="3" class="text-center">暂无数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

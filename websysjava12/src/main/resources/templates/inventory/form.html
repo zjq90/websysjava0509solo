@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('调整库存')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('inventory')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-archive"></i> 调整库存</h4>
+        <a th:href="@{/inventory}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> 返回列表
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/inventory/save}" method="post" th:object="${inventory}">
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>产品名称</label>
+                            <input type="text" class="form-control" th:value="${inventory.product.productName}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>产品分类</label>
+                            <input type="text" class="form-control" th:value="${inventory.product.category}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>当前库存数量 <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" th:field="*{quantity}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>最低库存预警</label>
+                            <input type="number" class="form-control" th:field="*{minStock}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>平均成本价</label>
+                            <input type="number" step="0.01" class="form-control" th:field="*{avgCostPrice}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>最高库存</label>
+                            <input type="number" class="form-control" th:field="*{maxStock}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary mr-2">
+                        <i class="fa fa-save"></i> 保存
+                    </button>
+                    <a th:href="@{/inventory}" class="btn btn-secondary">
+                        <i class="fa fa-times"></i> 取消
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

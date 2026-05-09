@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('销售管理')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('sales')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-shopping-cart"></i> 销售管理</h4>
+        <a th:href="@{/sales/add}" class="btn btn-primary">
+            <i class="fa fa-plus"></i> 新建销售
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span>
+        </button>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <form class="form-inline" th:action="@{/sales}" method="get">
+                <label class="mr-2">开始日期:</label>
+                <input type="date" class="form-control mr-2" name="startDate" th:value="${startDate}">
+                <label class="mr-2">结束日期:</label>
+                <input type="date" class="form-control mr-2" name="endDate" th:value="${endDate}">
+                <button type="submit" class="btn btn-primary mr-2">
+                    <i class="fa fa-search"></i> 查询
+                </button>
+                <a th:href="@{/sales}" class="btn btn-secondary">
+                    <i class="fa fa-refresh"></i> 重置
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>销售单号</th>
+                            <th>客户</th>
+                            <th>销售日期</th>
+                            <th>总金额</th>
+                            <th>总成本</th>
+                            <th>利润</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sale : ${sales}">
+                            <td th:text="${sale.saleNo}">XS001</td>
+                            <td th:text="${sale.customer != null ? sale.customer.customerName : '零售客户'}">客户名称</td>
+                            <td th:text="${#temporals.format(sale.saleDate, 'yyyy-MM-dd HH:mm')}">时间</td>
+                            <td>¥<span th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}">0.00</span></td>
+                            <td>¥<span th:text="${#numbers.formatDecimal(sale.totalCost, 1, 2)}">0.00</span></td>
+                            <td class="text-success">¥<span th:text="${#numbers.formatDecimal(sale.profit, 1, 2)}">0.00</span></td>
+                            <td>
+                                <span class="badge badge-success" th:text="${sale.status}">已完成</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/sales/detail/{id}(id=${sale.id})}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-eye"></i> 详情
+                                </a>
+                                <a th:href="@{/sales/delete/{id}(id=${sale.id})}" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('确定要删除该销售单吗？')">
+                                    <i class="fa fa-trash"></i> 删除
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(sales)}">
+                            <td colspan="8" class="text-center">暂无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('库存周转率')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('reports')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-refresh"></i> 库存周转率分析</h4>
+        <a th:href="@{/reports}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> 返回
+        </a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <form class="form-inline" th:action="@{/reports/inventory-turnover}" method="get">
+                <label class="mr-2">开始日期:</label>
+                <input type="date" class="form-control mr-2" name="startDate" th:value="${#temporals.format(startDate, 'yyyy-MM-dd')}">
+                <label class="mr-2">结束日期:</label>
+                <input type="date" class="form-control mr-2" name="endDate" th:value="${#temporals.format(endDate, 'yyyy-MM-dd')}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-search"></i> 查询
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card stat-card p-4">
+                <h6 class="text-white-50 mb-1">库存总价值</h6>
+                <h3 class="mb-0">¥<span th:text="${#numbers.formatDecimal(totalInventoryValue, 1, 2)}">0.00</span></h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card stat-card blue p-4">
+                <h6 class="text-white-50 mb-1">分析期间</h6>
+                <h3 class="mb-0" th:text="${#temporals.format(startDate, 'yyyy-MM-dd') + ' ~ ' + #temporals.format(endDate, 'yyyy-MM-dd')}">时间</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">产品库存周转率详情</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>产品名称</th>
+                            <th>分类</th>
+                            <th>期初库存</th>
+                            <th>期末库存</th>
+                            <th>平均库存</th>
+                            <th>销售数量</th>
+                            <th>采购数量</th>
+                            <th>周转率</th>
+                            <th>周转天数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${productTurnoverList}">
+                            <td th:text="${item.productName}">产品</td>
+                            <td th:text="${item.category}">分类</td>
+                            <td th:text="${item.beginStock}">0</td>
+                            <td th:text="${item.endStock}">0</td>
+                            <td th:text="${item.avgStock}">0</td>
+                            <td th:text="${item.soldQuantity}">0</td>
+                            <td th:text="${item.purchasedQuantity}">0</td>
+                            <td th:text="${item.turnoverRate}">0</td>
+                            <td th:text="${item.turnoverDays + ' 天'}">0 天</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(productTurnoverList)}">
+                            <td colspan="9" class="text-center">暂无数据，请先生成测试数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/layout :: head('市场需求预测')"></div>
+</head>
+<body>
+<div th:replace="fragments/layout :: sidebar('reports')"></div>
+
+<div class="main-content">
+    <div class="navbar-top d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fa fa-line-chart"></i> 市场需求预测</h4>
+        <div>
+            <a th:href="@{/reports/demand-forecast(months=3)}" class="btn btn-sm btn-outline-primary mr-2">3个月</a>
+            <a th:href="@{/reports/demand-forecast(months=6)}" class="btn btn-sm btn-outline-primary mr-2">6个月</a>
+            <a th:href="@{/reports/demand-forecast(months=12)}" class="btn btn-sm btn-outline-primary">12个月</a>
+            <a th:href="@{/reports}" class="btn btn-secondary ml-2">
+                <i class="fa fa-arrow-left"></i> 返回
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card stat-card p-4">
+                <h6 class="text-white-50 mb-1">历史期间</h6>
+                <h5 class="mb-0" th:text="${historyPeriod}">期间</h5>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card blue p-4">
+                <h6 class="text-white-50 mb-1">预测月数</h6>
+                <h3 class="mb-0"><span th:text="${months}">3</span> 个月</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card green p-4">
+                <h6 class="text-white-50 mb-1">预估采购总金额</h6>
+                <h3 class="mb-0">¥<span th:text="${#numbers.formatDecimal(estimatedTotalPurchaseValue, 1, 2)}">0.00</span></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">产品需求预测概览</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>产品名称</th>
+                        <th>历史销量</th>
+                        <th>月均销量</th>
+                        <th>预测月销量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${productForecasts}">
+                        <td th:text="${item.productName}">产品</td>
+                        <td th:text="${item.historicalSales}">0</td>
+                        <td th:text="${item.avgMonthlySales}">0</td>
+                        <td th:text="${item.predictedMonthlySales}">0</td>
+                        <td>
+                            <button class="btn btn-sm btn-info toggle-detail"
+                                    th:data-product="${item.productName}">
+                                <i class="fa fa-eye"></i> 查看详情
+                            </button>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(productForecasts)}">
+                        <td colspan="5" class="text-center">暂无历史销售数据，请先生成测试数据</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" id="detailSection" style="display:none;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">月度详细预测 - <span id="detailProductName"></span></h5>
+            <button class="btn btn-secondary btn-sm" onclick="$('#detailSection').hide();">
+                <i class="fa fa-times"></i> 关闭
+            </button>
+        </div>
+        <div class="card-body">
+            <div id="detailContent"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/layout :: scripts"></div>
+<script>
+var forecastData = /*[[${productForecasts}]]*/ [];
+
+$(function() {
+    $('.toggle-detail').click(function() {
+        var productName = $(this).data('product');
+        var product = forecastData.find(function(p) { return p.productName === productName; });
+        
+        if (product && product.monthlyForecasts) {
+            $('#detailProductName').text(productName);
+            var html = '<table class="table table-bordered">' +
+                '<thead class="thead-light"><tr><th>月份</th><th>预测销量</th><th>建议安全库存</th><th>建议采购量</th></tr></thead>' +
+                '<tbody>';
+            
+            product.monthlyForecasts.forEach(function(f) {
+                html += '<tr>' +
+                    '<td>' + f.month + '</td>' +
+                    '<td>' + f.predictedSales + '</td>' +
+                    '<td>' + f.safeStock + '</td>' +
+                    '<td class="text-primary">' + f.recommendedPurchase + '</td>' +
+                    '</tr>';
+            });
+            
+            html += '</tbody></table>';
+            $('#detailContent').html(html);
+            $('#detailSection').show();
+            $('html, body').animate({ scrollTop: $('#detailSection').offset().top }, 500);
+        }
+    });
+});
+</script>
+</body>
+</html>
