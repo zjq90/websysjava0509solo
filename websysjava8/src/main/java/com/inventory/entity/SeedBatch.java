@@ -1,90 +1,94 @@
 package com.inventory.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 种子批次实体类
- * 功能：管理种子的批次信息，包含保质期等关键属性
+ * 用于管理种子的批次信息
+ * 每个批次对应一个具体的品种（Variety）
+ * 包含批次号、生产日期、保质期等关键信息
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "seed_batch")
-public class SeedBatch {
+public class SeedBatch extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /**
+     * 批次编号，唯一标识
+     * 格式建议：品种编码 + 日期 + 序号
+     */
+    @Column(name = "batch_no", nullable = false, unique = true, length = 100)
+    private String batchNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "variety_id", nullable = false)
-    @NotNull(message = "品种不能为空")
+    /**
+     * 所属品种ID
+     */
+    @Column(name = "variety_id", nullable = false)
+    private Long varietyId;
+
+    /**
+     * 所属品种（多对一关系）
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "variety_id", insertable = false, updatable = false)
     private Variety variety;
 
-    @Column(nullable = false, unique = true, length = 50)
-    @NotBlank(message = "批次编码不能为空")
-    @Size(min = 1, max = 50, message = "批次编码长度必须在1-50之间")
-    private String batchCode;
-
-    @Column(nullable = false)
-    @NotNull(message = "生产日期不能为空")
+    /**
+     * 生产日期
+     */
+    @Column(name = "production_date", nullable = false)
     private LocalDate productionDate;
 
-    @Column(nullable = false)
-    @NotNull(message = "过期日期不能为空")
+    /**
+     * 保质期至（过期日期）
+     */
+    @Column(name = "expiry_date", nullable = false)
     private LocalDate expiryDate;
 
-    @Column(nullable = false, length = 100)
-    @NotBlank(message = "供应商不能为空")
-    @Size(min = 1, max = 100, message = "供应商名称长度必须在1-100之间")
+    /**
+     * 总数量（入库数量）
+     */
+    @Column(name = "total_quantity", nullable = false)
+    private Integer totalQuantity;
+
+    /**
+     * 剩余可用数量
+     */
+    @Column(name = "available_quantity", nullable = false)
+    private Integer availableQuantity;
+
+    /**
+     * 单位（如：袋、公斤、粒等）
+     */
+    @Column(name = "unit", length = 20)
+    private String unit;
+
+    /**
+     * 采购单价
+     */
+    @Column(name = "unit_price")
+    private Double unitPrice;
+
+    /**
+     * 供应商
+     */
+    @Column(name = "supplier", length = 100)
     private String supplier;
 
-    @Column(precision = 10, scale = 2)
-    @Positive(message = "进货价格必须为正数")
-    private BigDecimal purchasePrice;
+    /**
+     * 批次状态
+     * 0-正常，1-预警（近效期），2-已过期
+     */
+    @Column(name = "status", nullable = false)
+    private Integer status = 0;
 
-    @Column(length = 500)
-    @Size(max = 500, message = "备注长度不能超过500")
+    /**
+     * 备注信息
+     */
+    @Column(name = "remark", length = 500)
     private String remark;
-
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    @PrePersist
-    protected void onCreate() {
-        createTime = LocalDateTime.now();
-        updateTime = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updateTime = LocalDateTime.now();
-    }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Variety getVariety() { return variety; }
-    public void setVariety(Variety variety) { this.variety = variety; }
-    public String getBatchCode() { return batchCode; }
-    public void setBatchCode(String batchCode) { this.batchCode = batchCode; }
-    public LocalDate getProductionDate() { return productionDate; }
-    public void setProductionDate(LocalDate productionDate) { this.productionDate = productionDate; }
-    public LocalDate getExpiryDate() { return expiryDate; }
-    public void setExpiryDate(LocalDate expiryDate) { this.expiryDate = expiryDate; }
-    public String getSupplier() { return supplier; }
-    public void setSupplier(String supplier) { this.supplier = supplier; }
-    public java.math.BigDecimal getPurchasePrice() { return purchasePrice; }
-    public void setPurchasePrice(java.math.BigDecimal purchasePrice) { this.purchasePrice = purchasePrice; }
-    public String getRemark() { return remark; }
-    public void setRemark(String remark) { this.remark = remark; }
-    public LocalDateTime getCreateTime() { return createTime; }
-    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
-    public LocalDateTime getUpdateTime() { return updateTime; }
-    public void setUpdateTime(LocalDateTime updateTime) { this.updateTime = updateTime; }
 }

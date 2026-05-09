@@ -1,80 +1,110 @@
 package com.inventory.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
  * 仓库实体类
- * 功能：管理多个仓库信息，支持多仓库库存同步
+ * 用于管理仓库信息，支持多仓库管理
+ * 每个仓库可以存储多个批次的种子库存
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "warehouse")
-public class Warehouse {
+public class Warehouse extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /**
+     * 仓库名称
+     */
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
 
-    @Column(nullable = false, unique = true, length = 50)
-    @NotBlank(message = "仓库编码不能为空")
-    @Size(min = 1, max = 50, message = "仓库编码长度必须在1-50之间")
-    private String warehouseCode;
+    /**
+     * 仓库编码，唯一标识
+     */
+    @Column(name = "code", unique = true, length = 50)
+    private String code;
 
-    @Column(nullable = false, length = 100)
-    @NotBlank(message = "仓库名称不能为空")
-    @Size(min = 1, max = 100, message = "仓库名称长度必须在1-100之间")
-    private String warehouseName;
-
-    @Column(length = 200)
-    @Size(max = 200, message = "地址长度不能超过200")
+    /**
+     * 仓库地址
+     */
+    @Column(name = "address", length = 200)
     private String address;
 
-    @Column(length = 50)
-    @Size(max = 50, message = "负责人长度不能超过50")
+    /**
+     * 仓库负责人
+     */
+    @Column(name = "manager", length = 50)
     private String manager;
 
-    @Column(length = 20)
-    @Pattern(regexp = "^$|^1[3-9]\\d{9}$|^\\d{3,4}-\\d{7,8}$", message = "电话号码格式不正确")
+    /**
+     * 联系电话
+     */
+    @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(length = 500)
-    @Size(max = 500, message = "描述长度不能超过500")
-    private String description;
+    /**
+     * 仓库面积（平方米）
+     */
+    @Column(name = "area")
+    private Double area;
 
-    private LocalDateTime createTime;
+    /**
+     * 仓库类型：
+     * 1-常温库
+     * 2-冷藏库
+     * 3-恒温恒湿库
+     */
+    @Column(name = "type", nullable = false)
+    private Integer type = 1;
 
-    private LocalDateTime updateTime;
+    /**
+     * 当前温度（可实时更新）
+     */
+    @Column(name = "current_temperature")
+    private Double currentTemperature;
 
-    @PrePersist
-    protected void onCreate() {
-        createTime = LocalDateTime.now();
-        updateTime = LocalDateTime.now();
-    }
+    /**
+     * 当前湿度（可实时更新）
+     */
+    @Column(name = "current_humidity")
+    private Double currentHumidity;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updateTime = LocalDateTime.now();
-    }
+    /**
+     * 温度预警阈值最小值
+     */
+    @Column(name = "temp_warning_min")
+    private Double tempWarningMin;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getWarehouseCode() { return warehouseCode; }
-    public void setWarehouseCode(String warehouseCode) { this.warehouseCode = warehouseCode; }
-    public String getWarehouseName() { return warehouseName; }
-    public void setWarehouseName(String warehouseName) { this.warehouseName = warehouseName; }
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-    public String getManager() { return manager; }
-    public void setManager(String manager) { this.manager = manager; }
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public LocalDateTime getCreateTime() { return createTime; }
-    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
-    public LocalDateTime getUpdateTime() { return updateTime; }
-    public void setUpdateTime(LocalDateTime updateTime) { this.updateTime = updateTime; }
+    /**
+     * 温度预警阈值最大值
+     */
+    @Column(name = "temp_warning_max")
+    private Double tempWarningMax;
+
+    /**
+     * 湿度预警阈值最小值
+     */
+    @Column(name = "humidity_warning_min")
+    private Double humidityWarningMin;
+
+    /**
+     * 湿度预警阈值最大值
+     */
+    @Column(name = "humidity_warning_max")
+    private Double humidityWarningMax;
+
+    /**
+     * 状态：1-启用，0-禁用
+     */
+    @Column(name = "status", nullable = false)
+    private Integer status = 1;
+
+    /**
+     * 备注
+     */
+    @Column(name = "remark", length = 500)
+    private String remark;
 }

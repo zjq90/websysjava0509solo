@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入库管理 - 智能库存管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%); }
+        .sidebar a { color: #ecf0f1; padding: 12px 20px; display: block; text-decoration: none; transition: all 0.3s; }
+        .sidebar a:hover, .sidebar a.active { background-color: rgba(255,255,255,0.1); border-left: 4px solid #3498db; padding-left: 16px; }
+        .sidebar .nav-title { color: #95a5a6; padding: 15px 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .content-wrapper { padding: 20px; }
+        .brand { padding: 20px; color: white; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .brand h5 { margin: 0; font-weight: 600; }
+        .card { border-radius: 10px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .step-card { border-left: 4px solid #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-2 sidebar p-0">
+                <div class="brand">
+                    <i class="fas fa-seedling fa-2x mb-2"></i>
+                    <h5>智能库存管理系统</h5>
+                    <small class="text-muted">Smart Inventory</small>
+                </div>
+                <div class="nav-title">主菜单</div>
+                <a href="/"><i class="fas fa-tachometer-alt mr-2"></i>仪表盘</a>
+                <div class="nav-title">库存管理</div>
+                <a href="/batch/list"><i class="fas fa-boxes mr-2"></i>批次管理</a>
+                <a href="/inventory/list"><i class="fas fa-warehouse mr-2"></i>库存查询</a>
+                <a href="/inventory/inbound" class="active"><i class="fas fa-arrow-down mr-2"></i>入库管理</a>
+                <a href="/inventory/outbound"><i class="fas fa-arrow-up mr-2"></i>出库管理(FIFO)</a>
+                <div class="nav-title">仓库管理</div>
+                <a href="/warehouse/list"><i class="fas fa-building mr-2"></i>仓库管理</a>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="col-md-10 content-wrapper">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0"><i class="fas fa-arrow-down text-success mr-2"></i>入库管理</h3>
+                    <a href="/inventory/list" class="btn btn-secondary">
+                        <i class="fas fa-list mr-1"></i>查看库存
+                    </a>
+                </div>
+
+                <!-- 入库操作 -->
+                <div class="card step-card">
+                    <div class="card-body">
+                        <h5 class="mb-4"><i class="fas fa-plus-circle text-success mr-2"></i>新增入库单</h5>
+                        <form id="inboundForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>库存类型 <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="inventoryType">
+                                            <option value="1">仓库</option>
+                                            <option value="2">门店</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>位置ID <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="locationId" placeholder="输入仓库或门店ID" required>
+                                        <small class="text-muted">示例：1(中心仓库), 2(冷藏仓库), 3(恒温仓), 4(朝阳店)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>批次ID <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="batchId" placeholder="输入种子批次ID" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>入库数量 <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="quantity" placeholder="输入入库数量" min="1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>入库日期 <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="inboundDate" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>备注</label>
+                                        <input type="text" class="form-control" id="remark" placeholder="入库备注">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-success mr-2">
+                                        <i class="fas fa-check mr-1"></i>确认入库
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="fas fa-redo mr-1"></i>重置
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 操作说明 -->
+                <div class="card mt-4">
+                    <div class="card-header bg-white">
+                        <h6 class="mb-0"><i class="fas fa-info-circle text-info mr-2"></i>操作说明</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="fas fa-check-circle mr-2"></i>入库操作步骤</h6>
+                                <ol class="text-muted">
+                                    <li>选择库存类型：仓库或门店</li>
+                                    <li>输入位置ID：仓库或门店的ID</li>
+                                    <li>输入批次ID：要入库的种子批次ID</li>
+                                    <li>输入入库数量和日期</li>
+                                    <li>点击确认入库完成操作</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary"><i class="fas fa-info-circle mr-2"></i>示例测试数据</h6>
+                                <ul class="text-muted">
+                                    <li>仓库ID：1(中心仓库), 2(冷藏仓库), 3(恒温仓)</li>
+                                    <li>门店ID：4(朝阳直营店), 5(海淀加盟店)</li>
+                                    <li>批次ID：1-8 (系统启动时自动生成)</li>
+                                    <li>入库数量：请输入合理的数字</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 设置默认日期为今天
+        $('#inboundDate').val(new Date().toISOString().split('T')[0]);
+
+        $('#inboundForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var data = {
+                inventoryType: parseInt($('#inventoryType').val()),
+                locationId: parseInt($('#locationId').val()),
+                batchId: parseInt($('#batchId').val()),
+                quantity: parseInt($('#quantity').val()),
+                inboundDate: $('#inboundDate').val(),
+                remark: $('#remark').val()
+            };
+
+            if (!data.locationId || !data.batchId || !data.quantity) {
+                alert('请填写必填项');
+                return;
+            }
+
+            $.ajax({
+                url: '/inventory/inbound',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(result) {
+                    if (result.code === 200) {
+                        alert('入库成功！库存ID: ' + result.data.id);
+                        $('#inboundForm')[0].reset();
+                        $('#inboundDate').val(new Date().toISOString().split('T')[0]);
+                    } else {
+                        alert('入库失败：' + result.message);
+                    }
+                },
+                error: function(xhr) {
+                    try {
+                        var error = JSON.parse(xhr.responseText);
+                        alert('入库失败：' + (error.message || '未知错误'));
+                    } catch(e) {
+                        alert('入库失败，请检查参数是否正确');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

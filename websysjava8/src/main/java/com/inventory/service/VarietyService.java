@@ -10,37 +10,70 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 品种服务层
- * 功能：处理品种的增删改查业务逻辑
+ * 品种Service类
  */
 @Service
-@Transactional
 public class VarietyService {
 
     @Autowired
     private VarietyRepository varietyRepository;
 
+    /**
+     * 查询所有品种
+     */
     public List<Variety> findAll() {
         return varietyRepository.findAll();
     }
 
-    public Optional<Variety> findById(Long id) {
-        return varietyRepository.findById(id);
+    /**
+     * 根据ID查询
+     */
+    public Variety findById(Long id) {
+        Optional<Variety> optional = varietyRepository.findById(id);
+        return optional.orElse(null);
     }
 
-    public Optional<Variety> findByCode(String code) {
-        return varietyRepository.findByVarietyCode(code);
-    }
-
-    public List<Variety> findByCategoryId(Long categoryId) {
-        return varietyRepository.findByCategoryId(categoryId);
-    }
-
+    /**
+     * 保存品种
+     */
+    @Transactional(rollbackFor = Exception.class)
     public Variety save(Variety variety) {
         return varietyRepository.save(variety);
     }
 
-    public void deleteById(Long id) {
+    /**
+     * 删除品种
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
         varietyRepository.deleteById(id);
+    }
+
+    /**
+     * 根据品类ID查询
+     */
+    public List<Variety> findByCategoryId(Long categoryId) {
+        return varietyRepository.findByCategoryId(categoryId);
+    }
+
+    /**
+     * 根据品类ID和状态查询
+     */
+    public List<Variety> findByCategoryIdAndStatus(Long categoryId, Integer status) {
+        return varietyRepository.findByCategoryIdAndStatus(categoryId, status);
+    }
+
+    /**
+     * 检查名称是否存在
+     */
+    public boolean existsByName(String name) {
+        return varietyRepository.existsByName(name);
+    }
+
+    /**
+     * 检查编码是否存在
+     */
+    public boolean existsByCode(String code) {
+        return varietyRepository.existsByCode(code);
     }
 }

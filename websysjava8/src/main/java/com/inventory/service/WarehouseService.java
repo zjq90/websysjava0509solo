@@ -10,33 +10,63 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 仓库服务层
- * 功能：处理仓库的增删改查业务逻辑
+ * 仓库Service类
  */
 @Service
-@Transactional
 public class WarehouseService {
 
     @Autowired
     private WarehouseRepository warehouseRepository;
 
+    /**
+     * 查询所有仓库
+     */
     public List<Warehouse> findAll() {
         return warehouseRepository.findAll();
     }
 
-    public Optional<Warehouse> findById(Long id) {
-        return warehouseRepository.findById(id);
+    /**
+     * 根据ID查询
+     */
+    public Warehouse findById(Long id) {
+        Optional<Warehouse> optional = warehouseRepository.findById(id);
+        return optional.orElse(null);
     }
 
-    public Optional<Warehouse> findByCode(String code) {
-        return warehouseRepository.findByWarehouseCode(code);
-    }
-
+    /**
+     * 保存仓库
+     */
+    @Transactional(rollbackFor = Exception.class)
     public Warehouse save(Warehouse warehouse) {
         return warehouseRepository.save(warehouse);
     }
 
-    public void deleteById(Long id) {
+    /**
+     * 删除仓库
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
         warehouseRepository.deleteById(id);
+    }
+
+    /**
+     * 根据状态查询
+     */
+    public List<Warehouse> findByStatus(Integer status) {
+        return warehouseRepository.findByStatus(status);
+    }
+
+    /**
+     * 检查名称是否存在
+     */
+    public boolean existsByName(String name) {
+        return warehouseRepository.existsByName(name);
+    }
+
+    /**
+     * 检查编码是否存在
+     */
+    public boolean existsByCode(String code) {
+        return warehouseRepository.existsByCode(code);
     }
 }

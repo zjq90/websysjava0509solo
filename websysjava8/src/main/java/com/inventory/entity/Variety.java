@@ -1,69 +1,91 @@
 package com.inventory.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
- * 品种实体类
- * 功能：管理具体的种子品种，属于某个品类
+ * 种子品种实体类
+ * 用于管理具体的种子品种信息
+ * 每个品种属于一个品类（Category）
+ * 例如：蔬菜类下的"番茄一号"、"黄瓜二号"等
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "variety")
-public class Variety {
+public class Variety extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /**
+     * 品种名称
+     */
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", nullable = false)
-    @NotNull(message = "所属品类不能为空")
+    /**
+     * 品种编码
+     */
+    @Column(name = "code", unique = true, length = 50)
+    private String code;
+
+    /**
+     * 所属品类ID
+     */
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
+
+    /**
+     * 所属品类（多对一关系）
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private Category category;
 
-    @Column(nullable = false, unique = true, length = 50)
-    @NotBlank(message = "品种编码不能为空")
-    @Size(min = 1, max = 50, message = "品种编码长度必须在1-50之间")
-    private String varietyCode;
-
-    @Column(nullable = false, length = 100)
-    @NotBlank(message = "品种名称不能为空")
-    @Size(min = 1, max = 100, message = "品种名称长度必须在1-100之间")
-    private String varietyName;
-
-    @Column(length = 500)
-    @Size(max = 500, message = "描述长度不能超过500")
+    /**
+     * 品种描述，包括特征、适宜种植区域等
+     */
+    @Column(name = "description", length = 1000)
     private String description;
 
-    private LocalDateTime createTime;
+    /**
+     * 制造商/供应商
+     */
+    @Column(name = "manufacturer", length = 100)
+    private String manufacturer;
 
-    private LocalDateTime updateTime;
+    /**
+     * 建议保质期天数（默认365天）
+     */
+    @Column(name = "shelf_life_days", nullable = false)
+    private Integer shelfLifeDays = 365;
 
-    @PrePersist
-    protected void onCreate() {
-        createTime = LocalDateTime.now();
-        updateTime = LocalDateTime.now();
-    }
+    /**
+     * 最佳存储温度范围（最小值）
+     */
+    @Column(name = "optimal_temp_min")
+    private Double optimalTempMin;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updateTime = LocalDateTime.now();
-    }
+    /**
+     * 最佳存储温度范围（最大值）
+     */
+    @Column(name = "optimal_temp_max")
+    private Double optimalTempMax;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
-    public String getVarietyCode() { return varietyCode; }
-    public void setVarietyCode(String varietyCode) { this.varietyCode = varietyCode; }
-    public String getVarietyName() { return varietyName; }
-    public void setVarietyName(String varietyName) { this.varietyName = varietyName; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public LocalDateTime getCreateTime() { return createTime; }
-    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
-    public LocalDateTime getUpdateTime() { return updateTime; }
-    public void setUpdateTime(LocalDateTime updateTime) { this.updateTime = updateTime; }
+    /**
+     * 最佳存储湿度范围（最小值）
+     */
+    @Column(name = "optimal_humidity_min")
+    private Double optimalHumidityMin;
+
+    /**
+     * 最佳存储湿度范围（最大值）
+     */
+    @Column(name = "optimal_humidity_max")
+    private Double optimalHumidityMax;
+
+    /**
+     * 状态：1-启用，0-禁用
+     */
+    @Column(name = "status", nullable = false)
+    private Integer status = 1;
 }

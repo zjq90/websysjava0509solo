@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出库管理(FIFO) - 智能库存管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%); }
+        .sidebar a { color: #ecf0f1; padding: 12px 20px; display: block; text-decoration: none; transition: all 0.3s; }
+        .sidebar a:hover, .sidebar a.active { background-color: rgba(255,255,255,0.1); border-left: 4px solid #3498db; padding-left: 16px; }
+        .sidebar .nav-title { color: #95a5a6; padding: 15px 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .content-wrapper { padding: 20px; }
+        .brand { padding: 20px; color: white; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .brand h5 { margin: 0; font-weight: 600; }
+        .card { border-radius: 10px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .fifo-card { border-left: 4px solid #dc3545; }
+        .table th { background-color: #f8f9fa; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-2 sidebar p-0">
+                <div class="brand">
+                    <i class="fas fa-seedling fa-2x mb-2"></i>
+                    <h5>智能库存管理系统</h5>
+                    <small class="text-muted">Smart Inventory</small>
+                </div>
+                <div class="nav-title">主菜单</div>
+                <a href="/"><i class="fas fa-tachometer-alt mr-2"></i>仪表盘</a>
+                <div class="nav-title">库存管理</div>
+                <a href="/batch/list"><i class="fas fa-boxes mr-2"></i>批次管理</a>
+                <a href="/inventory/list"><i class="fas fa-warehouse mr-2"></i>库存查询</a>
+                <a href="/inventory/inbound"><i class="fas fa-arrow-down mr-2"></i>入库管理</a>
+                <a href="/inventory/outbound" class="active"><i class="fas fa-arrow-up mr-2"></i>出库管理(FIFO)</a>
+                <div class="nav-title">仓库管理</div>
+                <a href="/warehouse/list"><i class="fas fa-building mr-2"></i>仓库管理</a>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="col-md-10 content-wrapper">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0"><i class="fas fa-arrow-up text-danger mr-2"></i>出库管理 (FIFO先进先出)</h3>
+                    <a href="/inventory/list" class="btn btn-secondary">
+                        <i class="fas fa-list mr-1"></i>查看库存
+                    </a>
+                </div>
+
+                <!-- 出库操作 -->
+                <div class="card fifo-card">
+                    <div class="card-body">
+                        <h5 class="mb-4"><i class="fas fa-sort-amount-up text-danger mr-2"></i>FIFO出库操作</h5>
+                        <p class="text-muted mb-4">
+                            <i class="fas fa-info-circle"></i> 
+                            先进先出(FIFO)策略：系统会自动按入库日期从早到晚的顺序出库，确保旧批次优先出库，避免过期损失。
+                        </p>
+                        <form id="outboundForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>库存类型 <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="inventoryType">
+                                            <option value="1">仓库</option>
+                                            <option value="2">门店</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>位置ID <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="locationId" placeholder="输入仓库或门店ID" required>
+                                        <small class="text-muted">示例：1(中心仓库), 2(冷藏仓库), 3(恒温仓), 4(朝阳店)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>品种ID <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="varietyId" placeholder="输入种子品种ID" required>
+                                        <small class="text-muted">品种ID: 1-8 (系统启动时自动生成)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>出库数量 <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="quantity" placeholder="输入出库数量" min="1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>备注</label>
+                                        <input type="text" class="form-control" id="remark" placeholder="出库备注">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="btn btn-danger mr-2">
+                                        <i class="fas fa-check mr-1"></i>确认出库 (FIFO)
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="fas fa-redo mr-1"></i>重置
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 出库结果 -->
+                <div class="card mt-4" id="resultCard" style="display:none;">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="fas fa-check-circle mr-2"></i>出库成功</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>批次ID</th>
+                                        <th>出库数量</th>
+                                        <th>入库日期</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FIFO说明 -->
+                <div class="card mt-4">
+                    <div class="card-header bg-white">
+                        <h6 class="mb-0"><i class="fas fa-info-circle text-danger mr-2"></i>FIFO先进先出策略说明</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-danger"><i class="fas fa-sort-amount-up mr-2"></i>出库流程</h6>
+                                <ol class="text-muted">
+                                    <li>选择库存位置和品种</li>
+                                    <li>输入出库数量</li>
+                                    <li>系统自动按入库日期排序</li>
+                                    <li>从最早入库的批次开始出库</li>
+                                    <li>显示详细的出库明细</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-danger"><i class="fas fa-shield-alt mr-2"></i>为什么使用FIFO</h6>
+                                <ul class="text-muted">
+                                    <li>避免种子批次过期</li>
+                                    <li>保证种子新鲜度</li>
+                                    <li>降低库存损耗</li>
+                                    <li>符合库存管理最佳实践</li>
+                                    <li>便于追溯批次来源</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $('#outboundForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var data = {
+                inventoryType: parseInt($('#inventoryType').val()),
+                locationId: parseInt($('#locationId').val()),
+                varietyId: parseInt($('#varietyId').val()),
+                quantity: parseInt($('#quantity').val()),
+                remark: $('#remark').val()
+            };
+
+            if (!data.locationId || !data.varietyId || !data.quantity) {
+                alert('请填写必填项');
+                return;
+            }
+
+            $.ajax({
+                url: '/inventory/outbound-fifo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(result) {
+                    if (result.code === 200) {
+                        var list = result.data;
+                        var html = '';
+                        list.forEach(function(item) {
+                            html += '<tr>' +
+                                '<td>' + item.batchId + '</td>' +
+                                '<td>' + item.quantity + '</td>' +
+                                '<td>' + (item.inboundDate || 'N/A') + '</td>' +
+                                '</tr>';
+                        });
+                        $('#resultBody').html(html);
+                        $('#resultCard').show();
+                        alert('FIFO出库成功！共出库 ' + list.length + ' 个批次');
+                        $('#outboundForm')[0].reset();
+                    } else {
+                        alert('出库失败：' + result.message);
+                    }
+                },
+                error: function(xhr) {
+                    try {
+                        var error = JSON.parse(xhr.responseText);
+                        alert('出库失败：' + (error.message || '库存不足或品种不存在'));
+                    } catch(e) {
+                        alert('出库失败，请检查库存是否充足');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

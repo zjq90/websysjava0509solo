@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c41bcc68-6438-460d-a806-e0189f1c81ef" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ognl_ognl_3_1_26.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_attoparser_attoparser_2_0_5_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_20_0_GA.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_thymeleaf_2_7_18.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_extras_thymeleaf_extras_java8time_3_0_4_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_3_0_15_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_spring5_3_0_15_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_1_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-inventory-system.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/smart_inventory.mv.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-inventory.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/SmartInventoryApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/config/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/AlertController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/EnvironmentMonitorController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/InventoryCheckController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/controller/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/SeedBatchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/controller/SeedBatchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/StoreController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/TransferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/controller/TransferController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/VarietyController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/controller/WarehouseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/controller/WarehouseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Alert.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/EnvironmentMonitor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/InventoryCheck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/SeedBatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/SeedBatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Store.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Transfer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Variety.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Variety.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Warehouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/entity/Warehouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/AlertRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/EnvironmentMonitorRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/InventoryCheckRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/InventoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/InventoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/SeedBatchRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/SeedBatchRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/StoreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/StoreRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/TransferRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/VarietyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/VarietyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/repository/WarehouseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/repository/WarehouseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/AlertService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/EnvironmentMonitorService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/InventoryCheckService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/InventoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/SeedBatchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/SeedBatchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/StoreService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/TransferService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/TransferService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/VarietyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/VarietyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/inventory/service/WarehouseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/inventory/service/WarehouseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/alerts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/batches.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/categories.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/checks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/environment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/inventories.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/stores.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/test-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/transfers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/varieties.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/warehouses.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/SmartInventoryApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/config/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/AlertController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/controller/CategoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/EnvironmentMonitorController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/InventoryCheckController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/controller/InventoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/SeedBatchController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/controller/SeedBatchController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/StoreController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/TransferController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/controller/TransferController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/VarietyController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/controller/WarehouseController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/controller/WarehouseController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Alert.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/EnvironmentMonitor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/InventoryCheck.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/SeedBatch.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/SeedBatch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Store.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/Store.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Transfer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Variety.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/Variety.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/entity/Warehouse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/entity/Warehouse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/AlertRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/CategoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/CategoryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/EnvironmentMonitorRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/InventoryCheckRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/InventoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/InventoryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/SeedBatchRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/SeedBatchRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/StoreRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/StoreRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/TransferRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/VarietyRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/VarietyRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/repository/WarehouseRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/repository/WarehouseRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/AlertService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/CategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/CategoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/EnvironmentMonitorService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/InventoryCheckService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/InventoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/InventoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/SeedBatchService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/SeedBatchService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/StoreService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/StoreService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/TransferService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/TransferService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/VarietyService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/VarietyService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/inventory/service/WarehouseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/inventory/service/WarehouseService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/alerts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/batches.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/categories.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/checks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/environment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/inventories.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/stores.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/test-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/transfers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/varieties.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/warehouses.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/smart-inventory-1.0.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/smart-inventory-1.0.0.jar.original" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\ProgramFiles\epository" />
+        <option name="mavenHome" value="D:\software\apache-maven-3.8.1" />
+        <option name="userSettingsFile" value="D:\software\apache-maven-3.8.1\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="3DUK6zeYtA4b80fL0RwyKZWTJjP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="InventoryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="smart-inventory-system" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.inventory.InventoryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c41bcc68-6438-460d-a806-e0189f1c81ef" name="Default Changelist" comment="" />
+      <created>1778331037705</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778331037705</updated>
+      <workItem from="1778331038916" duration="3367000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

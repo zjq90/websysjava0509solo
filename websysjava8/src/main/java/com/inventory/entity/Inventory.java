@@ -1,80 +1,102 @@
 package com.inventory.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * 库存实体类
- * 功能：管理种子库存信息，关联批次、仓库/门店
+ * 核心表，管理具体的库存信息
+ * 关联仓库/门店和种子批次
+ * 支持先进先出（FIFO）库存管理策略
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "inventory")
-public class Inventory {
+public class Inventory extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /**
+     * 库存类型：1-仓库库存，2-门店库存
+     */
+    @Column(name = "inventory_type", nullable = false)
+    private Integer inventoryType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "batch_id", nullable = false)
-    @NotNull(message = "种子批次不能为空")
+    /**
+     * 位置ID（仓库ID或门店ID）
+     */
+    @Column(name = "location_id", nullable = false)
+    private Long locationId;
+
+    /**
+     * 批次ID
+     */
+    @Column(name = "batch_id", nullable = false)
+    private Long batchId;
+
+    /**
+     * 批次信息（多对一关系）
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "batch_id", insertable = false, updatable = false)
     private SeedBatch seedBatch;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "store_id")
-    private Store store;
-
-    @Column(nullable = false)
-    @NotNull(message = "库存数量不能为空")
-    @Min(value = 0, message = "库存数量不能为负数")
+    /**
+     * 当前库存数量
+     */
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(length = 50)
-    @Size(max = 50, message = "库位长度不能超过50")
-    private String location;
+    /**
+     * 锁定数量（如已下单待出库）
+     */
+    @Column(name = "locked_quantity", nullable = false)
+    private Integer lockedQuantity = 0;
 
-    @Column(length = 500)
-    @Size(max = 500, message = "备注长度不能超过500")
+    /**
+     * 可用数量 = 库存数量 - 锁定数量
+     */
+    @Column(name = "available_quantity", nullable = false)
+    private Integer availableQuantity;
+
+    /**
+     * 入库日期（用于先进先出排序）
+     */
+    @Column(name = "inbound_date", nullable = false)
+    private LocalDate inboundDate;
+
+    /**
+     * 库存状态：
+     * 0-正常
+     * 1-预警（库存不足）
+     * 2-预警（近效期）
+     * 3-已过期
+     */
+    @Column(name = "status", nullable = false)
+    private Integer status = 0;
+
+    /**
+     * 最低库存预警阈值
+     */
+    @Column(name = "min_stock_warning")
+    private Integer minStockWarning;
+
+    /**
+     * 最高库存预警阈值
+     */
+    @Column(name = "max_stock_warning")
+    private Integer maxStockWarning;
+
+    /**
+     * 入库单号
+     */
+    @Column(name = "inbound_no", length = 50)
+    private String inboundNo;
+
+    /**
+     * 备注
+     */
+    @Column(name = "remark", length = 500)
     private String remark;
-
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    @PrePersist
-    protected void onCreate() {
-        createTime = LocalDateTime.now();
-        updateTime = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updateTime = LocalDateTime.now();
-    }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public SeedBatch getSeedBatch() { return seedBatch; }
-    public void setSeedBatch(SeedBatch seedBatch) { this.seedBatch = seedBatch; }
-    public Warehouse getWarehouse() { return warehouse; }
-    public void setWarehouse(Warehouse warehouse) { this.warehouse = warehouse; }
-    public Store getStore() { return store; }
-    public void setStore(Store store) { this.store = store; }
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-    public String getRemark() { return remark; }
-    public void setRemark(String remark) { this.remark = remark; }
-    public LocalDateTime getCreateTime() { return createTime; }
-    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
-    public LocalDateTime getUpdateTime() { return updateTime; }
-    public void setUpdateTime(LocalDateTime updateTime) { this.updateTime = updateTime; }
 }
