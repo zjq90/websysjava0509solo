@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>质量追溯管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .sidebar {
+            min-height: 100vh;
+            background: #343a40;
+        }
+        .sidebar .nav-link {
+            color: #fff;
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: #495057;
+            border-left-color: #007bff;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .content-area {
+            padding: 20px;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .card-dashboard {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .card-dashboard:hover {
+            transform: translateY(-5px);
+        }
+        .card-dashboard .card-body {
+            padding: 25px;
+        }
+        .traceability-flow {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .flow-step {
+            text-align: center;
+            position: relative;
+        }
+        .flow-step .step-icon {
+            width: 60px;
+            height: 60px;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 24px;
+        }
+        .flow-step:not(:last-child):after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 30px;
+            font-size: 24px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-4 text-center text-white">
+                    <h4><i class="fa fa-leaf"></i> 质量追溯系统</h4>
+                </div>
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="/"><i class="fa fa-home"></i> 首页</a>
+                    <a class="nav-link" href="/seed-batch"><i class="fa fa-seedling"></i> 种子批次</a>
+                    <a class="nav-link" href="/parent-source"><i class="fa fa-sitemap"></i> 亲本来源</a>
+                    <a class="nav-link" href="/field-planting"><i class="fa fa-tree"></i> 田间种植</a>
+                    <a class="nav-link" href="/harvest"><i class="fa fa-cutlery"></i> 收获管理</a>
+                    <a class="nav-link" href="/processing"><i class="fa fa-cogs"></i> 加工管理</a>
+                    <a class="nav-link" href="/packaging"><i class="fa fa-gift"></i> 包装管理</a>
+                    <a class="nav-link" href="/sale"><i class="fa fa-shopping-cart"></i> 销售管理</a>
+                    <a class="nav-link" href="/quality-report"><i class="fa fa-file-text"></i> 质检报告</a>
+                    <a class="nav-link" href="/traceability"><i class="fa fa-link"></i> 全链追溯</a>
+                    <a class="nav-link" href="/qr-code"><i class="fa fa-qrcode"></i> 二维码管理</a>
+                    <a class="nav-link" href="/test-data"><i class="fa fa-database"></i> 测试数据</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-10 content-area">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fa fa-dashboard"></i> 系统概览</h2>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card card-dashboard bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6>种子批次</h6>
+                                        <h2 id="batchCount">0</h2>
+                                    </div>
+                                    <i class="fa fa-seedling fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-dashboard bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6>包装数量</h6>
+                                        <h2 id="packageCount">0</h2>
+                                    </div>
+                                    <i class="fa fa-gift fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-dashboard bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6>销售订单</h6>
+                                        <h2 id="saleCount">0</h2>
+                                    </div>
+                                    <i class="fa fa-shopping-cart fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-dashboard bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6>质检报告</h6>
+                                        <h2 id="reportCount">0</h2>
+                                    </div>
+                                    <i class="fa fa-file-text fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traceability-flow mb-4">
+                    <h4 class="mb-4"><i class="fa fa-link"></i> 全链条追溯流程</h4>
+                    <div class="row">
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-sitemap"></i></div>
+                            <h6>亲本来源</h6>
+                            <small class="text-muted">种子基因源头</small>
+                        </div>
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-tree"></i></div>
+                            <h6>田间种植</h6>
+                            <small class="text-muted">生长管理</small>
+                        </div>
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-cutlery"></i></div>
+                            <h6>收获</h6>
+                            <small class="text-muted">采收管理</small>
+                        </div>
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-cogs"></i></div>
+                            <h6>加工</h6>
+                            <small class="text-muted">精选处理</small>
+                        </div>
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-gift"></i></div>
+                            <h6>包装</h6>
+                            <small class="text-muted">一袋一码</small>
+                        </div>
+                        <div class="col-md-2 flow-step">
+                            <div class="step-icon"><i class="fa fa-shopping-cart"></i></div>
+                            <h6>销售</h6>
+                            <small class="text-muted">流通追溯</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="traceability-flow">
+                    <h4 class="mb-4"><i class="fa fa-info-circle"></i> 系统功能说明</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h5><i class="fa fa-check-circle text-success"></i> 全链条追溯</h5>
+                                <p class="text-muted">实现从亲本来源到销售的6环节全链条追溯，每一步都可查可控</p>
+                            </div>
+                            <div class="mb-3">
+                                <h5><i class="fa fa-check-circle text-success"></i> 一袋一码</h5>
+                                <p class="text-muted">每个包装生成唯一二维码，扫码即可查看完整追溯信息</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <h5><i class="fa fa-check-circle text-success"></i> 质检报告</h5>
+                                <p class="text-muted">质检报告与种子批次关联，确保每批种子质量可追溯</p>
+                            </div>
+                            <div class="mb-3">
+                                <h5><i class="fa fa-check-circle text-success"></i> 测试数据</h5>
+                                <p class="text-muted">提供一键生成测试数据功能，方便系统功能测试</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            loadDashboardData();
+        });
+
+        function loadDashboardData() {
+            $.get('/api/seed-batch', function(res) {
+                $('#batchCount').text(res.data ? res.data.length : 0);
+            });
+            $.get('/api/packaging', function(res) {
+                $('#packageCount').text(res.data ? res.data.length : 0);
+            });
+            $.get('/api/sale', function(res) {
+                $('#saleCount').text(res.data ? res.data.length : 0);
+            });
+            $.get('/api/quality-report', function(res) {
+                $('#reportCount').text(res.data ? res.data.length : 0);
+            });
+        }
+    </script>
+</body>
+</html>

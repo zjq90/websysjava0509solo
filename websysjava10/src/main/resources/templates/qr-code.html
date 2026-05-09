@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .sidebar { min-height: 100vh; background: #343a40; }
+        .sidebar .nav-link { color: #fff; padding: 12px 20px; border-left: 3px solid transparent; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #495057; border-left-color: #007bff; }
+        .sidebar .nav-link i { margin-right: 10px; }
+        .content-area { padding: 20px; background: #f8f9fa; min-height: 100vh; }
+        .data-card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .qr-card { border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin-bottom: 15px; text-align: center; }
+        .qr-card img { max-width: 150px; height: 150px; }
+        .search-section { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-4 text-center text-white"><h4><i class="fa fa-leaf"></i> 质量追溯系统</h4></div>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="/"><i class="fa fa-home"></i> 首页</a>
+                    <a class="nav-link" href="/seed-batch"><i class="fa fa-seedling"></i> 种子批次</a>
+                    <a class="nav-link" href="/parent-source"><i class="fa fa-sitemap"></i> 亲本来源</a>
+                    <a class="nav-link" href="/field-planting"><i class="fa fa-tree"></i> 田间种植</a>
+                    <a class="nav-link" href="/harvest"><i class="fa fa-cutlery"></i> 收获管理</a>
+                    <a class="nav-link" href="/processing"><i class="fa fa-cogs"></i> 加工管理</a>
+                    <a class="nav-link" href="/packaging"><i class="fa fa-gift"></i> 包装管理</a>
+                    <a class="nav-link" href="/sale"><i class="fa fa-shopping-cart"></i> 销售管理</a>
+                    <a class="nav-link" href="/quality-report"><i class="fa fa-file-text"></i> 质检报告</a>
+                    <a class="nav-link" href="/traceability"><i class="fa fa-link"></i> 全链追溯</a>
+                    <a class="nav-link active" href="/qr-code"><i class="fa fa-qrcode"></i> 二维码管理</a>
+                    <a class="nav-link" href="/test-data"><i class="fa fa-database"></i> 测试数据</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-10 content-area">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fa fa-qrcode"></i> 二维码管理 <small class="text-muted">一袋一码追溯</small></h2>
+                    <div>
+                        <button class="btn btn-success mr-2" onclick="batchGenerate()"><i class="fa fa-plus-circle"></i> 批量生成</button>
+                        <button class="btn btn-info" onclick="refreshData()"><i class="fa fa-refresh"></i> 刷新</button>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>批次号</label>
+                            <input type="text" class="form-control" id="searchBatchNo" placeholder="输入批次号搜索">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>包装号</label>
+                            <input type="text" class="form-control" id="searchPackageNo" placeholder="输入包装号搜索">
+                        </div>
+                        <div class="form-group col-md-4 d-flex align-items-end">
+                            <button class="btn btn-primary mr-2" onclick="searchData()"><i class="fa fa-search"></i> 搜索</button>
+                            <button class="btn btn-secondary" onclick="clearSearch()"><i class="fa fa-times"></i> 清空</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-card p-4">
+                    <div class="row" id="qrGrid">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <nav>
+                        <ul class="pagination justify-content-center" id="pagination">
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="qrDetailModal">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">二维码详情</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="detailQrImage" class="img-fluid mb-3" alt="二维码">
+                    <table class="table table-bordered text-left">
+                        <tr><th style="width: 100px;">包装号</th><td id="detailPackageNo"></td></tr>
+                        <tr><th>批次号</th><td id="detailBatchNo"></td></tr>
+                        <tr><th>二维码内容</th><td id="detailQrCode"></td></tr>
+                        <tr><th>包装规格</th><td id="detailPackageSpec"></td></tr>
+                        <tr><th>状态</th><td id="detailStatus"></td></tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" onclick="downloadQr()"><i class="fa fa-download"></i> 下载二维码</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="batchGenerateModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">批量生成二维码</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label>选择批次 *</label>
+                            <select class="form-control" id="batchGenerateBatchNo" required>
+                                <option value="">请选择批次</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>生成数量 *</label>
+                            <input type="number" class="form-control" id="batchGenerateCount" value="10" min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label>包装规格</label>
+                            <select class="form-control" id="batchGenerateSpec">
+                                <option value="1kg/袋">1kg/袋</option>
+                                <option value="5kg/袋">5kg/袋</option>
+                                <option value="10kg/袋">10kg/袋</option>
+                                <option value="25kg/袋">25kg/袋</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmBatchGenerate()">生成</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var currentPage = 1;
+        var pageSize = 12;
+        var allData = [];
+        var currentQrCode = '';
+
+        $(document).ready(function() {
+            loadData();
+            loadBatchesForGenerate();
+        });
+
+        function loadData() {
+            $.get('/api/packaging', function(res) {
+                if (res.data && res.data.length > 0) {
+                    allData = res.data;
+                    renderQrGrid();
+                } else {
+                    $('#qrGrid').html('<div class="col-12 text-center py-5 text-muted"><i class="fa fa-qrcode fa-5x mb-3"></i><p>暂无二维码数据，请先生成包装记录</p></div>');
+                }
+            });
+        }
+
+        function loadBatchesForGenerate() {
+            $.get('/api/seed-batch', function(res) {
+                if (res.data && res.data.length > 0) {
+                    var options = '<option value="">请选择批次</option>';
+                    res.data.forEach(function(item) {
+                        options += '<option value="' + item.batchNo + '">' + item.batchNo + ' - ' + item.seedName + '</option>';
+                    });
+                    $('#batchGenerateBatchNo').html(options);
+                }
+            });
+        }
+
+        function renderQrGrid() {
+            var filteredData = filterData();
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = startIndex + pageSize;
+            var pageData = filteredData.slice(startIndex, endIndex);
+            
+            var html = '';
+            if (pageData.length > 0) {
+                pageData.forEach(function(item, index) {
+                    html += '<div class="col-md-3">';
+                    html += '<div class="qr-card" onclick="showQrDetail(\'' + item.qrCode + '\')">';
+                    html += '<img src="/api/packaging/qr-image/' + item.qrCode + '" alt="二维码" class="img-thumbnail">';
+                    html += '<p class="mt-2 mb-1 small font-weight-bold">' + (item.packageNo || '-') + '</p>';
+                    html += '<p class="mb-1 small text-muted">' + item.batchNo + '</p>';
+                    html += '<span class="badge badge-success small">' + (item.status || '-') + '</span>';
+                    html += '</div>';
+                    html += '</div>';
+                });
+            } else {
+                html = '<div class="col-12 text-center py-5 text-muted"><p>暂无匹配数据</p></div>';
+            }
+            $('#qrGrid').html(html);
+            renderPagination(filteredData.length);
+        }
+
+        function filterData() {
+            var batchNo = $('#searchBatchNo').val().trim();
+            var packageNo = $('#searchPackageNo').val().trim();
+            
+            return allData.filter(function(item) {
+                var matchBatch = !batchNo || item.batchNo.includes(batchNo);
+                var matchPackage = !packageNo || (item.packageNo && item.packageNo.includes(packageNo));
+                return matchBatch && matchPackage;
+            });
+        }
+
+        function renderPagination(total) {
+            var totalPages = Math.ceil(total / pageSize);
+            var html = '';
+            
+            if (totalPages <= 1) {
+                $('#pagination').html('');
+                return;
+            }
+            
+            html += '<li class="page-item ' + (currentPage === 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + (currentPage - 1) + ')">上一页</a></li>';
+            
+            for (var i = 1; i <= totalPages; i++) {
+                html += '<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + i + ')">' + i + '</a></li>';
+            }
+            
+            html += '<li class="page-item ' + (currentPage === totalPages ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + (currentPage + 1) + ')">下一页</a></li>';
+            
+            $('#pagination').html(html);
+        }
+
+        function goToPage(page) {
+            var filteredData = filterData();
+            var totalPages = Math.ceil(filteredData.length / pageSize);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                renderQrGrid();
+            }
+            return false;
+        }
+
+        function searchData() {
+            currentPage = 1;
+            renderQrGrid();
+        }
+
+        function clearSearch() {
+            $('#searchBatchNo').val('');
+            $('#searchPackageNo').val('');
+            currentPage = 1;
+            renderQrGrid();
+        }
+
+        function refreshData() {
+            clearSearch();
+            loadData();
+        }
+
+        function showQrDetail(qrCode) {
+            currentQrCode = qrCode;
+            var item = allData.find(function(d) { return d.qrCode === qrCode; });
+            if (item) {
+                $('#detailQrImage').attr('src', '/api/packaging/qr-image/' + qrCode);
+                $('#detailPackageNo').text(item.packageNo || '-');
+                $('#detailBatchNo').text(item.batchNo);
+                $('#detailQrCode').text(item.qrCode);
+                $('#detailPackageSpec').text(item.packageSpec || '-');
+                $('#detailStatus').text(item.status || '-');
+                $('#qrDetailModal').modal('show');
+            }
+        }
+
+        function downloadQr() {
+            if (currentQrCode) {
+                var link = document.createElement('a');
+                link.download = 'qr_' + currentQrCode + '.png';
+                link.href = $('#detailQrImage').attr('src');
+                link.click();
+            }
+        }
+
+        function batchGenerate() {
+            $('#batchGenerateModal').modal('show');
+        }
+
+        function confirmBatchGenerate() {
+            var batchNo = $('#batchGenerateBatchNo').val();
+            var count = parseInt($('#batchGenerateCount').val());
+            var spec = $('#batchGenerateSpec').val();
+            
+            if (!batchNo) {
+                alert('请选择批次');
+                return;
+            }
+            if (!count || count < 1 || count > 100) {
+                alert('请输入1-100之间的生成数量');
+                return;
+            }
+            
+            var successCount = 0;
+            var totalCount = count;
+            
+            function generateNext() {
+                if (count <= 0) {
+                    alert('批量生成完成！成功生成 ' + successCount + ' 个二维码');
+                    $('#batchGenerateModal').modal('hide');
+                    loadData();
+                    return;
+                }
+                
+                var data = {
+                    batchNo: batchNo,
+                    packageSpec: spec,
+                    status: '待包装'
+                };
+                
+                $.ajax({
+                    url: '/api/packaging',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(res) {
+                        if (res.code === 200) {
+                            successCount++;
+                        }
+                        count--;
+                        generateNext();
+                    },
+                    error: function() {
+                        count--;
+                        generateNext();
+                    }
+                });
+            }
+            
+            generateNext();
+        }
+    </script>
+</body>
+</html>

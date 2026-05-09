@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>销售管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        body { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .sidebar { min-height: 100vh; background: #343a40; }
+        .sidebar .nav-link { color: #fff; padding: 12px 20px; border-left: 3px solid transparent; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: #495057; border-left-color: #007bff; }
+        .sidebar .nav-link i { margin-right: 10px; }
+        .content-area { padding: 20px; background: #f8f9fa; min-height: 100vh; }
+        .data-card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-4 text-center text-white"><h4><i class="fa fa-leaf"></i> 质量追溯系统</h4></div>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="/"><i class="fa fa-home"></i> 首页</a>
+                    <a class="nav-link" href="/seed-batch"><i class="fa fa-seedling"></i> 种子批次</a>
+                    <a class="nav-link" href="/parent-source"><i class="fa fa-sitemap"></i> 亲本来源</a>
+                    <a class="nav-link" href="/field-planting"><i class="fa fa-tree"></i> 田间种植</a>
+                    <a class="nav-link" href="/harvest"><i class="fa fa-cutlery"></i> 收获管理</a>
+                    <a class="nav-link" href="/processing"><i class="fa fa-cogs"></i> 加工管理</a>
+                    <a class="nav-link" href="/packaging"><i class="fa fa-gift"></i> 包装管理</a>
+                    <a class="nav-link active" href="/sale"><i class="fa fa-shopping-cart"></i> 销售管理</a>
+                    <a class="nav-link" href="/quality-report"><i class="fa fa-file-text"></i> 质检报告</a>
+                    <a class="nav-link" href="/traceability"><i class="fa fa-link"></i> 全链追溯</a>
+                    <a class="nav-link" href="/qr-code"><i class="fa fa-qrcode"></i> 二维码管理</a>
+                    <a class="nav-link" href="/test-data"><i class="fa fa-database"></i> 测试数据</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-10 content-area">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fa fa-shopping-cart"></i> 销售管理</h2>
+                    <button class="btn btn-primary" onclick="openModal()"><i class="fa fa-plus"></i> 新增</button>
+                </div>
+
+                <div class="data-card p-4">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>销售单号</th>
+                                    <th>批次号</th>
+                                    <th>包装号</th>
+                                    <th>客户名称</th>
+                                    <th>销售数量</th>
+                                    <th>销售日期</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTable">
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav class="mt-3">
+                        <ul class="pagination justify-content-center" id="pagination">
+                        </ul>
+                    </nav>
+                    <div class="text-center text-muted mt-2" id="pageInfo"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">新增销售记录</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="dataForm">
+                        <input type="hidden" id="id">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>销售单号</label>
+                                <input type="text" class="form-control" id="saleNo" placeholder="系统自动生成">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>批次号 *</label>
+                                <select class="form-control" id="batchNo" required>
+                                    <option value="">请选择批次</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>包装号</label>
+                                <select class="form-control" id="packageNo">
+                                    <option value="">请选择包装</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>销售日期</label>
+                                <input type="date" class="form-control" id="saleDate">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>客户名称 *</label>
+                                <input type="text" class="form-control" id="customerName" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>客户电话</label>
+                                <input type="text" class="form-control" id="customerPhone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>客户地址</label>
+                            <input type="text" class="form-control" id="customerAddress">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>销售数量</label>
+                                <input type="number" class="form-control" id="saleQuantity" step="0.01">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>单位</label>
+                                <select class="form-control" id="unit">
+                                    <option value="袋">袋</option>
+                                    <option value="公斤">公斤</option>
+                                    <option value="吨">吨</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>单价(元)</label>
+                                <input type="number" class="form-control" id="unitPrice" step="0.01">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>运输方式</label>
+                                <input type="text" class="form-control" id="transportMethod" placeholder="如：物流、快递、自提">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>运输单号</label>
+                                <input type="text" class="form-control" id="transportNo">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>状态</label>
+                            <select class="form-control" id="status">
+                                <option value="待发货">待发货</option>
+                                <option value="已发货">已发货</option>
+                                <option value="已收货">已收货</option>
+                                <option value="已完成">已完成</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea class="form-control" id="remark" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveData()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var currentPage = 0;
+        var pageSize = 10;
+        var totalElements = 0;
+        var totalPages = 0;
+
+        $(document).ready(function() {
+            loadData();
+            loadBatches();
+            loadPackages();
+        });
+
+        function loadData() {
+            $.get('/api/sale', { page: currentPage, size: pageSize }, function(res) {
+                var html = '';
+                var content = res.data && res.data.content ? res.data.content : [];
+                totalElements = res.data && res.data.totalElements ? res.data.totalElements : 0;
+                totalPages = res.data && res.data.totalPages ? res.data.totalPages : 1;
+                
+                if (content.length > 0) {
+                    content.forEach(function(item) {
+                        var badgeClass = 'badge-secondary';
+                        if (item.status === '已完成') badgeClass = 'badge-success';
+                        else if (item.status === '已发货') badgeClass = 'badge-info';
+                        else if (item.status === '待发货') badgeClass = 'badge-warning';
+                        
+                        html += '<tr>';
+                        html += '<td>' + (item.saleNo || '-') + '</td>';
+                        html += '<td>' + item.batchNo + '</td>';
+                        html += '<td>' + (item.packageNo || '-') + '</td>';
+                        html += '<td>' + (item.customerName || '-') + '</td>';
+                        html += '<td>' + (item.saleQuantity || 0) + ' ' + (item.unit || '') + '</td>';
+                        html += '<td>' + (item.saleDate || '-') + '</td>';
+                        html += '<td><span class="badge ' + badgeClass + '">' + (item.status || '-') + '</span></td>';
+                        html += '<td>';
+                        html += '<button class="btn btn-sm btn-warning mr-1" onclick="editData(' + item.id + ')">编辑</button>';
+                        html += '<button class="btn btn-sm btn-danger" onclick="deleteData(' + item.id + ')">删除</button>';
+                        html += '</td></tr>';
+                    });
+                } else {
+                    html = '<tr><td colspan="8" class="text-center">暂无数据</td></tr>';
+                }
+                $('#dataTable').html(html);
+                renderPagination();
+                renderPageInfo();
+            });
+        }
+
+        function renderPagination() {
+            var html = '';
+            if (totalPages <= 1) {
+                $('#pagination').html('');
+                return;
+            }
+            
+            html += '<li class="page-item ' + (currentPage === 0 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(0)">首页</a></li>';
+            html += '<li class="page-item ' + (currentPage === 0 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + (currentPage - 1) + ')">上一页</a></li>';
+            
+            var startPage = Math.max(0, currentPage - 2);
+            var endPage = Math.min(totalPages - 1, currentPage + 2);
+            
+            for (var i = startPage; i <= endPage; i++) {
+                html += '<li class="page-item ' + (currentPage === i ? 'active' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + i + ')">' + (i + 1) + '</a></li>';
+            }
+            
+            html += '<li class="page-item ' + (currentPage === totalPages - 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + (currentPage + 1) + ')">下一页</a></li>';
+            html += '<li class="page-item ' + (currentPage === totalPages - 1 ? 'disabled' : '') + '"><a class="page-link" href="#" onclick="goToPage(' + (totalPages - 1) + ')">末页</a></li>';
+            
+            $('#pagination').html(html);
+        }
+
+        function renderPageInfo() {
+            var info = '共 ' + totalElements + ' 条记录，当前第 ' + (currentPage + 1) + '/' + totalPages + ' 页，每页 ' + pageSize + ' 条';
+            $('#pageInfo').text(info);
+        }
+
+        function goToPage(page) {
+            if (page >= 0 && page < totalPages) {
+                currentPage = page;
+                loadData();
+            }
+            return false;
+        }
+
+        function loadBatches() {
+            $.get('/api/seed-batch/all', function(res) {
+                if (res.data && res.data.length > 0) {
+                    var options = '<option value="">请选择批次</option>';
+                    res.data.forEach(function(item) {
+                        options += '<option value="' + item.batchNo + '">' + item.batchNo + ' - ' + item.seedName + '</option>';
+                    });
+                    $('#batchNo').html(options);
+                }
+            });
+        }
+
+        function loadPackages() {
+            $.get('/api/packaging/all', function(res) {
+                if (res.data && res.data.length > 0) {
+                    var options = '<option value="">请选择包装</option>';
+                    res.data.forEach(function(item) {
+                        options += '<option value="' + item.packageNo + '">' + item.packageNo + '</option>';
+                    });
+                    $('#packageNo').html(options);
+                }
+            });
+        }
+
+        function openModal() {
+            $('#dataForm')[0].reset();
+            $('#id').val('');
+            $('#formModal').modal('show');
+        }
+
+        function editData(id) {
+            $.get('/api/sale/' + id, function(res) {
+                if (res.code === 200) {
+                    var item = res.data;
+                    $('#id').val(item.id);
+                    $('#saleNo').val(item.saleNo);
+                    $('#batchNo').val(item.batchNo);
+                    $('#packageNo').val(item.packageNo);
+                    $('#saleDate').val(item.saleDate);
+                    $('#customerName').val(item.customerName);
+                    $('#customerPhone').val(item.customerPhone);
+                    $('#customerAddress').val(item.customerAddress);
+                    $('#saleQuantity').val(item.saleQuantity);
+                    $('#unit').val(item.unit);
+                    $('#unitPrice').val(item.unitPrice);
+                    $('#transportMethod').val(item.transportMethod);
+                    $('#transportNo').val(item.transportNo);
+                    $('#status').val(item.status);
+                    $('#remark').val(item.remark);
+                    $('#formModal').modal('show');
+                }
+            });
+        }
+
+        function saveData() {
+            var data = {
+                id: $('#id').val() ? parseInt($('#id').val()) : null,
+                saleNo: $('#saleNo').val(),
+                batchNo: $('#batchNo').val(),
+                packageNo: $('#packageNo').val(),
+                saleDate: $('#saleDate').val(),
+                customerName: $('#customerName').val(),
+                customerPhone: $('#customerPhone').val(),
+                customerAddress: $('#customerAddress').val(),
+                saleQuantity: $('#saleQuantity').val() ? parseFloat($('#saleQuantity').val()) : null,
+                unit: $('#unit').val(),
+                unitPrice: $('#unitPrice').val() ? parseFloat($('#unitPrice').val()) : null,
+                transportMethod: $('#transportMethod').val(),
+                transportNo: $('#transportNo').val(),
+                status: $('#status').val(),
+                remark: $('#remark').val()
+            };
+
+            if (!data.batchNo || !data.customerName) {
+                alert('请填写必填字段');
+                return;
+            }
+
+            var method = data.id ? 'PUT' : 'POST';
+
+            $.ajax({
+                url: '/api/sale',
+                type: method,
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(res) {
+                    if (res.code === 200) {
+                        alert('保存成功');
+                        $('#formModal').modal('hide');
+                        loadData();
+                    } else {
+                        alert(res.message || '保存失败');
+                    }
+                }
+            });
+        }
+
+        function deleteData(id) {
+            if (confirm('确定要删除吗？')) {
+                $.ajax({
+                    url: '/api/sale/' + id,
+                    type: 'DELETE',
+                    success: function(res) {
+                        if (res.code === 200) {
+                            alert('删除成功');
+                            loadData();
+                        } else {
+                            alert('删除失败');
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
