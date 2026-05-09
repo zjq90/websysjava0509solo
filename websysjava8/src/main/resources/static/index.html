@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能库存管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #343a40 0%, #212529 100%); }
+        .sidebar a { color: rgba(255,255,255,.8); padding: 12px 15px; display: block; transition: all .3s; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
+        .card-stat { transition: transform .2s; border: none; box-shadow: 0 4px 6px rgba(0,0,0,.07); }
+        .card-stat:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,.1); }
+        .alert-card { border-left: 4px solid; }
+        .table-responsive { border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-3 text-center text-white border-bottom border-secondary">
+                    <h4><i class="bi bi-box-seam"></i> 智能库存</h4>
+                    <small class="text-muted">Smart Inventory</small>
+                </div>
+                <nav class="mt-2">
+                    <a href="index.html" class="active"><i class="bi bi-speedometer2 mr-2"></i>仪表板</a>
+                    <a href="categories.html"><i class="bi bi-tags mr-2"></i>品类管理</a>
+                    <a href="varieties.html"><i class="bi bi-folder mr-2"></i>品种管理</a>
+                    <a href="batches.html"><i class="bi bi-box mr-2"></i>批次管理</a>
+                    <a href="warehouses.html"><i class="bi bi-building mr-2"></i>仓库管理</a>
+                    <a href="stores.html"><i class="bi bi-shop mr-2"></i>门店管理</a>
+                    <a href="inventories.html"><i class="bi bi-boxes mr-2"></i>库存管理</a>
+                    <a href="environment.html"><i class="bi bi-thermometer-half mr-2"></i>温湿度监控</a>
+                    <a href="transfers.html"><i class="bi bi-arrow-left-right mr-2"></i>调拨管理</a>
+                    <a href="checks.html"><i class="bi bi-clipboard-check mr-2"></i>库存盘点</a>
+                    <a href="alerts.html"><i class="bi bi-bell mr-2"></i>预警中心</a>
+                    <a href="test-data.html"><i class="bi bi-play-circle mr-2"></i>测试数据生成</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-10 p-4">
+                <h3 class="mb-4"><i class="bi bi-speedometer2"></i> 系统仪表板</h3>
+                
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card card-stat bg-primary text-white">
+                            <div class="card-body">
+                                <h5><i class="bi bi-boxes"></i> 库存总量</h5>
+                                <h2 id="totalInventory">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card card-stat bg-warning text-white">
+                            <div class="card-body">
+                                <h5><i class="bi bi-clock-history"></i> 近效期预警</h5>
+                                <h2 id="expiringCount">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card card-stat bg-danger text-white">
+                            <div class="card-body">
+                                <h5><i class="bi bi-bell"></i> 活动预警</h5>
+                                <h2 id="activeAlerts">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card card-stat bg-success text-white">
+                            <div class="card-body">
+                                <h5><i class="bi bi-building"></i> 仓库/门店</h5>
+                                <h2 id="totalLocations">-</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                <i class="bi bi-bell"></i> 最近预警
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-light">
+                                            <tr><th>类型</th><th>级别</th><th>消息</th><th>状态</th></tr>
+                                        </thead>
+                                        <tbody id="recentAlerts"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                <i class="bi bi-arrow-left-right"></i> 最近调拨
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="thead-light">
+                                            <tr><th>单号</th><th>数量</th><th>状态</th><th>时间</th></tr>
+                                        </thead>
+                                        <tbody id="recentTransfers"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <i class="bi bi-box-seam"></i> 近效期库存提醒（30天内）
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="thead-light">
+                                    <tr><th>批次号</th><th>品种</th><th>数量</th><th>过期日期</th><th>位置</th></tr>
+                                </thead>
+                                <tbody id="expiringTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function() {
+            loadDashboard();
+            
+            async function loadDashboard() {
+                try {
+                    const inventories = await fetchData('/api/inventories');
+                    const alerts = await fetchData('/api/alerts/active');
+                    const warehouses = await fetchData('/api/warehouses');
+                    const stores = await fetchData('/api/stores');
+                    const transfers = await fetchData('/api/transfers');
+                    const expiring = await fetchData('/api/inventories/expiring/30');
+                    
+                    let totalQty = 0;
+                    inventories.forEach(i => totalQty += i.quantity);
+                    
+                    $('#totalInventory').text(totalQty);
+                    $('#expiringCount').text(expiring.length);
+                    $('#activeAlerts').text(alerts.length);
+                    $('#totalLocations').text(warehouses.length + stores.length);
+                    
+                    const recentAlerts = alerts.slice(0, 5);
+                    $('#recentAlerts').html(recentAlerts.map(a => `
+                        <tr>
+                            <td><span class="badge badge-${a.alertType === 'TEMPERATURE' ? 'warning' : 'info'}">${a.alertType}</span></td>
+                            <td><span class="badge badge-${a.level === 'WARNING' ? 'warning' : 'danger'}">${a.level}</span></td>
+                            <td class="small">${a.message}</td>
+                            <td><span class="badge badge-${a.status === 'ACTIVE' ? 'danger' : 'success'}">${a.status}</span></td>
+                        </tr>
+                    `).join(''));
+                    
+                    const recentTransfers = transfers.reverse().slice(0, 5);
+                    $('#recentTransfers').html(recentTransfers.map(t => `
+                        <tr>
+                            <td>${t.transferCode}</td>
+                            <td>${t.quantity}</td>
+                            <td><span class="badge badge-${t.status === 'COMPLETED' ? 'success' : t.status === 'PENDING' ? 'warning' : 'danger'}">${t.status}</span></td>
+                            <td class="small">${new Date(t.createTime).toLocaleString()}</td>
+                        </tr>
+                    `).join(''));
+                    
+                    $('#expiringTable').html(expiring.slice(0, 5).map(i => `
+                        <tr class="table-warning">
+                            <td>${i.seedBatch.batchCode}</td>
+                            <td>${i.seedBatch.variety.varietyName}</td>
+                            <td>${i.quantity}</td>
+                            <td>${i.seedBatch.expiryDate}</td>
+                            <td>${i.warehouse ? i.warehouse.warehouseName : i.store.storeName}</td>
+                        </tr>
+                    `).join(''));
+                    
+                } catch(e) {
+                    console.error('加载数据失败', e);
+                }
+            }
+            
+            async function fetchData(url) {
+                const resp = await fetch(url);
+                if (!resp.ok) return [];
+                return resp.json();
+            }
+        });
+    </script>
+</body>
+</html>

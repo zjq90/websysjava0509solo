@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓库管理 - 智能库存管理系统</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #343a40 0%, #212529 100%); }
+        .sidebar a { color: rgba(255,255,255,.8); padding: 12px 15px; display: block; transition: all .3s; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,.1); color: #fff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-3 text-center text-white border-bottom border-secondary">
+                    <h4><i class="bi bi-box-seam"></i> 智能库存</h4>
+                </div>
+                <nav class="mt-2">
+                    <a href="index.html"><i class="bi bi-speedometer2 mr-2"></i>仪表板</a>
+                    <a href="categories.html"><i class="bi bi-tags mr-2"></i>品类管理</a>
+                    <a href="varieties.html"><i class="bi bi-folder mr-2"></i>品种管理</a>
+                    <a href="batches.html"><i class="bi bi-box mr-2"></i>批次管理</a>
+                    <a href="warehouses.html" class="active"><i class="bi bi-building mr-2"></i>仓库管理</a>
+                    <a href="stores.html"><i class="bi bi-shop mr-2"></i>门店管理</a>
+                    <a href="inventories.html"><i class="bi bi-boxes mr-2"></i>库存管理</a>
+                    <a href="environment.html"><i class="bi bi-thermometer-half mr-2"></i>温湿度监控</a>
+                    <a href="transfers.html"><i class="bi bi-arrow-left-right mr-2"></i>调拨管理</a>
+                    <a href="checks.html"><i class="bi bi-clipboard-check mr-2"></i>库存盘点</a>
+                    <a href="alerts.html"><i class="bi bi-bell mr-2"></i>预警中心</a>
+                    <a href="test-data.html"><i class="bi bi-play-circle mr-2"></i>测试数据生成</a>
+                </nav>
+            </div>
+            
+            <div class="col-md-10 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3><i class="bi bi-building"></i> 仓库管理</h3>
+                    <button class="btn btn-primary" onclick="showModal()"><i class="bi bi-plus-circle"></i> 新增仓库</button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="thead-dark">
+                                    <tr><th>ID</th><th>编码</th><th>名称</th><th>地址</th><th>负责人</th><th>电话</th><th>操作</th></tr>
+                                </thead>
+                                <tbody id="tableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                        <div class="text-muted small" id="pageInfo">共 0 条数据</div>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0" id="pagination">
+                                <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="#">下一页</a></li>
+                            </ul>
+                        </nav>
+                        <div class="d-flex align-items-center">
+                            <span class="text-muted small mr-2">每页:</span>
+                            <select class="form-control form-control-sm" id="pageSize" style="width:80px;" onchange="changePageSize()">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><span id="modalTitle">新增仓库</span></h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="dataForm">
+                        <input type="hidden" id="itemId">
+                        <div class="form-group">
+                            <label>仓库编码 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="warehouseCode" required maxlength="50" placeholder="请输入仓库编码">
+                            <small class="form-text text-muted">长度1-50字符</small>
+                            <div class="invalid-feedback" id="warehouseCodeError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>仓库名称 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="warehouseName" required maxlength="100" placeholder="请输入仓库名称">
+                            <small class="form-text text-muted">长度1-100字符</small>
+                            <div class="invalid-feedback" id="warehouseNameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>地址</label>
+                            <input type="text" class="form-control" id="address" maxlength="200" placeholder="请输入地址（可选）">
+                            <small class="form-text text-muted">最大200字符</small>
+                            <div class="invalid-feedback" id="addressError"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>负责人</label>
+                                <input type="text" class="form-control" id="manager" maxlength="50" placeholder="请输入负责人（可选）">
+                                <small class="form-text text-muted">最大50字符</small>
+                                <div class="invalid-feedback" id="managerError"></div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>电话</label>
+                                <input type="text" class="form-control" id="phone" maxlength="20" placeholder="手机号或座机号（可选）">
+                                <small class="form-text text-muted">如：13800138000 或 010-12345678</small>
+                                <div class="invalid-feedback" id="phoneError"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <textarea class="form-control" id="description" rows="2" maxlength="500" placeholder="请输入描述（可选）"></textarea>
+                            <small class="form-text text-muted">最大500字符</small>
+                            <div class="invalid-feedback" id="descriptionError"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveData()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = '/api/warehouses';
+        let allData = [];
+        let currentPage = 1;
+        let pageSize = 10;
+        
+        $(function() { loadData(); });
+        
+        async function loadData() {
+            allData = await fetchData(API_URL);
+            renderTable();
+        }
+        
+        function renderTable() {
+            const total = allData.length;
+            const totalPages = Math.max(1, Math.ceil(total / pageSize));
+            if (currentPage > totalPages) currentPage = totalPages;
+            
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const pageData = allData.slice(start, end);
+            
+            $('#pageInfo').text(`共 ${total} 条数据，第 ${currentPage}/${totalPages} 页`);
+            renderPagination(totalPages);
+            
+            if (pageData.length === 0) {
+                $('#tableBody').html(`<tr><td colspan="7" class="text-center text-muted py-4"><i class="bi bi-inbox"></i> 暂无数据</td></tr>`);
+                return;
+            }
+            
+            $('#tableBody').html(pageData.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td><strong>${item.warehouseCode}</strong></td>
+                    <td>${item.warehouseName}</td>
+                    <td>${item.address || '-'}</td>
+                    <td>${item.manager || '-'}</td>
+                    <td>${item.phone || '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick='editData(${JSON.stringify(item)})'><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteData(${item.id})"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+            `).join(''));
+        }
+        
+        function renderPagination(totalPages) {
+            let html = '';
+            html += `<li class="page-item ${currentPage <= 1 ? 'disabled' : ''}"><a class="page-link" href="javascript:goToPage(${currentPage - 1})">上一页</a></li>`;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    html += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="javascript:goToPage(${i})">${i}</a></li>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    html += `<li class="page-item disabled"><a class="page-link" href="#">...</a></li>`;
+                }
+            }
+            
+            html += `<li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}"><a class="page-link" href="javascript:goToPage(${currentPage + 1})">下一页</a></li>`;
+            $('#pagination').html(html);
+        }
+        
+        function goToPage(page) {
+            const totalPages = Math.max(1, Math.ceil(allData.length / pageSize));
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                renderTable();
+            }
+        }
+        
+        function changePageSize() {
+            pageSize = parseInt($('#pageSize').val());
+            currentPage = 1;
+            renderTable();
+        }
+        
+        function showModal() {
+            $('#modalTitle').text('新增仓库');
+            $('#dataForm')[0].reset();
+            $('#itemId').val('');
+            clearErrors();
+            $('#formModal').modal('show');
+        }
+        
+        function editData(item) {
+            showModal();
+            $('#modalTitle').text('编辑仓库');
+            $('#itemId').val(item.id);
+            $('#warehouseCode').val(item.warehouseCode);
+            $('#warehouseName').val(item.warehouseName);
+            $('#address').val(item.address);
+            $('#manager').val(item.manager);
+            $('#phone').val(item.phone);
+            $('#description').val(item.description);
+        }
+        
+        function validateForm() {
+            clearErrors();
+            let isValid = true;
+            const errors = {};
+            
+            const warehouseCode = $('#warehouseCode').val().trim();
+            const warehouseName = $('#warehouseName').val().trim();
+            const phone = $('#phone').val().trim();
+            const phoneRegex = /^$|^1[3-9]\d{9}$|^\d{3,4}-\d{7,8}$/;
+            
+            if (!warehouseCode) {
+                errors.warehouseCode = '仓库编码不能为空';
+                isValid = false;
+            } else if (warehouseCode.length > 50) {
+                errors.warehouseCode = '仓库编码长度不能超过50';
+                isValid = false;
+            }
+            
+            if (!warehouseName) {
+                errors.warehouseName = '仓库名称不能为空';
+                isValid = false;
+            } else if (warehouseName.length > 100) {
+                errors.warehouseName = '仓库名称长度不能超过100';
+                isValid = false;
+            }
+            
+            if (phone && !phoneRegex.test(phone)) {
+                errors.phone = '电话格式不正确（手机号或座机号）';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                showErrors(errors);
+            }
+            
+            return isValid;
+        }
+        
+        function clearErrors() {
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('');
+        }
+        
+        function showErrors(errors) {
+            for (const [field, message] of Object.entries(errors)) {
+                $(`#${field}`).addClass('is-invalid');
+                $(`#${field}Error`).text(message);
+            }
+        }
+        
+        async function saveData() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            const data = {
+                warehouseCode: $('#warehouseCode').val().trim(),
+                warehouseName: $('#warehouseName').val().trim(),
+                address: $('#address').val(),
+                manager: $('#manager').val(),
+                phone: $('#phone').val().trim(),
+                description: $('#description').val()
+            };
+            
+            const id = $('#itemId').val();
+            const url = id ? `${API_URL}/${id}` : API_URL;
+            const method = id ? 'PUT' : 'POST';
+            
+            try {
+                const resp = await fetch(url, {method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)});
+                
+                if (!resp.ok) {
+                    const errorData = await resp.json();
+                    if (errorData.errors) {
+                        showErrors(errorData.errors);
+                        alert(errorData.message || '保存失败，请检查输入');
+                    } else {
+                        alert(errorData.message || '保存失败');
+                    }
+                    return;
+                }
+                
+                $('#formModal').modal('hide');
+                alert('保存成功');
+                loadData();
+            } catch (e) {
+                console.error(e);
+                alert('保存失败，请稍后重试');
+            }
+        }
+        
+        async function deleteData(id) {
+            if(confirm('确定删除吗？')) {
+                try {
+                    await fetch(`${API_URL}/${id}`, {method:'DELETE'});
+                    loadData();
+                } catch (e) {
+                    alert('删除失败');
+                }
+            }
+        }
+        
+        async function fetchData(url) {
+            try {
+                const resp = await fetch(url);
+                if (!resp.ok) {
+                    throw new Error('请求失败');
+                }
+                return resp.json();
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }
+    </script>
+</body>
+</html>
