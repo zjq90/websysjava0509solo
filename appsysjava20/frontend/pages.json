@@ -1,0 +1,121 @@
+{
+    "pages": [
+        {
+            "path": "pages/login/login",
+            "style": {
+                "navigationBarTitleText": "登录"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "首页",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/performance/performance",
+            "style": {
+                "navigationBarTitleText": "个人业绩"
+            }
+        },
+        {
+            "path": "pages/dashboard/dashboard",
+            "style": {
+                "navigationBarTitleText": "经营看板"
+            }
+        },
+        {
+            "path": "pages/customer/list",
+            "style": {
+                "navigationBarTitleText": "客户管理"
+            }
+        },
+        {
+            "path": "pages/customer/detail",
+            "style": {
+                "navigationBarTitleText": "客户详情"
+            }
+        },
+        {
+            "path": "pages/customer/add",
+            "style": {
+                "navigationBarTitleText": "添加客户"
+            }
+        },
+        {
+            "path": "pages/product/list",
+            "style": {
+                "navigationBarTitleText": "产品管理"
+            }
+        },
+        {
+            "path": "pages/product/detail",
+            "style": {
+                "navigationBarTitleText": "产品详情"
+            }
+        },
+        {
+            "path": "pages/product/add",
+            "style": {
+                "navigationBarTitleText": "添加产品"
+            }
+        },
+        {
+            "path": "pages/order/list",
+            "style": {
+                "navigationBarTitleText": "订单管理"
+            }
+        },
+        {
+            "path": "pages/order/add",
+            "style": {
+                "navigationBarTitleText": "创建订单"
+            }
+        },
+        {
+            "path": "pages/mine/mine",
+            "style": {
+                "navigationBarTitleText": "我的"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "财务报表系统",
+        "navigationBarBackgroundColor": "#3c9cff",
+        "backgroundColor": "#f5f5f5"
+    },
+    "tabBar": {
+        "color": "#999999",
+        "selectedColor": "#3c9cff",
+        "borderStyle": "black",
+        "backgroundColor": "#ffffff",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "static/tab/home.png",
+                "selectedIconPath": "static/tab/home-active.png"
+            },
+            {
+                "pagePath": "pages/performance/performance",
+                "text": "业绩",
+                "iconPath": "static/tab/chart.png",
+                "selectedIconPath": "static/tab/chart-active.png"
+            },
+            {
+                "pagePath": "pages/dashboard/dashboard",
+                "text": "看板",
+                "iconPath": "static/tab/dashboard.png",
+                "selectedIconPath": "static/tab/dashboard-active.png"
+            },
+            {
+                "pagePath": "pages/mine/mine",
+                "text": "我的",
+                "iconPath": "static/tab/user.png",
+                "selectedIconPath": "static/tab/user-active.png"
+            }
+        ]
+    }
+}

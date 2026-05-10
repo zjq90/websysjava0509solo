@@ -1,0 +1,38 @@
+{
+  "name": "finance-app-frontend",
+  "version": "1.0.0",
+  "description": "财务与报表管理系统前端 - UniApp项目",
+  "main": "main.js",
+  "scripts": {
+    "dev:mp-weixin": "cross-env NODE_ENV=development UNI_PLATFORM=mp-weixin vue-cli-service uni-build --watch",
+    "dev:h5": "cross-env NODE_ENV=development UNI_PLATFORM=h5 vue-cli-service uni-serve",
+    "build:mp-weixin": "cross-env NODE_ENV=production UNI_PLATFORM=mp-weixin vue-cli-service uni-build",
+    "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "build:app": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus vue-cli-service uni-build"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "^2.0.0",
+    "@dcloudio/uni-app-plus": "^2.0.0",
+    "@dcloudio/uni-components": "^2.0.0",
+    "@dcloudio/uni-h5": "^2.0.0",
+    "@dcloudio/uni-mp-weixin": "^2.0.0",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^2.0.0",
+    "@dcloudio/uni-automator": "^2.0.0",
+    "@dcloudio/uni-cli-shared": "^2.0.0",
+    "@dcloudio/uni-template-compiler": "^2.0.0",
+    "@dcloudio/vue-cli-plugin-hbuilderx": "^2.0.0",
+    "@dcloudio/vue-cli-plugin-uni": "^2.0.0",
+    "@dcloudio/vue-cli-plugin-uni-optimize": "^2.0.0",
+    "@dcloudio/webpack-uni-mp-loader": "^2.0.0",
+    "@dcloudio/webpack-uni-pages-loader": "^2.0.0",
+    "cross-env": "^7.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "Android >= 4.4",
+    "ios >= 9"
+  ]
+}
