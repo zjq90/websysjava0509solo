@@ -1,0 +1,102 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
+      "path": "pages/inventory/list",
+      "style": {
+        "navigationBarTitleText": "库存管理"
+      }
+    },
+    {
+      "path": "pages/inventory/detail",
+      "style": {
+        "navigationBarTitleText": "库存详情"
+      }
+    },
+    {
+      "path": "pages/scan/scan",
+      "style": {
+        "navigationBarTitleText": "扫码操作"
+      }
+    },
+    {
+      "path": "pages/scan/inbound",
+      "style": {
+        "navigationBarTitleText": "入库登记"
+      }
+    },
+    {
+      "path": "pages/scan/outbound",
+      "style": {
+        "navigationBarTitleText": "出库登记"
+      }
+    },
+    {
+      "path": "pages/warehouse/list",
+      "style": {
+        "navigationBarTitleText": "仓库管理"
+      }
+    },
+    {
+      "path": "pages/notifications/list",
+      "style": {
+        "navigationBarTitleText": "消息通知"
+      }
+    },
+    {
+      "path": "pages/customers/list",
+      "style": {
+        "navigationBarTitleText": "客户管理"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "种子库存管理",
+    "navigationBarBackgroundColor": "#2979FF",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2979FF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/inventory/list",
+        "text": "库存",
+        "iconPath": "static/icons/inventory.png",
+        "selectedIconPath": "static/icons/inventory-active.png"
+      },
+      {
+        "pagePath": "pages/scan/scan",
+        "text": "扫码",
+        "iconPath": "static/icons/scan.png",
+        "selectedIconPath": "static/icons/scan-active.png"
+      },
+      {
+        "pagePath": "pages/notifications/list",
+        "text": "消息",
+        "iconPath": "static/icons/notification.png",
+        "selectedIconPath": "static/icons/notification-active.png"
+      },
+      {
+        "pagePath": "pages/customers/list",
+        "text": "客户",
+        "iconPath": "static/icons/customer.png",
+        "selectedIconPath": "static/icons/customer-active.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>种子库存管理系统 - API测试</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd6;
+        }
+        .btn-success {
+            background: #00C853;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #00a844;
+        }
+        .btn-warning {
+            background: #FF9800;
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+        .result-box {
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success { color: #00C853; }
+        .error { color: #F44336; }
+        .info { color: #667eea; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .links a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 种子库存管理系统 - API测试工具</h1>
+        
+        <div class="grid">
+            <!-- 基础查询 -->
+            <div class="card">
+                <h2>📋 基础数据查询</h2>
+                <button class="btn btn-primary" onclick="testWarehouses()">获取仓库列表</button>
+                <button class="btn btn-primary" onclick="testSeeds()">获取种子列表</button>
+                <button class="btn btn-primary" onclick="testInventory()">获取库存列表</button>
+                <button class="btn btn-primary" onclick="testCustomers()">获取客户列表</button>
+                <button class="btn btn-primary" onclick="testNotifications()">获取通知列表</button>
+                <div id="basicResult" class="result-box">等待测试...</div>
+            </div>
+            
+            <!-- 扫码查询 -->
+            <div class="card">
+                <h2>🔍 扫码查询</h2>
+                <div class="input-group">
+                    <label>批次号</label>
+                    <input type="text" id="batchNo" value="WH01AB1234" placeholder="输入批次号">
+                </div>
+                <button class="btn btn-success" onclick="testScan()">查询库存</button>
+                <div id="scanResult" class="result-box">等待测试...</div>
+            </div>
+            
+            <!-- 入库测试 -->
+            <div class="card">
+                <h2>📥 入库测试</h2>
+                <div class="input-group">
+                    <label>批次号 (8位数字字母)</label>
+                    <input type="text" id="inBatchNo" value="NEW001AB" placeholder="例如: NEW001AB">
+                </div>
+                <div class="input-group">
+                    <label>仓库ID</label>
+                    <input type="number" id="inWarehouse" value="1">
+                </div>
+                <div class="input-group">
+                    <label>种子ID</label>
+                    <input type="number" id="inSeed" value="1">
+                </div>
+                <div class="input-group">
+                    <label>数量</label>
+                    <input type="number" id="inQty" value="100">
+                </div>
+                <div class="input-group">
+                    <label>单位</label>
+                    <input type="text" id="inUnit" value="kg">
+                </div>
+                <div class="input-group">
+                    <label>保质期 (YYYY-MM-DD)</label>
+                    <input type="date" id="inExpiry">
+                </div>
+                <div class="input-group">
+                    <label>发芽率 (0.0-100.0)</label>
+                    <input type="number" id="inRate" value="95.5" step="0.1">
+                </div>
+                <button class="btn btn-success" onclick="testInbound()">执行入库</button>
+                <div id="inboundResult" class="result-box">等待测试...</div>
+            </div>
+            
+            <!-- 出库测试 -->
+            <div class="card">
+                <h2>📤 出库测试</h2>
+                <div class="input-group">
+                    <label>批次号</label>
+                    <input type="text" id="outBatchNo" value="WH01AB1234">
+                </div>
+                <div class="input-group">
+                    <label>出库数量</label>
+                    <input type="number" id="outQty" value="10">
+                </div>
+                <div class="input-group">
+                    <label>操作人</label>
+                    <input type="text" id="outOperator" value="测试员">
+                </div>
+                <button class="btn btn-warning" onclick="testOutbound()">执行出库</button>
+                <div id="outboundResult" class="result-box">等待测试...</div>
+            </div>
+            
+            <!-- 预警测试 -->
+            <div class="card">
+                <h2>⚠️ 预警测试</h2>
+                <button class="btn btn-warning" onclick="testCheckExpiry()">检测近效期</button>
+                <div id="expiryResult" class="result-box">等待测试...</div>
+            </div>
+            
+            <!-- 数据校验测试 -->
+            <div class="card">
+                <h2>🔒 数据校验测试</h2>
+                <button class="btn btn-primary" onclick="testInvalidBatch()">测试无效批次号</button>
+                <button class="btn btn-primary" onclick="testInvalidPhone()">测试无效手机号</button>
+                <button class="btn btn-primary" onclick="testInvalidExpiry()">测试无效保质期</button>
+                <div id="validationResult" class="result-box">等待测试...</div>
+            </div>
+        </div>
+        
+        <div class="links">
+            <a href="http://localhost:8080/swagger-ui.html" target="_blank">📚 Swagger文档</a>
+            <a href="http://localhost:8080/h2-console" target="_blank">🗄️ H2控制台</a>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8080';
+        
+        // 设置默认保质期为当前日期+12个月
+        document.getElementById('inExpiry').valueAsDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+        
+        async function fetchAPI(url, options = {}) {
+            try {
+                const response = await fetch(BASE_URL + url, {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    }
+                });
+                return await response.json();
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+        
+        function showResult(elementId, data, success = true) {
+            const el = document.getElementById(elementId);
+            el.className = 'result-box ' + (success ? 'success' : 'error');
+            el.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        // 基础查询测试
+        async function testWarehouses() {
+            const data = await fetchAPI('/api/warehouses');
+            showResult('basicResult', data, !data.error);
+        }
+        
+        async function testSeeds() {
+            const data = await fetchAPI('/api/seeds');
+            showResult('basicResult', data, !data.error);
+        }
+        
+        async function testInventory() {
+            const data = await fetchAPI('/api/inventory/list');
+            showResult('basicResult', data, !data.error);
+        }
+        
+        async function testCustomers() {
+            const data = await fetchAPI('/api/customers');
+            showResult('basicResult', data, !data.error);
+        }
+        
+        async function testNotifications() {
+            const data = await fetchAPI('/api/notifications');
+            showResult('basicResult', data, !data.error);
+        }
+        
+        // 扫码查询测试
+        async function testScan() {
+            const batchNo = document.getElementById('batchNo').value;
+            const data = await fetchAPI(`/api/inventory/scan/${batchNo}`);
+            showResult('scanResult', data, data.code === 200);
+        }
+        
+        // 入库测试
+        async function testInbound() {
+            const body = {
+                batchNo: document.getElementById('inBatchNo').value,
+                warehouseId: parseInt(document.getElementById('inWarehouse').value),
+                seedId: parseInt(document.getElementById('inSeed').value),
+                quantity: parseInt(document.getElementById('inQty').value),
+                unit: document.getElementById('inUnit').value,
+                expiryDate: document.getElementById('inExpiry').value,
+                germinationRate: parseFloat(document.getElementById('inRate').value),
+                origin: '测试产地',
+                storageLocation: 'A-01-测试'
+            };
+            
+            const data = await fetchAPI('/api/inventory/inbound?operator=测试员', {
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
+            showResult('inboundResult', data, data.code === 200);
+        }
+        
+        // 出库测试
+        async function testOutbound() {
+            const batchNo = document.getElementById('outBatchNo').value;
+            const qty = document.getElementById('outQty').value;
+            const operator = document.getElementById('outOperator').value;
+            
+            const data = await fetchAPI(
+                `/api/inventory/outbound?batchNo=${batchNo}&quantity=${qty}&operator=${operator}`,
+                { method: 'POST' }
+            );
+            showResult('outboundResult', data, data.code === 200);
+        }
+        
+        // 预警测试
+        async function testCheckExpiry() {
+            const data = await fetchAPI('/api/inventory/check-expiry', { method: 'POST' });
+            showResult('expiryResult', data, data.code === 200);
+        }
+        
+        // 数据校验测试
+        async function testInvalidBatch() {
+            const body = {
+                batchNo: 'INVALID', // 无效：不是8位
+                warehouseId: 1,
+                seedId: 1,
+                quantity: 100,
+                unit: 'kg',
+                expiryDate: '2026-01-01',
+                germinationRate: 95.5
+            };
+            
+            const data = await fetchAPI('/api/inventory/inbound?operator=测试', {
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
+            const success = data.code !== 200 && (data.message && data.message.includes('批次号'));
+            showResult('validationResult', {
+                test: '无效批次号测试',
+                expected: '应该被拒绝',
+                actual: data.message || '无错误信息',
+                result: success ? '✓ 校验通过' : '✗ 校验失败'
+            }, success);
+        }
+        
+        async function testInvalidPhone() {
+            const body = {
+                customerCode: 'T001',
+                customerName: '测试客户',
+                customerType: 'INDIVIDUAL',
+                contactName: '测试',
+                phone: '12345' // 无效手机号
+            };
+            
+            const data = await fetchAPI('/api/customers', {
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
+            const success = data.code !== 200;
+            showResult('validationResult', {
+                test: '无效手机号测试',
+                expected: '应该被拒绝',
+                actual: data.message || '无错误信息',
+                result: success ? '✓ 校验通过' : '✗ 校验失败'
+            }, success);
+        }
+        
+        async function testInvalidExpiry() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            const body = {
+                batchNo: 'TEST0001',
+                warehouseId: 1,
+                seedId: 1,
+                quantity: 100,
+                unit: 'kg',
+                expiryDate: yesterday.toISOString().split('T')[0], // 昨天（无效）
+                germinationRate: 95.5
+            };
+            
+            const data = await fetchAPI('/api/inventory/inbound?operator=测试', {
+                method: 'POST',
+                body: JSON.stringify(body)
+            });
+            const success = data.code !== 200;
+            showResult('validationResult', {
+                test: '无效保质期测试',
+                expected: '应该被拒绝（小于6个月）',
+                actual: data.message || '无错误信息',
+                result: success ? '✓ 校验通过' : '✗ 校验失败'
+            }, success);
+        }
+    </script>
+</body>
+</html>
