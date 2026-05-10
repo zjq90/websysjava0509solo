@@ -1,0 +1,110 @@
+{
+    "pages": [
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "种子质量追溯系统",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": true
+            }
+        },
+        {
+            "path": "pages/scan/scan",
+            "style": {
+                "navigationBarTitleText": "扫码溯源",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/trace/trace",
+            "style": {
+                "navigationBarTitleText": "溯源详情",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": true
+            }
+        },
+        {
+            "path": "pages/batch/list",
+            "style": {
+                "navigationBarTitleText": "批次列表",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": true
+            }
+        },
+        {
+            "path": "pages/batch/detail",
+            "style": {
+                "navigationBarTitleText": "批次详情",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/batch/form",
+            "style": {
+                "navigationBarTitleText": "新增批次",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/share/share",
+            "style": {
+                "navigationBarTitleText": "分享报告",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/mine/mine",
+            "style": {
+                "navigationBarTitleText": "我的",
+                "navigationBarBackgroundColor": "#2b7a4b",
+                "navigationBarTextStyle": "white"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "种子质量追溯",
+        "navigationBarBackgroundColor": "#2b7a4b",
+        "backgroundColor": "#f5f5f5",
+        "backgroundTextStyle": "dark"
+    },
+    "tabBar": {
+        "color": "#999999",
+        "selectedColor": "#2b7a4b",
+        "backgroundColor": "#ffffff",
+        "borderStyle": "black",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "static/tabbar/home.png",
+                "selectedIconPath": "static/tabbar/home-active.png"
+            },
+            {
+                "pagePath": "pages/scan/scan",
+                "text": "扫码",
+                "iconPath": "static/tabbar/scan.png",
+                "selectedIconPath": "static/tabbar/scan-active.png"
+            },
+            {
+                "pagePath": "pages/batch/list",
+                "text": "批次",
+                "iconPath": "static/tabbar/batch.png",
+                "selectedIconPath": "static/tabbar/batch-active.png"
+            },
+            {
+                "pagePath": "pages/mine/mine",
+                "text": "我的",
+                "iconPath": "static/tabbar/mine.png",
+                "selectedIconPath": "static/tabbar/mine-active.png"
+            }
+        ]
+    }
+}

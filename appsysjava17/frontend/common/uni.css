@@ -1,0 +1,566 @@
+/**
+ * 全局样式
+ * 种子质量追溯系统 - 统一的样式规范
+ */
+
+/* ==================== 基础样式 ==================== */
+page {
+    background-color: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 28rpx;
+    color: #333;
+    line-height: 1.6;
+}
+
+view, text, image, input, textarea, button {
+    box-sizing: border-box;
+}
+
+/* ==================== 主题色 ==================== */
+/* 主色调：绿色系（农业主题） */
+$primary-color: #2b7a4b;
+$primary-light: #4a9d6a;
+$primary-dark: #1f5c36;
+$secondary-color: #8bc34a;
+$accent-color: #ff9800;
+
+/* 背景色 */
+$bg-color: #f5f5f5;
+$bg-white: #ffffff;
+$bg-gray: #eeeeee;
+
+/* 文字颜色 */
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-muted: #999999;
+$text-white: #ffffff;
+
+/* 边框颜色 */
+$border-color: #e0e0e0;
+$border-light: #f0f0f0;
+
+/* ==================== 通用工具类 ==================== */
+
+/* 容器 */
+.container {
+    padding: 20rpx;
+    min-height: 100vh;
+}
+
+/* 卡片样式 */
+.card {
+    background-color: #fff;
+    border-radius: 16rpx;
+    margin-bottom: 20rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 30rpx;
+    border-bottom: 2rpx solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-body {
+    padding: 30rpx;
+}
+
+.card-footer {
+    padding: 20rpx 30rpx;
+    background-color: #fafafa;
+    border-top: 2rpx solid #f0f0f0;
+}
+
+/* ==================== 按钮样式 ==================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20rpx 40rpx;
+    border-radius: 40rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2b7a4b 0%, #4a9d6a 100%);
+    color: #fff;
+    box-shadow: 0 4rpx 12rpx rgba(43, 122, 75, 0.3);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    box-shadow: 0 2rpx 8rpx rgba(43, 122, 75, 0.3);
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #2b7a4b;
+    border: 2rpx solid #2b7a4b;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2rpx solid #ddd;
+    color: #666;
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.btn-lg {
+    padding: 28rpx 60rpx;
+    font-size: 32rpx;
+}
+
+.btn-sm {
+    padding: 12rpx 24rpx;
+    font-size: 24rpx;
+}
+
+/* ==================== 表单样式 ==================== */
+
+.form-group {
+    margin-bottom: 30rpx;
+}
+
+.form-label {
+    display: block;
+    font-size: 28rpx;
+    color: #333;
+    margin-bottom: 16rpx;
+    font-weight: 500;
+}
+
+.form-label .required {
+    color: #f44336;
+    margin-left: 4rpx;
+}
+
+.form-input {
+    width: 100%;
+    height: 88rpx;
+    padding: 0 24rpx;
+    background-color: #fff;
+    border: 2rpx solid #e0e0e0;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    color: #333;
+}
+
+.form-input:focus {
+    border-color: #2b7a4b;
+}
+
+.form-textarea {
+    width: 100%;
+    min-height: 200rpx;
+    padding: 20rpx 24rpx;
+    background-color: #fff;
+    border: 2rpx solid #e0e0e0;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    color: #333;
+}
+
+.form-error {
+    margin-top: 10rpx;
+    font-size: 24rpx;
+    color: #f44336;
+}
+
+.form-hint {
+    margin-top: 10rpx;
+    font-size: 24rpx;
+    color: #999;
+}
+
+/* ==================== 标签样式 ==================== */
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 8rpx 20rpx;
+    border-radius: 20rpx;
+    font-size: 22rpx;
+    margin-right: 10rpx;
+}
+
+.tag-success {
+    background-color: #e8f5e9;
+    color: #2b7a4b;
+}
+
+.tag-warning {
+    background-color: #fff3e0;
+    color: #ff9800;
+}
+
+.tag-danger {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.tag-info {
+    background-color: #e3f2fd;
+    color: #2196f3;
+}
+
+.tag-default {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+/* ==================== 列表样式 ==================== */
+
+.list-item {
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+    background-color: #fff;
+    border-bottom: 2rpx solid #f0f0f0;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item-content {
+    flex: 1;
+    margin-left: 24rpx;
+}
+
+.list-item-title {
+    font-size: 30rpx;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8rpx;
+}
+
+.list-item-desc {
+    font-size: 24rpx;
+    color: #999;
+}
+
+.list-item-arrow {
+    color: #ccc;
+    font-size: 32rpx;
+}
+
+/* ==================== 时间轴样式 ==================== */
+
+.timeline {
+    position: relative;
+    padding-left: 60rpx;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 24rpx;
+    top: 0;
+    bottom: 0;
+    width: 4rpx;
+    background: linear-gradient(to bottom, #2b7a4b, #e0e0e0);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 40rpx;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -46rpx;
+    top: 0;
+    width: 32rpx;
+    height: 32rpx;
+    background-color: #2b7a4b;
+    border: 6rpx solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4rpx rgba(43, 122, 75, 0.2);
+}
+
+.timeline-dot.warning {
+    background-color: #ff9800;
+    box-shadow: 0 0 0 4rpx rgba(255, 152, 0, 0.2);
+}
+
+.timeline-dot.danger {
+    background-color: #f44336;
+    box-shadow: 0 0 0 4rpx rgba(244, 67, 54, 0.2);
+}
+
+.timeline-date {
+    font-size: 24rpx;
+    color: #999;
+    margin-bottom: 10rpx;
+}
+
+.timeline-content {
+    background-color: #fff;
+    border-radius: 12rpx;
+    padding: 24rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.timeline-title {
+    font-size: 28rpx;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8rpx;
+}
+
+.timeline-desc {
+    font-size: 24rpx;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ==================== 网格布局 ==================== */
+
+.grid-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10rpx;
+}
+
+.grid-col-2 {
+    width: 50%;
+    padding: 10rpx;
+}
+
+.grid-col-3 {
+    width: 33.33%;
+    padding: 10rpx;
+}
+
+.grid-col-4 {
+    width: 25%;
+    padding: 10rpx;
+}
+
+/* ==================== Flex 布局工具类 ==================== */
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-between {
+    justify-content: space-between;
+}
+
+.flex-around {
+    justify-content: space-around;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+/* ==================== 间距工具类 ==================== */
+
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mt-40 { margin-top: 40rpx; }
+
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.mb-30 { margin-bottom: 30rpx; }
+.mb-40 { margin-bottom: 40rpx; }
+
+.pt-10 { padding-top: 10rpx; }
+.pt-20 { padding-top: 20rpx; }
+.pt-30 { padding-top: 30rpx; }
+
+.pb-10 { padding-bottom: 10rpx; }
+.pb-20 { padding-bottom: 20rpx; }
+.pb-30 { padding-bottom: 30rpx; }
+
+/* ==================== 文字工具类 ==================== */
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-bold { font-weight: bold; }
+.text-normal { font-weight: normal; }
+
+.text-primary { color: #2b7a4b; }
+.text-success { color: #4caf50; }
+.text-warning { color: #ff9800; }
+.text-danger { color: #f44336; }
+.text-muted { color: #999; }
+
+.text-xs { font-size: 20rpx; }
+.text-sm { font-size: 24rpx; }
+.text-base { font-size: 28rpx; }
+.text-lg { font-size: 32rpx; }
+.text-xl { font-size: 36rpx; }
+
+/* ==================== 分割线 ==================== */
+
+.divider {
+    height: 2rpx;
+    background-color: #f0f0f0;
+    margin: 20rpx 0;
+}
+
+/* ==================== 加载状态 ==================== */
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100rpx 0;
+}
+
+.loading-text {
+    margin-top: 20rpx;
+    font-size: 28rpx;
+    color: #999;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100rpx 0;
+}
+
+.empty-icon {
+    font-size: 120rpx;
+    color: #ddd;
+    margin-bottom: 20rpx;
+}
+
+.empty-text {
+    font-size: 28rpx;
+    color: #999;
+}
+
+/* ==================== 搜索框 ==================== */
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+    background-color: #fff;
+    border-radius: 40rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.search-icon {
+    font-size: 36rpx;
+    color: #999;
+    margin-right: 16rpx;
+}
+
+.search-input {
+    flex: 1;
+    font-size: 28rpx;
+    color: #333;
+}
+
+.search-btn {
+    padding: 16rpx 32rpx;
+    background-color: #2b7a4b;
+    color: #fff;
+    border-radius: 28rpx;
+    font-size: 26rpx;
+}
+
+/* ==================== 统计卡片 ==================== */
+
+.stats-card {
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+    background-color: #fff;
+    border-radius: 16rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.stats-icon {
+    width: 100rpx;
+    height: 100rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20rpx;
+    margin-right: 24rpx;
+    font-size: 48rpx;
+}
+
+.stats-icon.green {
+    background-color: #e8f5e9;
+    color: #2b7a4b;
+}
+
+.stats-icon.blue {
+    background-color: #e3f2fd;
+    color: #2196f3;
+}
+
+.stats-icon.orange {
+    background-color: #fff3e0;
+    color: #ff9800;
+}
+
+.stats-icon.purple {
+    background-color: #f3e5f5;
+    color: #9c27b0;
+}
+
+.stats-info {
+    flex: 1;
+}
+
+.stats-value {
+    font-size: 40rpx;
+    font-weight: bold;
+    color: #333;
+}
+
+.stats-label {
+    font-size: 24rpx;
+    color: #999;
+    margin-top: 6rpx;
+}
