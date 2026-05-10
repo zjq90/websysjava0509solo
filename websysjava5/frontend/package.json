@@ -1,0 +1,29 @@
+{
+  "name": "websys-frontend",
+  "version": "1.0.0",
+  "description": "Web Platform Management System Frontend",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.3",
+    "vuex": "^3.6.2",
+    "axios": "^0.27.2",
+    "element-ui": "^2.15.12"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^5.0.8",
+    "sass": "^1.54.0",
+    "sass-loader": "^13.0.2",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
