@@ -1,0 +1,100 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "销售订单系统"
+      }
+    },
+    {
+      "path": "pages/product/list",
+      "style": {
+        "navigationBarTitleText": "产品列表"
+      }
+    },
+    {
+      "path": "pages/product/detail",
+      "style": {
+        "navigationBarTitleText": "产品详情"
+      }
+    },
+    {
+      "path": "pages/customer/list",
+      "style": {
+        "navigationBarTitleText": "客户管理"
+      }
+    },
+    {
+      "path": "pages/customer/detail",
+      "style": {
+        "navigationBarTitleText": "客户详情"
+      }
+    },
+    {
+      "path": "pages/customer/add",
+      "style": {
+        "navigationBarTitleText": "添加客户"
+      }
+    },
+    {
+      "path": "pages/order/list",
+      "style": {
+        "navigationBarTitleText": "订单列表"
+      }
+    },
+    {
+      "path": "pages/order/detail",
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
+    },
+    {
+      "path": "pages/order/create",
+      "style": {
+        "navigationBarTitleText": "创建订单"
+      }
+    },
+    {
+      "path": "pages/order/sign",
+      "style": {
+        "navigationBarTitleText": "签署合同"
+      }
+    },
+    {
+      "path": "pages/order/logistics",
+      "style": {
+        "navigationBarTitleText": "物流跟踪"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "销售订单管理系统",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#667eea",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/product/list",
+        "text": "产品"
+      },
+      {
+        "pagePath": "pages/order/list",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/customer/list",
+        "text": "客户"
+      }
+    ]
+  }
+}

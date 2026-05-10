@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: appsys-backend
+  
+  # H2内存数据库配置
+  datasource:
+    url: jdbc:h2:mem:appsysdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  # H2控制台配置
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# AES-256加密密钥配置
+app:
+  encryption:
+    aes-key: appsys-256-bit-encryption-key-12345678
+
+# Swagger/OpenAPI配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+# 日志配置
+logging:
+  level:
+    com.appsys: DEBUG
+    org.hibernate.SQL: DEBUG
