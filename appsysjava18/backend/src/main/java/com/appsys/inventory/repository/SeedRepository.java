@@ -1,0 +1,34 @@
+package com.appsys.inventory.repository;
+
+import com.appsys.inventory.entity.Seed;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * 种子数据访问接口
+ * 
+ * @author 系统管理员
+ * @version 1.0.0
+ */
+@Repository
+public interface SeedRepository extends JpaRepository<Seed, Long>, JpaSpecificationExecutor<Seed> {
+
+    /**
+     * 根据ID查询未删除的种子
+     */
+    Optional<Seed> findByIdAndDeletedFalse(Long id);
+
+    /**
+     * 查询所有未删除的种子
+     */
+    List<Seed> findByDeletedFalseOrderByCreatedTimeDesc();
+
+    /**
+     * 根据名称模糊查询
+     */
+    List<Seed> findBySeedNameContainingAndDeletedFalse(String seedName);
+}

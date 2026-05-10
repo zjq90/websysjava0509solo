@@ -1,0 +1,105 @@
+{
+    "pages": [
+        {
+            "path": "pages/login/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "首页"
+            }
+        },
+        {
+            "path": "pages/inventory/list",
+            "style": {
+                "navigationBarTitleText": "库存管理"
+            }
+        },
+        {
+            "path": "pages/inventory/form",
+            "style": {
+                "navigationBarTitleText": "库存操作"
+            }
+        },
+        {
+            "path": "pages/order/list",
+            "style": {
+                "navigationBarTitleText": "订单管理"
+            }
+        },
+        {
+            "path": "pages/order/form",
+            "style": {
+                "navigationBarTitleText": "创建订单"
+            }
+        },
+        {
+            "path": "pages/order/detail",
+            "style": {
+                "navigationBarTitleText": "订单详情"
+            }
+        },
+        {
+            "path": "pages/field/list",
+            "style": {
+                "navigationBarTitleText": "田间记录"
+            }
+        },
+        {
+            "path": "pages/field/form",
+            "style": {
+                "navigationBarTitleText": "田间记录"
+            }
+        },
+        {
+            "path": "pages/report/index",
+            "style": {
+                "navigationBarTitleText": "报表查看"
+            }
+        },
+        {
+            "path": "pages/profile/index",
+            "style": {
+                "navigationBarTitleText": "个人中心"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "white",
+        "navigationBarTitleText": "农业应用系统",
+        "navigationBarBackgroundColor": "#007AFF",
+        "backgroundColor": "#F5F5F5"
+    },
+    "tabBar": {
+        "color": "#999999",
+        "selectedColor": "#007AFF",
+        "backgroundColor": "#FFFFFF",
+        "borderStyle": "black",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/inventory/list",
+                "text": "库存"
+            },
+            {
+                "pagePath": "pages/order/list",
+                "text": "订单"
+            },
+            {
+                "pagePath": "pages/field/list",
+                "text": "田间"
+            },
+            {
+                "pagePath": "pages/profile/index",
+                "text": "我的"
+            }
+        ]
+    }
+}

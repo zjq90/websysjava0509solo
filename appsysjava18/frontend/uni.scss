@@ -1,0 +1,42 @@
+$uni-primary: #007AFF;
+$uni-primary-disable: rgba($uni-primary, 0.6);
+$uni-primary-light: rgba($uni-primary, 0.1);
+$uni-success: #4CD964;
+$uni-warning: #FF9600;
+$uni-error: #DD524D;
+$uni-info: #909399;
+
+$uni-text-color: #333333;
+$uni-text-color-inverse: #FFFFFF;
+$uni-text-color-grey: #999999;
+$uni-text-color-placeholder: #808080;
+$uni-text-color-disable: #c0c4cc;
+
+$uni-bg-color: #FFFFFF;
+$uni-bg-color-grey: #F5F5F5;
+$uni-bg-color-hover: #F5F5F5;
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4);
+
+$uni-border-color: #e5e5e5;
+$uni-color-black: #000000;
+$uni-color-white: #FFFFFF;
+
+$uni-font-size-sm: 24rpx;
+$uni-font-size-base: 28rpx;
+$uni-font-size-lg: 32rpx;
+
+$uni-spacing-col-sm: 8rpx;
+$uni-spacing-col-base: 16rpx;
+$uni-spacing-col-lg: 24rpx;
+$uni-spacing-row-sm: 10px;
+$uni-spacing-row-base: 20rpx;
+$uni-spacing-row-lg: 30rpx;
+
+$uni-radius-sm: 4rpx;
+$uni-radius-base: 8rpx;
+$uni-radius-lg: 16rpx;
+$uni-radius-circle: 50%;
+
+$uni-shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+$uni-shadow-base: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+$uni-shadow-lg: 0 4rpx 16rpx rgba(0, 0, 0, 0.12);
