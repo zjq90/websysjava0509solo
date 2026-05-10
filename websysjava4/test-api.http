@@ -1,0 +1,94 @@
+### Web平台管理系统 API 测试脚本
+### 启动后端后，可以用这些请求测试API
+
+### 商品相关API
+
+# 获取商品列表
+GET http://localhost:8080/api/products?page=0&size=10
+
+# 获取热销商品
+GET http://localhost:8080/api/products/stats/hot-selling?limit=10
+
+# 获取滞销商品
+GET http://localhost:8080/api/products/stats/unsold?limit=10
+
+# 获取毛利率分析
+GET http://localhost:8080/api/products/stats/gross-margin
+
+### 设备相关API
+
+# 获取设备列表
+GET http://localhost:8080/api/devices?page=0&size=10
+
+# 获取单机产出统计
+GET http://localhost:8080/api/devices/stats/single-output?limit=10
+
+# 获取故障率统计
+GET http://localhost:8080/api/devices/stats/fault-rate
+
+# 获取运维成本分析
+GET http://localhost:8080/api/devices/stats/maintenance-cost
+
+### 用户相关API
+
+# 获取用户列表
+GET http://localhost:8080/api/users?page=0&size=10
+
+# 获取活跃用户统计
+GET http://localhost:8080/api/users/stats/active?days=7
+
+# 获取复购率统计
+GET http://localhost:8080/api/users/stats/repurchase-rate
+
+# 获取新用户增长趋势
+GET http://localhost:8080/api/users/stats/growth-trend
+
+# 获取购买时段热力图
+GET http://localhost:8080/api/users/stats/purchase-heatmap?days=7
+
+### 数据大屏API
+
+# 获取大屏综合数据
+GET http://localhost:8080/api/dashboard
+
+### 测试创建商品
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "测试商品",
+  "category": "电子产品",
+  "costPrice": 100.00,
+  "salePrice": 150.00,
+  "stockQuantity": 100,
+  "salesQuantity": 0,
+  "status": "active"
+}
+
+### 测试创建设备
+POST http://localhost:8080/api/devices
+Content-Type: application/json
+
+{
+  "deviceCode": "DEV9999",
+  "name": "测试设备",
+  "type": "生产设备",
+  "location": "A车间",
+  "status": "running",
+  "totalRuntime": 1000.0,
+  "totalOutput": 10000,
+  "faultCount": 0,
+  "maintenanceCost": 0.00
+}
+
+### 测试创建用户
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "phone": "13800138000",
+  "status": "active",
+  "purchaseCount": 0
+}

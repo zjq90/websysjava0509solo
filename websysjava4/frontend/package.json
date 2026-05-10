@@ -1,0 +1,21 @@
+{
+  "name": "management-platform-frontend",
+  "version": "1.0.0",
+  "description": "Web平台管理系统前端",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0",
+    "axios": "^0.27.2",
+    "echarts": "^5.3.2",
+    "element-plus": "^2.2.0"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "~5.0.0"
+  }
+}
