@@ -1,0 +1,30 @@
+{
+  "name": "hospital-app-frontend",
+  "version": "1.0.0",
+  "description": "医院住院服务APP前端",
+  "main": "main.js",
+  "scripts": {
+    "dev:h5": "uni",
+    "build:h5": "uni build",
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "dev:app": "uni -p app",
+    "build:app": "uni build -p app"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "^2.0.2",
+    "@dcloudio/uni-app-plus": "^2.0.2",
+    "@dcloudio/uni-components": "^2.0.2",
+    "@dcloudio/uni-h5": "^2.0.2",
+    "@dcloudio/uni-mp-weixin": "^2.0.2",
+    "@dcloudio/uni-ui": "^1.4.20",
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.3.2",
+    "@dcloudio/uni-automator": "^2.0.2",
+    "@dcloudio/uni-cli-shared": "^2.0.2",
+    "@dcloudio/uni-stacktracey": "^2.0.2",
+    "@dcloudio/vue-cli-plugin-uni": "^2.0.2"
+  }
+}
