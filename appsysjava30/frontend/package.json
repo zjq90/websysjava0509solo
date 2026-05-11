@@ -1,0 +1,20 @@
+{
+  "name": "registration-app",
+  "version": "1.0.0",
+  "description": "医疗挂号系统App",
+  "main": "main.js",
+  "scripts": {
+    "serve": "npm run dev:h5",
+    "build": "npm run build:h5"
+  },
+  "dependencies": {
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@dcloudio/uni-app": "2.0.2-4010520240507001",
+    "@dcloudio/uni-app-plus": "2.0.2-4010520240507001",
+    "@dcloudio/uni-components": "2.0.2-4010520240507001",
+    "@dcloudio/uni-h5": "2.0.2-4010520240507001",
+    "@dcloudio/uni-mp-weixin": "2.0.2-4010520240507001"
+  }
+}
