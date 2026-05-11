@@ -1,0 +1,118 @@
+{
+    "pages": [
+        {
+            "path": "pages/login/login",
+            "style": {
+                "navigationBarTitleText": "登录"
+            }
+        },
+        {
+            "path": "pages/register/register",
+            "style": {
+                "navigationBarTitleText": "注册"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "首页"
+            }
+        },
+        {
+            "path": "pages/department/department",
+            "style": {
+                "navigationBarTitleText": "科室列表"
+            }
+        },
+        {
+            "path": "pages/doctor/doctor",
+            "style": {
+                "navigationBarTitleText": "医生列表"
+            }
+        },
+        {
+            "path": "pages/appointment/appointment",
+            "style": {
+                "navigationBarTitleText": "预约挂号"
+            }
+        },
+        {
+            "path": "pages/appointment-list/appointment-list",
+            "style": {
+                "navigationBarTitleText": "我的预约"
+            }
+        },
+        {
+            "path": "pages/report/report",
+            "style": {
+                "navigationBarTitleText": "检验报告"
+            }
+        },
+        {
+            "path": "pages/report-detail/report-detail",
+            "style": {
+                "navigationBarTitleText": "报告详情"
+            }
+        },
+        {
+            "path": "pages/invoice/invoice",
+            "style": {
+                "navigationBarTitleText": "电子票据"
+            }
+        },
+        {
+            "path": "pages/message/message",
+            "style": {
+                "navigationBarTitleText": "消息中心"
+            }
+        },
+        {
+            "path": "pages/message-detail/message-detail",
+            "style": {
+                "navigationBarTitleText": "消息详情"
+            }
+        },
+        {
+            "path": "pages/settings/settings",
+            "style": {
+                "navigationBarTitleText": "通知设置"
+            }
+        },
+        {
+            "path": "pages/profile/profile",
+            "style": {
+                "navigationBarTitleText": "个人中心"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "医院预约挂号",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "backgroundColor": "#F5F5F5"
+    },
+    "tabBar": {
+        "color": "#999999",
+        "selectedColor": "#007AFF",
+        "backgroundColor": "#FFFFFF",
+        "borderStyle": "black",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/appointment-list/appointment-list",
+                "text": "预约"
+            },
+            {
+                "pagePath": "pages/message/message",
+                "text": "消息"
+            },
+            {
+                "pagePath": "pages/profile/profile",
+                "text": "我的"
+            }
+        ]
+    }
+}

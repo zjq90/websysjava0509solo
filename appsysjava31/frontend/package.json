@@ -1,0 +1,8 @@
+{
+  "name": "hospital-app",
+  "version": "1.0.0",
+  "description": "医院预约挂号系统",
+  "main": "main.js",
+  "scripts": {},
+  "dependencies": {}
+}
