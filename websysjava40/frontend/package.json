@@ -1,0 +1,21 @@
+{
+  "name": "photostudio-frontend",
+  "version": "1.0.0",
+  "description": "影楼Web平台管理系统前端",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "vue": "^3.2.0",
+    "vue-router": "^4.0.0",
+    "axios": "^1.4.0",
+    "element-plus": "^2.3.0"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^5.0.0",
+    "@vue/compiler-sfc": "^3.2.0",
+    "sass": "^1.60.0"
+  }
+}
