@@ -1,0 +1,78 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
+    },
+    {
+      "path": "pages/service-order/index",
+      "style": {
+        "navigationBarTitleText": "服务进度"
+      }
+    },
+    {
+      "path": "pages/fault-report/index",
+      "style": {
+        "navigationBarTitleText": "故障报修"
+      }
+    },
+    {
+      "path": "pages/network/index",
+      "style": {
+        "navigationBarTitleText": "网络管理"
+      }
+    },
+    {
+      "path": "pages/chat/index",
+      "style": {
+        "navigationBarTitleText": "AI客服"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "智慧家庭服务",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tab/home.png",
+        "selectedIconPath": "static/tab/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/service-order/index",
+        "iconPath": "static/tab/service.png",
+        "selectedIconPath": "static/tab/service-active.png",
+        "text": "服务"
+      },
+      {
+        "pagePath": "pages/network/index",
+        "iconPath": "static/tab/network.png",
+        "selectedIconPath": "static/tab/network-active.png",
+        "text": "网络"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "iconPath": "static/tab/mine.png",
+        "selectedIconPath": "static/tab/mine-active.png",
+        "text": "我的"
+      }
+    ]
+  }
+}
