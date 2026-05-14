@@ -1,0 +1,151 @@
+{
+    "pages": [
+        {
+            "path": "pages/login/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "首页"
+            }
+        },
+        {
+            "path": "pages/package/list",
+            "style": {
+                "navigationBarTitleText": "宽带套餐"
+            }
+        },
+        {
+            "path": "pages/package/detail",
+            "style": {
+                "navigationBarTitleText": "套餐详情"
+            }
+        },
+        {
+            "path": "pages/number/select",
+            "style": {
+                "navigationBarTitleText": "选择号码"
+            }
+        },
+        {
+            "path": "pages/order/list",
+            "style": {
+                "navigationBarTitleText": "我的工单"
+            }
+        },
+        {
+            "path": "pages/order/detail",
+            "style": {
+                "navigationBarTitleText": "工单详情"
+            }
+        },
+        {
+            "path": "pages/order/install",
+            "style": {
+                "navigationBarTitleText": "新装办理"
+            }
+        },
+        {
+            "path": "pages/order/move",
+            "style": {
+                "navigationBarTitleText": "移机办理"
+            }
+        },
+        {
+            "path": "pages/order/cancel",
+            "style": {
+                "navigationBarTitleText": "销户办理"
+            }
+        },
+        {
+            "path": "pages/bill/list",
+            "style": {
+                "navigationBarTitleText": "我的账单"
+            }
+        },
+        {
+            "path": "pages/bill/detail",
+            "style": {
+                "navigationBarTitleText": "账单详情"
+            }
+        },
+        {
+            "path": "pages/bill/pay",
+            "style": {
+                "navigationBarTitleText": "账单支付"
+            }
+        },
+        {
+            "path": "pages/user/index",
+            "style": {
+                "navigationBarTitleText": "个人中心"
+            }
+        },
+        {
+            "path": "pages/user/profile",
+            "style": {
+                "navigationBarTitleText": "个人信息"
+            }
+        },
+        {
+            "path": "pages/user/realname",
+            "style": {
+                "navigationBarTitleText": "实名认证"
+            }
+        },
+        {
+            "path": "pages/user/settings",
+            "style": {
+                "navigationBarTitleText": "设置"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "宽带服务",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "backgroundColor": "#F5F5F5"
+    },
+    "tabBar": {
+        "color": "#999999",
+        "selectedColor": "#007AFF",
+        "borderStyle": "black",
+        "backgroundColor": "#FFFFFF",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "static/tabbar/home.png",
+                "selectedIconPath": "static/tabbar/home-active.png"
+            },
+            {
+                "pagePath": "pages/package/list",
+                "text": "套餐",
+                "iconPath": "static/tabbar/package.png",
+                "selectedIconPath": "static/tabbar/package-active.png"
+            },
+            {
+                "pagePath": "pages/order/list",
+                "text": "工单",
+                "iconPath": "static/tabbar/order.png",
+                "selectedIconPath": "static/tabbar/order-active.png"
+            },
+            {
+                "pagePath": "pages/bill/list",
+                "text": "账单",
+                "iconPath": "static/tabbar/bill.png",
+                "selectedIconPath": "static/tabbar/bill-active.png"
+            },
+            {
+                "pagePath": "pages/user/index",
+                "text": "我的",
+                "iconPath": "static/tabbar/user.png",
+                "selectedIconPath": "static/tabbar/user-active.png"
+            }
+        ]
+    }
+}
