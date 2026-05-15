@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时聊天系统</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 登录注册页面 -->
+        <div v-if="!isLoggedIn" class="auth-container">
+            <div class="auth-box">
+                <h1>实时聊天系统</h1>
+                <div class="auth-tabs">
+                    <button @click="authTab = 'login'" :class="{ active: authTab === 'login' }">登录</button>
+                    <button @click="authTab = 'register'" :class="{ active: authTab === 'register' }">注册</button>
+                </div>
+
+                <!-- 登录表单 -->
+                <div v-if="authTab === 'login'" class="auth-form">
+                    <input type="text" v-model="loginForm.username" placeholder="用户名">
+                    <input type="password" v-model="loginForm.password" placeholder="密码">
+                    <button @click="handleLogin" class="submit-btn">登录</button>
+                </div>
+
+                <!-- 注册表单 -->
+                <div v-if="authTab === 'register'" class="auth-form">
+                    <input type="text" v-model="registerForm.username" placeholder="用户名">
+                    <input type="password" v-model="registerForm.password" placeholder="密码">
+                    <input type="text" v-model="registerForm.nickname" placeholder="昵称">
+                    <button @click="handleRegister" class="submit-btn">注册</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主聊天界面 -->
+        <div v-else class="chat-container">
+            <!-- 左侧侧边栏 -->
+            <div class="sidebar">
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="avatar">{{ currentUser.nickname.charAt(0) }}</div>
+                    <div class="user-details">
+                        <div class="nickname">{{ currentUser.nickname }}</div>
+                        <div class="status online">在线</div>
+                    </div>
+                    <button @click="handleLogout" class="logout-btn">退出</button>
+                </div>
+
+                <!-- 搜索用户 -->
+                <div class="search-box">
+                    <input type="text" v-model="searchKeyword" placeholder="搜索用户..." @input="searchUsers">
+                </div>
+
+                <!-- 搜索结果 -->
+                <div v-if="searchResults.length > 0" class="search-results">
+                    <div class="section-title">搜索结果</div>
+                    <div v-for="user in searchResults" :key="user.id" class="friend-item" @click="addFriend(user.id)">
+                        <div class="avatar">{{ user.nickname.charAt(0) }}</div>
+                        <div class="friend-info">
+                            <div class="friend-name">{{ user.nickname }}</div>
+                            <div class="friend-status">{{ user.status === 1 ? '在线' : '离线' }}</div>
+                        </div>
+                        <button class="add-btn">添加</button>
+                    </div>
+                </div>
+
+                <!-- 好友请求 -->
+                <div v-if="friendRequests.length > 0" class="friend-requests">
+                    <div class="section-title">好友请求 ({{ friendRequests.length }})</div>
+                    <div v-for="req in friendRequests" :key="req.id" class="request-item">
+                        <span>用户 {{ req.userId }} 请求添加好友</span>
+                        <div class="request-actions">
+                            <button @click="acceptFriend(req.id)" class="accept-btn">接受</button>
+                            <button @click="rejectFriend(req.id)" class="reject-btn">拒绝</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 好友列表 -->
+                <div class="friend-list">
+                    <div class="section-title">好友列表 ({{ friends.length }})</div>
+                    <div v-for="friend in friends" :key="friend.id" 
+                         class="friend-item" 
+                         :class="{ active: selectedFriend && selectedFriend.id === friend.id }"
+                         @click="selectFriend(friend)">
+                        <div class="avatar">{{ friend.nickname.charAt(0) }}</div>
+                        <div class="friend-info">
+                            <div class="friend-name">{{ friend.nickname }}</div>
+                            <div class="last-message">{{ getUnreadCount(friend.id) > 0 ? getUnreadCount(friend.id) + '条未读' : (friend.status === 1 ? '在线' : '离线') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧聊天区域 -->
+            <div class="chat-area">
+                <div v-if="!selectedFriend" class="no-chat-selected">
+                    <div class="welcome-icon">💬</div>
+                    <div class="welcome-text">选择一个好友开始聊天</div>
+                </div>
+
+                <div v-else class="chat-content">
+                    <!-- 聊天头部 -->
+                    <div class="chat-header">
+                        <div class="chat-friend-info">
+                            <div class="avatar">{{ selectedFriend.nickname.charAt(0) }}</div>
+                            <div>
+                                <div class="chat-friend-name">{{ selectedFriend.nickname }}</div>
+                                <div class="chat-friend-status">{{ selectedFriend.status === 1 ? '在线' : '离线' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 消息列表 -->
+                    <div class="message-list" ref="messageList">
+                        <div v-for="msg in messages" :key="msg.id" 
+                             class="message-item"
+                             :class="{ 'my-message': msg.fromUserId === currentUser.id, 'recalled': msg.status === 2 }">
+                            <div class="avatar" v-if="msg.fromUserId !== currentUser.id">
+                                {{ selectedFriend.nickname.charAt(0) }}
+                            </div>
+                            <div class="message-content">
+                                <div v-if="msg.type === 0" class="text-message">
+                                    {{ msg.status === 2 ? '(消息已撤回)' : msg.content }}
+                                </div>
+                                <div v-else-if="msg.type === 1" class="image-message">
+                                    <img :src="msg.fileUrl" alt="图片">
+                                </div>
+                                <div v-else-if="msg.type === 2" class="file-message">
+                                    <div class="file-icon">📎</div>
+                                    <a :href="msg.fileUrl" target="_blank">{{ msg.fileName }}</a>
+                                </div>
+                                <div v-else-if="msg.type === 3" class="emoji-message">
+                                    {{ msg.content }}
+                                </div>
+                                <div class="message-time">{{ formatTime(msg.sendTime) }}</div>
+                            </div>
+                            <div class="avatar" v-if="msg.fromUserId === currentUser.id">
+                                {{ currentUser.nickname.charAt(0) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 输入区域 -->
+                    <div class="input-area">
+                        <!-- 工具栏 -->
+                        <div class="toolbar">
+                            <button @click="showEmojiPicker = !showEmojiPicker" class="tool-btn">😀</button>
+                            <button @click="triggerImageUpload" class="tool-btn">🖼️</button>
+                            <button @click="triggerFileUpload" class="tool-btn">📎</button>
+                            <input type="file" ref="imageInput" accept="image/*" @change="handleImageUpload" style="display: none">
+                            <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none">
+                        </div>
+
+                        <!-- 表情选择器 -->
+                        <div v-if="showEmojiPicker" class="emoji-picker">
+                            <span v-for="emoji in emojis" :key="emoji" @click="selectEmoji(emoji)" class="emoji-item">
+                                {{ emoji }}
+                            </span>
+                        </div>
+
+                        <!-- 输入框 -->
+                        <textarea v-model="messageInput" 
+                                  placeholder="输入消息..."
+                                  @keydown.enter.prevent="sendMessage"
+                                  rows="3"></textarea>
+
+                        <!-- 发送按钮 -->
+                        <div class="send-area">
+                            <button @click="sendMessage" class="send-btn" :disabled="!messageInput.trim()">发送</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
