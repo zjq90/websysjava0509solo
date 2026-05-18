@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理咨询系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.5.0/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+        }
+        .elder-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            padding: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .tab i {
+            margin-right: 8px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .stat-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+        }
+        .stat-card.purple .icon {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+        .stat-card.blue .icon {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+        .stat-card.green .icon {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .stat-card.red .icon {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-card .label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .list-item .info {
+            flex: 1;
+        }
+        .list-item .name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .list-item .desc {
+            color: #666;
+            font-size: 14px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .tag.depression {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .tag.anxiety {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .tag.stress {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+        .tag.crisis {
+            background: #ef4444;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+        .row .col {
+            flex: 1;
+        }
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .time-slot {
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        .time-slot.available {
+            background: #d1fae5;
+            border-color: #059669;
+            color: #059669;
+        }
+        .time-slot.booked {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+        .time-slot.unavailable {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #9ca3af;
+        }
+        .alert-banner {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .alert-banner i {
+            font-size: 28px;
+            color: #ef4444;
+        }
+        .alert-banner .content {
+            flex: 1;
+        }
+        .alert-banner .title {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 5px;
+        }
+        .alert-banner .text {
+            color: #7f1d1d;
+            font-size: 14px;
+        }
+        /* 长辈模式 */
+        body.elder-mode {
+            font-size: 18px;
+        }
+        body.elder-mode .card {
+            padding: 30px;
+        }
+        body.elder-mode .btn {
+            padding: 18px 30px;
+            font-size: 18px;
+            min-height: 60px;
+        }
+        body.elder-mode .form-group input,
+        body.elder-mode .form-group select,
+        body.elder-mode .form-group textarea {
+            padding: 18px;
+            font-size: 18px;
+        }
+        body.elder-mode .tabs {
+            padding: 12px;
+        }
+        body.elder-mode .tab {
+            padding: 20px;
+            font-size: 18px;
+        }
+        body.elder-mode .stat-card .number {
+            font-size: 3rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .loading i {
+            font-size: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            z-index: 3000;
+        }
+        .toast.success {
+            background: #10b981;
+        }
+        .toast.error {
+            background: #ef4444;
+        }
+        .course-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .course-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .course-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .course-card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .course-card .meta {
+            display: flex;
+            justify-content: space-between;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+        .supervisor-card {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        .supervisor-card:hover {
+            border-color: #667eea;
+        }
+        .supervisor-card.selected {
+            border-color: #667eea;
+            background: #f5f3ff;
+        }
+        .supervisor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .supervisor-info {
+            flex: 1;
+        }
+        .supervisor-info .name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .supervisor-info .title {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .supervisor-info .specialty {
+            font-size: 13px;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button class="elder-mode-toggle" @click="toggleElderMode">
+            <i class="fas fa-user"></i> {{ isElderMode ? '关闭长辈模式' : '开启长辈模式' }}
+        </button>
+
+        <div class="app-container">
+            <div class="header">
+                <h1><i class="fas fa-heartbeat"></i> 心理咨询系统</h1>
+                <p>专业的心理咨询管理平台</p>
+            </div>
+
+            <div class="tabs">
+                <div class="tab" :class="{ active: currentTab === 'dashboard' }" @click="currentTab = 'dashboard'">
+                    <i class="fas fa-chart-pie"></i> 控制台
+                </div>
+                <div class="tab" :class="{ active: currentTab === 'schedule' }" @click="currentTab = 'schedule'">
+                    <i class="fas fa-calendar-alt"></i> 日程管理
+                </div>
+                <div class="tab" :class="{ active: currentTab === 'records' }" @click="currentTab = 'records'">
+                    <i class="fas fa-file-medical"></i> 咨询记录
+                </div>
+                <div class="tab" :class="{ active: currentTab === 'crisis' }" @click="currentTab = 'crisis'">
+                    <i class="fas fa-exclamation-triangle"></i> 危机预警
+                </div>
+                <div class="tab" :class="{ active: currentTab === 'courses' }" @click="currentTab = 'courses'">
+                    <i class="fas fa-book"></i> 专业课程
+                </div>
+                <div class="tab" :class="{ active: currentTab === 'supervision' }" @click="currentTab = 'supervision'">
+                    <i class="fas fa-user-tie"></i> 督导预约
+                </div>
+            </div>
+
+            <!-- 控制台 -->
+            <div v-if="currentTab === 'dashboard'">
+                <div v-if="crisisAlerts.length > 0" class="alert-banner">
+                    <i class="fas fa-bell"></i>
+                    <div class="content">
+                        <div class="title">危机预警提醒</div>
+                        <div class="text">当前有 {{ crisisAlerts.length }} 条危机预警需要处理</div>
+                    </div>
+                    <button class="btn btn-danger" @click="currentTab = 'crisis'">立即处理</button>
+                </div>
+
+                <div class="grid-2">
+                    <div class="stat-card purple">
+                        <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="number">{{ stats.todayAppointments }}</div>
+                        <div class="label">今日预约</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="number">{{ stats.totalRecords }}</div>
+                        <div class="label">咨询记录</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="number">{{ stats.activeCounselors }}</div>
+                        <div class="label">在职咨询师</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="icon"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="number">{{ stats.pendingCrisis }}</div>
+                        <div class="label">待处理预警</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-list"></i> 今日预约</h3>
+                    <div v-if="todayAppointments.length === 0" class="loading">
+                        暂无今日预约
+                    </div>
+                    <div v-else>
+                        <div v-for="apt in todayAppointments" :key="apt.id" class="list-item">
+                            <div class="info">
+                                <div class="name">{{ apt.userName }} <span class="tag" :class="getTagClass(apt.tag)">{{ apt.tag }}</span></div>
+                                <div class="desc">{{ apt.timeSlot }} · {{ apt.counselorName }}</div>
+                            </div>
+                            <button class="btn btn-primary" @click="createRecordFromAppointment(apt)">开始咨询</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-lightbulb"></i> 常用操作</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" @click="currentTab = 'schedule'; showAddSchedule = true">
+                            <i class="fas fa-plus"></i> 添加排班
+                        </button>
+                        <button class="btn btn-success" @click="currentTab = 'records'; showAddRecord = true">
+                            <i class="fas fa-pen"></i> 新建记录
+                        </button>
+                        <button class="btn btn-warning" @click="currentTab = 'courses'">
+                            <i class="fas fa-graduation-cap"></i> 学习课程
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日程管理 -->
+            <div v-if="currentTab === 'schedule'">
+                <div class="card">
+                    <h3>
+                        <i class="fas fa-calendar-week"></i> 本周排班
+                        <button class="btn btn-primary" style="float: right" @click="showAddSchedule = true">
+                            <i class="fas fa-plus"></i> 添加排班
+                        </button>
+                    </h3>
+                    <div style="clear: both; margin-bottom: 20px;"></div>
+                    
+                    <div class="schedule-grid">
+                        <div v-for="slot in scheduleSlots" :key="slot.id" 
+                             class="time-slot" 
+                             :class="slot.status"
+                             @click="handleSlotClick(slot)">
+                            <div><strong>{{ slot.date }}</strong></div>
+                            <div>{{ slot.time }}</div>
+                            <div style="font-size: 12px; margin-top: 5px;">
+                                {{ slot.status === 'available' ? '可预约' : 
+                                   slot.status === 'booked' ? '已预约' : '不可用' }}
+                            </div>
+                            <div style="font-size: 12px; color: #666;">({{ slot.bookedCount }}/{{ slot.maxCount }})</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-list"></i> 预约列表</h3>
+                    <div v-for="apt in appointments" :key="apt.id" class="list-item">
+                        <div class="info">
+                            <div class="name">{{ apt.userName }}</div>
+                            <div class="desc">{{ apt.date }} {{ apt.timeSlot }} · 主诉: {{ apt.chiefComplaint }}</div>
+                        </div>
+                        <div>
+                            <span class="tag" :class="apt.status === 'confirmed' ? 'anxiety' : 'depression'">
+                                {{ apt.status === 'confirmed' ? '已确认' : '待确认' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 咨询记录 -->
+            <div v-if="currentTab === 'records'">
+                <div class="card">
+                    <h3>
+                        <i class="fas fa-file-medical-alt"></i> 咨询记录
+                        <button class="btn btn-primary" style="float: right" @click="showAddRecord = true">
+                            <i class="fas fa-plus"></i> 新建记录
+                        </button>
+                    </h3>
+                    <div style="clear: both; margin-bottom: 20px;"></div>
+
+                    <div v-if="records.length === 0" class="loading">
+                        暂无咨询记录
+                    </div>
+                    <div v-else>
+                        <div v-for="record in records" :key="record.id" class="card" style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                                <div>
+                                    <h4 style="color: #333; margin-bottom: 8px;">
+                                        <i class="fas fa-user"></i> {{ record.userName }}
+                                        <span v-if="record.hasCrisis" class="tag crisis">
+                                            <i class="fas fa-exclamation"></i> 包含敏感内容
+                                        </span>
+                                    </h4>
+                                    <div style="color: #666; font-size: 14px;">
+                                        <i class="fas fa-calendar"></i> {{ record.date }} · 
+                                        <i class="fas fa-user-md"></i> {{ record.counselorName }}
+                                    </div>
+                                </div>
+                                <div class="tag" :class="getRiskClass(record.riskLevel)">
+                                    风险: {{ record.riskLevelText }}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>主诉：</strong>{{ record.chiefComplaint }}
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <strong>干预措施：</strong>{{ record.interventionMeasures }}
+                            </div>
+                            <div v-if="record.tags" style="margin-top: 10px;">
+                                <span v-for="tag in record.tags.split(',')" :key="tag" 
+                                      class="tag" :class="getTagClass(tag.trim())">{{ tag.trim() }}</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button class="btn btn-primary" @click="viewRecord(record)">查看详情</button>
+                                <button class="btn btn-success" @click="editRecord(record)">编辑</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 危机预警 -->
+            <div v-if="currentTab === 'crisis'">
+                <div class="card">
+                    <h3><i class="fas fa-shield-alt"></i> 危机预警管理</h3>
+                    <div v-if="crisisAlerts.length === 0" class="loading">
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 48px;"></i>
+                        <p style="margin-top: 15px;">暂无危机预警</p>
+                    </div>
+                    <div v-else>
+                        <div v-for="alert in crisisAlerts" :key="alert.id" class="alert-banner">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <div class="content">
+                                <div class="title">
+                                    {{ alert.userName }} 
+                                    <span class="tag crisis">{{ alert.alertLevelText }}</span>
+                                    <span class="tag" :class="alert.status === 'pending' ? 'depression' : 'anxiety'">
+                                        {{ alert.statusText }}
+                                    </span>
+                                </div>
+                                <div class="text">
+                                    <strong>触发词：</strong>{{ alert.triggerWords }}
+                                </div>
+                                <div class="text">
+                                    <strong>内容：</strong>{{ alert.content }}
+                                </div>
+                                <div class="text" style="margin-top: 8px;">
+                                    <i class="fas fa-clock"></i> {{ alert.createTime }}
+                                </div>
+                            </div>
+                            <button v-if="alert.status === 'pending'" class="btn btn-warning" @click="handleAlert(alert)">
+                                处理
+                            </button>
+                            <button v-else class="btn btn-success" disabled>已处理</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 专业课程 -->
+            <div v-if="currentTab === 'courses'">
+                <div class="card">
+                    <h3><i class="fas fa-book-open"></i> 专业课程学习</h3>
+                    <div v-for="course in courses" :key="course.id" class="course-card">
+                        <h4>{{ course.title }}</h4>
+                        <p>{{ course.description }}</p>
+                        <div class="meta">
+                            <span><i class="fas fa-user"></i> {{ course.instructor }}</span>
+                            <span><i class="fas fa-clock"></i> {{ course.duration }}小时</span>
+                            <span><i class="fas fa-users"></i> {{ course.students }}人已学习</span>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px; margin-bottom: 8px;">
+                                <div style="width: 35%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 4px;"></div>
+                            </div>
+                            <span style="color: #666; font-size: 13px;">学习进度: 35%</span>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-primary">继续学习</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 督导预约 -->
+            <div v-if="currentTab === 'supervision'">
+                <div class="card">
+                    <h3><i class="fas fa-user-tie"></i> 选择督导</h3>
+                    <div v-for="sv in supervisors" :key="sv.id" 
+                         class="supervisor-card"
+                         :class="{ selected: selectedSupervisorId === sv.id }"
+                         @click="selectedSupervisorId = sv.id">
+                        <div class="supervisor-avatar">{{ sv.name.charAt(0) }}</div>
+                        <div class="supervisor-info">
+                            <div class="name">{{ sv.name }}</div>
+                            <div class="title">{{ sv.title }} · {{ sv.experience }}年经验</div>
+                            <div class="specialty">专长：{{ sv.specialty }}</div>
+                        </div>
+                        <div v-if="selectedSupervisorId === sv.id" style="color: #667eea;">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="selectedSupervisorId" class="card">
+                    <h3><i class="fas fa-calendar-plus"></i> 预约信息</h3>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label>预约日期</label>
+                            <input type="date" v-model="supervisionForm.date">
+                        </div>
+                        <div class="col form-group">
+                            <label>时段</label>
+                            <select v-model="supervisionForm.timeSlot">
+                                <option value="09:00-10:00">09:00-10:00</option>
+                                <option value="10:30-11:30">10:30-11:30</option>
+                                <option value="14:00-15:00">14:00-15:00</option>
+                                <option value="15:30-16:30">15:30-16:30</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label>时长</label>
+                            <select v-model="supervisionForm.duration">
+                                <option value="1">1小时</option>
+                                <option value="1.5">1.5小时</option>
+                                <option value="2">2小时</option>
+                            </select>
+                        </div>
+                        <div class="col form-group">
+                            <label>案例主题</label>
+                            <input type="text" v-model="supervisionForm.topic" placeholder="请输入案例主题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>案例描述</label>
+                        <textarea v-model="supervisionForm.description" placeholder="请详细描述案例情况..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" @click="submitSupervision" style="width: 100%;">
+                        提交预约
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新建记录弹窗 -->
+        <div v-if="showAddRecord" class="modal-overlay" @click.self="showAddRecord = false">
+            <div class="modal">
+                <h3><i class="fas fa-pen"></i> 新建咨询记录</h3>
+                <div class="row">
+                    <div class="col form-group">
+                        <label>来访者姓名</label>
+                        <input type="text" v-model="newRecord.userName" placeholder="请输入姓名">
+                    </div>
+                    <div class="col form-group">
+                        <label>风险等级</label>
+                        <select v-model="newRecord.riskLevel">
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>主诉</label>
+                    <textarea v-model="newRecord.chiefComplaint" placeholder="来访者的主要诉求"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>干预措施</label>
+                    <textarea v-model="newRecord.interventionMeasures" placeholder="采取的干预措施"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>后续建议</label>
+                    <textarea v-model="newRecord.followUpSuggestions" placeholder="后续咨询建议"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>标签（逗号分隔）</label>
+                    <input type="text" v-model="newRecord.tags" placeholder="抑郁, 焦虑, 压力">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" @click="showAddRecord = false">取消</button>
+                    <button class="btn btn-primary" @click="saveRecord">保存记录</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 处理预警弹窗 -->
+        <div v-if="showHandleAlert" class="modal-overlay" @click.self="showHandleAlert = false">
+            <div class="modal">
+                <h3><i class="fas fa-shield-alt"></i> 处理危机预警</h3>
+                <div class="alert-banner" style="margin-bottom: 20px;">
+                    <i class="fas fa-user"></i>
+                    <div class="content">
+                        <div class="title">{{ currentAlert?.userName }}</div>
+                        <div class="text">触发词：{{ currentAlert?.triggerWords }}</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>处理结果</label>
+                    <textarea v-model="handleResult" placeholder="请输入处理结果和措施..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>处理状态</label>
+                    <select v-model="handleStatus">
+                        <option value="processing">处理中</option>
+                        <option value="resolved">已解决</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" @click="showHandleAlert = false">取消</button>
+                    <button class="btn btn-success" @click="confirmHandleAlert">确认处理</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast提示 -->
+        <div v-if="toast.show" class="toast" :class="toast.type">
+            {{ toast.message }}
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+
+        new Vue({
+            el: '#app',
+            data: {
+                currentTab: 'dashboard',
+                isElderMode: false,
+                showAddRecord: false,
+                showAddSchedule: false,
+                showHandleAlert: false,
+                currentAlert: null,
+                handleResult: '',
+                handleStatus: 'processing',
+                selectedSupervisorId: null,
+                toast: { show: false, message: '', type: 'success' },
+                
+                stats: {
+                    todayAppointments: 3,
+                    totalRecords: 156,
+                    activeCounselors: 8,
+                    pendingCrisis: 1
+                },
+                
+                todayAppointments: [
+                    { id: 1, userName: '张小明', counselorName: '王医生', timeSlot: '09:00-10:00', tag: '焦虑' },
+                    { id: 2, userName: '李小红', counselorName: '李医生', timeSlot: '14:00-15:00', tag: '抑郁' },
+                    { id: 3, userName: '王小华', counselorName: '张医生', timeSlot: '15:30-16:30', tag: '压力' }
+                ],
+                
+                scheduleSlots: [
+                    { id: 1, date: '周一', time: '09:00-10:00', status: 'available', bookedCount: 2, maxCount: 4 },
+                    { id: 2, date: '周一', time: '10:30-11:30', status: 'booked', bookedCount: 4, maxCount: 4 },
+                    { id: 3, date: '周一', time: '14:00-15:00', status: 'available', bookedCount: 1, maxCount: 4 },
+                    { id: 4, date: '周二', time: '09:00-10:00', status: 'unavailable', bookedCount: 0, maxCount: 0 },
+                    { id: 5, date: '周二', time: '14:00-15:00', status: 'available', bookedCount: 3, maxCount: 4 },
+                    { id: 6, date: '周三', time: '09:00-10:00', status: 'available', bookedCount: 2, maxCount: 4 },
+                    { id: 7, date: '周三', time: '14:00-15:00', status: 'available', bookedCount: 1, maxCount: 4 },
+                    { id: 8, date: '周四', time: '09:00-10:00', status: 'booked', bookedCount: 4, maxCount: 4 }
+                ],
+                
+                appointments: [
+                    { id: 1, userName: '张小明', date: '2024-05-20', timeSlot: '09:00-10:00', chiefComplaint: '工作压力大', status: 'confirmed' },
+                    { id: 2, userName: '李小红', date: '2024-05-20', timeSlot: '14:00-15:00', chiefComplaint: '睡眠问题', status: 'pending' }
+                ],
+                
+                records: [
+                    { 
+                        id: 1, 
+                        userName: '张小明', 
+                        counselorName: '王医生', 
+                        date: '2024-05-18', 
+                        chiefComplaint: '最近工作压力很大，经常感到焦虑，晚上睡不着觉',
+                        interventionMeasures: '进行认知行为疗法，教授放松技巧，建议规律作息',
+                        followUpSuggestions: '每周一次咨询，记录睡眠日记',
+                        tags: '焦虑, 睡眠问题, 压力',
+                        riskLevel: 'medium',
+                        riskLevelText: '中',
+                        hasCrisis: false,
+                        moodRating: 4
+                    },
+                    { 
+                        id: 2, 
+                        userName: '李小红', 
+                        counselorName: '李医生', 
+                        date: '2024-05-17', 
+                        chiefComplaint: '情绪低落，对什么都提不起兴趣，有时候觉得活着没什么意思，想死的心都有了',
+                        interventionMeasures: '进行抑郁评估，制定安全计划，联系紧急联系人',
+                        followUpSuggestions: '每周两次咨询，密切关注情绪变化',
+                        tags: '抑郁, 危机',
+                        riskLevel: 'high',
+                        riskLevelText: '高',
+                        hasCrisis: true,
+                        moodRating: 2
+                    }
+                ],
+                
+                crisisAlerts: [
+                    { 
+                        id: 1, 
+                        userName: '李小红', 
+                        triggerWords: '想死, 活着没什么意思', 
+                        content: '情绪低落，对什么都提不起兴趣，有时候觉得活着没什么意思，想死的心都有了',
+                        alertLevel: 'high',
+                        alertLevelText: '高危',
+                        status: 'pending',
+                        statusText: '待处理',
+                        createTime: '2024-05-17 15:30'
+                    }
+                ],
+                
+                courses: [
+                    { id: 1, title: '认知行为疗法（CBT）入门', description: '学习认知行为疗法的基本概念和技术，掌握CBT的核心方法', instructor: '陈教授', duration: 12, students: 256 },
+                    { id: 2, title: '抑郁症的识别与干预', description: '系统学习抑郁症的诊断标准和干预方法', instructor: '王教授', duration: 8, students: 189 },
+                    { id: 3, title: '焦虑障碍的治疗技术', description: '掌握各类焦虑障碍的评估和治疗技术', instructor: '李教授', duration: 10, students: 145 },
+                    { id: 4, title: '危机干预实用技巧', description: '学习心理危机的识别、评估和干预流程', instructor: '张教授', duration: 6, students: 312 }
+                ],
+                
+                supervisors: [
+                    { id: 1, name: '王督导', title: '注册心理师', experience: 15, specialty: '抑郁症, 焦虑障碍, 危机干预' },
+                    { id: 2, name: '李督导', title: '高级心理咨询师', experience: 12, specialty: '青少年心理, 家庭治疗' },
+                    { id: 3, name: '张督导', title: '精神科医生', experience: 20, specialty: '重症心理障碍, 药物治疗' }
+                ],
+                
+                supervisionForm: {
+                    date: '',
+                    timeSlot: '09:00-10:00',
+                    duration: '1',
+                    topic: '',
+                    description: ''
+                },
+                
+                newRecord: {
+                    userName: '',
+                    chiefComplaint: '',
+                    interventionMeasures: '',
+                    followUpSuggestions: '',
+                    tags: '',
+                    riskLevel: 'low'
+                }
+            },
+            
+            methods: {
+                toggleElderMode() {
+                    this.isElderMode = !this.isElderMode;
+                    document.body.classList.toggle('elder-mode', this.isElderMode);
+                    this.showToast(this.isElderMode ? '已开启长辈模式' : '已关闭长辈模式');
+                },
+                
+                getTagClass(tag) {
+                    if (tag.includes('抑郁')) return 'depression';
+                    if (tag.includes('焦虑')) return 'anxiety';
+                    if (tag.includes('压力') || tag.includes('应激')) return 'stress';
+                    return 'anxiety';
+                },
+                
+                getRiskClass(level) {
+                    if (level === 'high') return 'depression';
+                    if (level === 'medium') return 'anxiety';
+                    return 'stress';
+                },
+                
+                createRecordFromAppointment(apt) {
+                    this.newRecord.userName = apt.userName;
+                    this.newRecord.chiefComplaint = apt.chiefComplaint || '';
+                    this.currentTab = 'records';
+                    this.showAddRecord = true;
+                },
+                
+                viewRecord(record) {
+                    alert(`查看记录：${record.userName}\n\n主诉：${record.chiefComplaint}`);
+                },
+                
+                editRecord(record) {
+                    this.newRecord = { ...record };
+                    this.showAddRecord = true;
+                },
+                
+                saveRecord() {
+                    if (!this.newRecord.userName || !this.newRecord.chiefComplaint) {
+                        this.showToast('请填写必要信息', 'error');
+                        return;
+                    }
+                    
+                    const hasSensitiveWords = this.checkSensitiveWords(
+                        this.newRecord.chiefComplaint + ' ' + 
+                        this.newRecord.interventionMeasures + ' ' + 
+                        this.newRecord.followUpSuggestions
+                    );
+                    
+                    const record = {
+                        id: Date.now(),
+                        ...this.newRecord,
+                        counselorName: '当前咨询师',
+                        date: new Date().toLocaleDateString(),
+                        hasCrisis: hasSensitiveWords,
+                        riskLevelText: this.newRecord.riskLevel === 'high' ? '高' : 
+                                      this.newRecord.riskLevel === 'medium' ? '中' : '低',
+                        moodRating: 5
+                    };
+                    
+                    this.records.unshift(record);
+                    
+                    if (hasSensitiveWords) {
+                        const triggerWords = this.getTriggerWords(
+                            this.newRecord.chiefComplaint + ' ' + 
+                            this.newRecord.interventionMeasures + ' ' + 
+                            this.newRecord.followUpSuggestions
+                        );
+                        this.crisisAlerts.unshift({
+                            id: Date.now(),
+                            userName: this.newRecord.userName,
+                            triggerWords: triggerWords.join(', '),
+                            content: this.newRecord.chiefComplaint,
+                            alertLevel: 'high',
+                            alertLevelText: '高危',
+                            status: 'pending',
+                            statusText: '待处理',
+                            createTime: new Date().toLocaleString()
+                        });
+                        this.stats.pendingCrisis = this.crisisAlerts.filter(a => a.status === 'pending').length;
+                        this.showToast('记录已保存，检测到敏感内容，已触发危机预警！', 'error');
+                    } else {
+                        this.showToast('记录已保存成功！');
+                    }
+                    
+                    this.showAddRecord = false;
+                    this.newRecord = {
+                        userName: '',
+                        chiefComplaint: '',
+                        interventionMeasures: '',
+                        followUpSuggestions: '',
+                        tags: '',
+                        riskLevel: 'low'
+                    };
+                    this.stats.totalRecords++;
+                },
+                
+                checkSensitiveWords(text) {
+                    const sensitiveWords = ['自杀', '想死', '不想活', '结束生命', '活不下去', '自残', '自伤', '割腕', '跳楼', '喝农药'];
+                    return sensitiveWords.some(word => text.includes(word));
+                },
+                
+                getTriggerWords(text) {
+                    const sensitiveWords = ['自杀', '想死', '不想活', '结束生命', '活不下去', '自残', '自伤', '割腕', '跳楼', '喝农药'];
+                    return sensitiveWords.filter(word => text.includes(word));
+                },
+                
+                handleAlert(alert) {
+                    this.currentAlert = alert;
+                    this.handleResult = '';
+                    this.handleStatus = 'processing';
+                    this.showHandleAlert = true;
+                },
+                
+                confirmHandleAlert() {
+                    if (!this.handleResult) {
+                        this.showToast('请填写处理结果', 'error');
+                        return;
+                    }
+                    
+                    const alert = this.crisisAlerts.find(a => a.id === this.currentAlert.id);
+                    if (alert) {
+                        alert.status = this.handleStatus;
+                        alert.statusText = this.handleStatus === 'resolved' ? '已解决' : '处理中';
+                        alert.handleResult = this.handleResult;
+                        alert.handleTime = new Date().toLocaleString();
+                    }
+                    
+                    this.stats.pendingCrisis = this.crisisAlerts.filter(a => a.status === 'pending').length;
+                    this.showHandleAlert = false;
+                    this.showToast('处理成功！');
+                },
+                
+                handleSlotClick(slot) {
+                    if (slot.status === 'available') {
+                        this.showToast(`已选择 ${slot.date} ${slot.time} 时段`);
+                    } else if (slot.status === 'booked') {
+                        this.showToast('此时段已约满', 'error');
+                    } else {
+                        this.showToast('此时段不可用', 'error');
+                    }
+                },
+                
+                submitSupervision() {
+                    if (!this.selectedSupervisorId || !this.supervisionForm.date || !this.supervisionForm.topic) {
+                        this.showToast('请填写完整信息', 'error');
+                        return;
+                    }
+                    
+                    const supervisor = this.supervisors.find(s => s.id === this.selectedSupervisorId);
+                    this.showToast(`已成功预约 ${supervisor.name} 的督导！\n时间：${this.supervisionForm.date} ${this.supervisionForm.timeSlot}`);
+                    
+                    this.supervisionForm = {
+                        date: '',
+                        timeSlot: '09:00-10:00',
+                        duration: '1',
+                        topic: '',
+                        description: ''
+                    };
+                    this.selectedSupervisorId = null;
+                },
+                
+                showToast(message, type = 'success') {
+                    this.toast = { show: true, message, type };
+                    setTimeout(() => {
+                        this.toast.show = false;
+                    }, 3000);
+                }
+            },
+            
+            mounted() {
+                console.log('心理咨询系统已启动');
+            }
+        });
+    </script>
+</body>
+</html>

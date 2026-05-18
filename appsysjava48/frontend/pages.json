@@ -1,0 +1,94 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "心理咨询"
+      }
+    },
+    {
+      "path": "pages/schedule/schedule",
+      "style": {
+        "navigationBarTitleText": "日程管理"
+      }
+    },
+    {
+      "path": "pages/records/records",
+      "style": {
+        "navigationBarTitleText": "咨询记录"
+      }
+    },
+    {
+      "path": "pages/record-detail/record-detail",
+      "style": {
+        "navigationBarTitleText": "记录详情"
+      }
+    },
+    {
+      "path": "pages/crisis/crisis",
+      "style": {
+        "navigationBarTitleText": "危机预警"
+      }
+    },
+    {
+      "path": "pages/courses/courses",
+      "style": {
+        "navigationBarTitleText": "专业课程"
+      }
+    },
+    {
+      "path": "pages/supervision/supervision",
+      "style": {
+        "navigationBarTitleText": "督导预约"
+      }
+    },
+    {
+      "path": "pages/counselors/counselors",
+      "style": {
+        "navigationBarTitleText": "咨询师列表"
+      }
+    },
+    {
+      "path": "pages/appointment/appointment",
+      "style": {
+        "navigationBarTitleText": "预约咨询"
+      }
+    },
+    {
+      "path": "pages/my/my",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "心理咨询",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/schedule/schedule",
+        "text": "日程"
+      },
+      {
+        "pagePath": "pages/records/records",
+        "text": "记录"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  }
+}
