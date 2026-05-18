@@ -1,0 +1,153 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "二手市场",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/product/detail",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/product/publish",
+      "style": {
+        "navigationBarTitleText": "发布商品",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/search/index",
+      "style": {
+        "navigationBarTitleText": "搜索商品",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/order/list",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/order/detail",
+      "style": {
+        "navigationBarTitleText": "订单详情",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/pay/index",
+      "style": {
+        "navigationBarTitleText": "支付",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/message/index",
+      "style": {
+        "navigationBarTitleText": "消息中心",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/user/index",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/user/profile",
+      "style": {
+        "navigationBarTitleText": "编辑资料",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/user/auth",
+      "style": {
+        "navigationBarTitleText": "实名认证",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/user/reviews",
+      "style": {
+        "navigationBarTitleText": "我的评价",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/community/index",
+      "style": {
+        "navigationBarTitleText": "社区",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/community/post",
+      "style": {
+        "navigationBarTitleText": "发布帖子",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/community/detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    },
+    {
+      "path": "pages/register/index",
+      "style": {
+        "navigationBarTitleText": "注册",
+        "navigationBarBackgroundColor": "#409EFF"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#409EFF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/community/index",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "二手交易系统",
+    "navigationBarBackgroundColor": "#409EFF",
+    "backgroundColor": "#f5f5f5"
+  }
+}
