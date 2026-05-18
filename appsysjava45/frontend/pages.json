@@ -1,0 +1,130 @@
+{
+    "pages": [
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "花店APP",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/product/list",
+            "style": {
+                "navigationBarTitleText": "商品列表",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/product/detail",
+            "style": {
+                "navigationBarTitleText": "商品详情",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/cart/cart",
+            "style": {
+                "navigationBarTitleText": "购物车",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/order/checkout",
+            "style": {
+                "navigationBarTitleText": "确认订单",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/order/list",
+            "style": {
+                "navigationBarTitleText": "我的订单",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/order/detail",
+            "style": {
+                "navigationBarTitleText": "订单详情",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/user/index",
+            "style": {
+                "navigationBarTitleText": "个人中心",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/user/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/user/register",
+            "style": {
+                "navigationBarTitleText": "注册",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        },
+        {
+            "path": "pages/coupon/list",
+            "style": {
+                "navigationBarTitleText": "优惠券中心",
+                "navigationBarBackgroundColor": "#FF6B6B",
+                "navigationBarTextStyle": "white"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "花店APP",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "tabBar": {
+        "color": "#7A7E83",
+        "selectedColor": "#FF6B6B",
+        "borderStyle": "black",
+        "backgroundColor": "#ffffff",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "iconPath": "static/tabbar/home.png",
+                "selectedIconPath": "static/tabbar/home-active.png",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/product/list",
+                "iconPath": "static/tabbar/category.png",
+                "selectedIconPath": "static/tabbar/category-active.png",
+                "text": "分类"
+            },
+            {
+                "pagePath": "pages/cart/cart",
+                "iconPath": "static/tabbar/cart.png",
+                "selectedIconPath": "static/tabbar/cart-active.png",
+                "text": "购物车"
+            },
+            {
+                "pagePath": "pages/user/index",
+                "iconPath": "static/tabbar/user.png",
+                "selectedIconPath": "static/tabbar/user-active.png",
+                "text": "我的"
+            }
+        ]
+    }
+}
