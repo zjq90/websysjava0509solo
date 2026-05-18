@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: secondhand-trading
+  datasource:
+    url: jdbc:h2:mem:secondhand;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+wechat:
+  appid: your_wechat_appid
+  secret: your_wechat_secret
+  mch-id: your_merchant_id
+  mch-key: your_merchant_key
+  notify-url: http://your-domain.com/api/pay/notify
+
+rsa:
+  public-key: classpath:rsa/public.key
+  private-key: classpath:rsa/private.key
+
+logging:
+  level:
+    com.secondhand: debug
+    org.springframework.web: info
