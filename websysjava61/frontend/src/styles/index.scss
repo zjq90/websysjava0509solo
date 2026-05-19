@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+
+.page-card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #303133;
+}
+
+.toolbar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  
+  .stat-title {
+    font-size: 14px;
+    color: #909399;
+    margin-bottom: 10px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #303133;
+  }
+  
+  &.warning {
+    .stat-value {
+      color: #E6A23C;
+    }
+  }
+  
+  &.danger {
+    .stat-value {
+      color: #F56C6C;
+    }
+  }
+  
+  &.success {
+    .stat-value {
+      color: #67C23A;
+    }
+  }
+}
+
+.chart-container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.warning-row {
+  background-color: #fef0f0 !important;
+  --el-table-tr-bg-color: #fef0f0;
+}
