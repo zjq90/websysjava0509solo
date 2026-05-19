@@ -1,0 +1,101 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "宠物健康"
+      }
+    },
+    {
+      "path": "pages/health/cards",
+      "style": {
+        "navigationBarTitleText": "健康管理"
+      }
+    },
+    {
+      "path": "pages/health/deworming-history",
+      "style": {
+        "navigationBarTitleText": "驱虫记录"
+      }
+    },
+    {
+      "path": "pages/diet/suggestion",
+      "style": {
+        "navigationBarTitleText": "饮食建议"
+      }
+    },
+    {
+      "path": "pages/exercise/stats",
+      "style": {
+        "navigationBarTitleText": "运动监测"
+      }
+    },
+    {
+      "path": "pages/circle/posts",
+      "style": {
+        "navigationBarTitleText": "宠物圈"
+      }
+    },
+    {
+      "path": "pages/circle/post-detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情"
+      }
+    },
+    {
+      "path": "pages/hospital/list",
+      "style": {
+        "navigationBarTitleText": "附近医院"
+      }
+    },
+    {
+      "path": "pages/hospital/detail",
+      "style": {
+        "navigationBarTitleText": "医院详情"
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/mine/elder-mode",
+      "style": {
+        "navigationBarTitleText": "长辈模式"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "宠物问诊",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/circle/posts",
+        "text": "宠物圈"
+      },
+      {
+        "pagePath": "pages/hospital/list",
+        "text": "医院"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}
