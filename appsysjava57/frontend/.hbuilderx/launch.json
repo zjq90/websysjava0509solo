@@ -1,0 +1,26 @@
+{
+    "version": "0.0",
+    "configurations": [
+        {
+            "type": "uni-app",
+            "name": "运行到小程序模拟器",
+            "request": "launch",
+            "platform": "mp-weixin",
+            "appid": "",
+            "setting": {
+                "urlCheck": false
+            }
+        },
+        {
+            "type": "uni-app",
+            "name": "运行到浏览器",
+            "request": "launch",
+            "platform": "h5",
+            "devServer": {
+                "port": 8080,
+                "https": false,
+                "disableHostCheck": true
+            }
+        }
+    ]
+}
