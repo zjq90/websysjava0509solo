@@ -1,0 +1,83 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: bike-sharing-system
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data/bikedb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.bikesystem.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+jwt:
+  secret: bike-sharing-system-secret-key-2024-abcdefghijklmnop
+  expiration: 604800000
+
+bike:
+  deposit:
+    amount: 199.00
+    free-credit-score: 650
+  reservation:
+    hold-minutes: 15
+  pricing:
+    base-price: 1.50
+    per-minute-price: 0.05
+    peak-multiplier: 1.5
+    free-minutes: 2
+  credit:
+    initial-score: 100
+    min-score: 0
+    max-score: 120
+    warning-threshold: 80
+    excellent-threshold: 90
