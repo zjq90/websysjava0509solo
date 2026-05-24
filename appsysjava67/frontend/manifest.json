@@ -1,0 +1,70 @@
+{
+    "name": "车辆识别系统",
+    "appid": "__UNI__VEHICLE",
+    "description": "车辆识别系统 - 套牌车查验、现场执法记录、任务管理",
+    "versionName": "1.0.0",
+    "versionCode": "100",
+    "transformPx": false,
+    "app-plus": {
+        "usingComponents": true,
+        "nvueStyleCompiler": "uni-app",
+        "compilerVersion": 3,
+        "splashscreen": {
+            "alwaysShowBeforeRender": true,
+            "waiting": true,
+            "autoclose": true,
+            "delay": 0
+        },
+        "modules": {
+            "Camera": {},
+            "Geolocation": {},
+            "Map": {},
+            "PhotoLibrary": {},
+            "Storage": {}
+        },
+        "distribute": {
+            "android": {
+                "permissions": [
+                    "<uses-permission android:name=\"android.permission.CAMERA\" />",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\" />"
+                ]
+            },
+            "ios": {
+                "dSYMs": false,
+                "UIBackgroundModes": [
+                    "location"
+                ]
+            }
+        }
+    },
+    "quickapp": {},
+    "mp-weixin": {
+        "appid": "",
+        "setting": {
+            "urlCheck": false
+        },
+        "usingComponents": true,
+        "permission": {
+            "scope.userLocation": {
+                "desc": "您的位置信息将用于任务地图定位"
+            }
+        }
+    },
+    "mp-alipay": {
+        "usingComponents": true
+    },
+    "mp-baidu": {
+        "usingComponents": true
+    },
+    "mp-toutiao": {
+        "usingComponents": true
+    },
+    "uniStatistics": {
+        "enable": false
+    },
+    "vueVersion": "2"
+}
