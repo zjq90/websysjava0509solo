@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accounting.system.mapper.TransferRecordMapper">
+
+    <resultMap id="TransferRecordDetailMap" type="com.accounting.system.entity.TransferRecord">
+        <id property="id" column="id"/>
+        <result property="fromAccountId" column="from_account_id"/>
+        <result property="toAccountId" column="to_account_id"/>
+        <result property="amount" column="amount"/>
+        <result property="transferFee" column="transfer_fee"/>
+        <result property="transferTime" column="transfer_time"/>
+        <result property="description" column="description"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleted" column="deleted"/>
+        <result property="fromAccountName" column="from_account_name"/>
+        <result property="toAccountName" column="to_account_name"/>
+    </resultMap>
+
+    <select id="selectPageWithDetail" resultMap="TransferRecordDetailMap">
+        SELECT tr.*,
+               from_acc.account_name AS from_account_name,
+               to_acc.account_name AS to_account_name
+        FROM transfer_record tr
+        LEFT JOIN account from_acc ON tr.from_account_id = from_acc.id AND from_acc.deleted = 0
+        LEFT JOIN account to_acc ON tr.to_account_id = to_acc.id AND to_acc.deleted = 0
+        WHERE tr.deleted = 0
+        ORDER BY tr.transfer_time DESC
+    </select>
+</mapper>

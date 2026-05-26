@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accounting.system.mapper.TransactionMapper">
+
+    <resultMap id="TransactionDetailMap" type="com.accounting.system.entity.Transaction">
+        <id property="id" column="id"/>
+        <result property="transactionType" column="transaction_type"/>
+        <result property="amount" column="amount"/>
+        <result property="accountId" column="account_id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="transactionTime" column="transaction_time"/>
+        <result property="description" column="description"/>
+        <result property="merchant" column="merchant"/>
+        <result property="location" column="location"/>
+        <result property="isRecurring" column="is_recurring"/>
+        <result property="recurringType" column="recurring_type"/>
+        <result property="attachment" column="attachment"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleted" column="deleted"/>
+        <result property="accountName" column="account_name"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="categoryIcon" column="category_icon"/>
+    </resultMap>
+
+    <sql id="baseSelect">
+        SELECT t.*, a.account_name, c.category_name, c.icon AS category_icon
+        FROM transaction t
+        LEFT JOIN account a ON t.account_id = a.id AND a.deleted = 0
+        LEFT JOIN category c ON t.category_id = c.id AND c.deleted = 0
+        WHERE t.deleted = 0
+    </sql>
+
+    <select id="selectPageWithDetail" resultMap="TransactionDetailMap">
+        <include refid="baseSelect"/>
+        <if test="query != null">
+            <if test="query.transactionType != null and query.transactionType != ''">
+                AND t.transaction_type = #{query.transactionType}
+            </if>
+            <if test="query.accountId != null">
+                AND t.account_id = #{query.accountId}
+            </if>
+            <if test="query.categoryId != null">
+                AND t.category_id = #{query.categoryId}
+            </if>
+            <if test="query.startTime != null">
+                AND t.transaction_time >= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND t.transaction_time <= #{query.endTime}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                AND (t.description LIKE CONCAT('%', #{query.keyword}, '%')
+                OR t.merchant LIKE CONCAT('%', #{query.keyword}, '%'))
+            </if>
+            <if test="query.minAmount != null">
+                AND t.amount >= #{query.minAmount}
+            </if>
+            <if test="query.maxAmount != null">
+                AND t.amount <= #{query.maxAmount}
+            </if>
+            <if test="query.tagIds != null and query.tagIds.size() > 0">
+                AND t.id IN (SELECT tt.transaction_id FROM transaction_tag tt WHERE tt.tag_id IN
+                <foreach collection="query.tagIds" item="tagId" open="(" separator="," close=")">
+                    #{tagId}
+                </foreach>
+                )
+            </if>
+        </if>
+        ORDER BY t.transaction_time DESC
+    </select>
+
+    <select id="selectDetailById" resultMap="TransactionDetailMap">
+        <include refid="baseSelect"/>
+        AND t.id = #{id}
+    </select>
+
+    <select id="selectAllWithDetail" resultMap="TransactionDetailMap">
+        <include refid="baseSelect"/>
+        <if test="query != null">
+            <if test="query.transactionType != null and query.transactionType != ''">
+                AND t.transaction_type = #{query.transactionType}
+            </if>
+            <if test="query.accountId != null">
+                AND t.account_id = #{query.accountId}
+            </if>
+            <if test="query.categoryId != null">
+                AND t.category_id = #{query.categoryId}
+            </if>
+            <if test="query.startTime != null">
+                AND t.transaction_time >= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND t.transaction_time <= #{query.endTime}
+            </if>
+        </if>
+        ORDER BY t.transaction_time DESC
+    </select>
+</mapper>
