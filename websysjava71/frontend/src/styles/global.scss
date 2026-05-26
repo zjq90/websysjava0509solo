@@ -1,0 +1,157 @@
+/*
+ * 全局样式文件
+ * 定义全局变量、重置样式和通用样式
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root {
+  --primary-color: #409eff;
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+  --info-color: #909399;
+  --bg-color: #f5f7fa;
+  --card-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: #303133;
+}
+
+/* 通用工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+/* 卡片通用样式 */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+/* 金额颜色 */
+.income {
+  color: var(--success-color);
+}
+
+.expense {
+  color: var(--danger-color);
+}
+
+/* 进度条样式 */
+.progress-bar {
+  height: 8px;
+  background: #ebeef5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-fill.success {
+  background: var(--success-color);
+}
+
+.progress-bar-fill.warning {
+  background: var(--warning-color);
+}
+
+.progress-bar-fill.danger {
+  background: var(--danger-color);
+}
+
+/* 图表容器 */
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+.chart-container-lg {
+  width: 100%;
+  height: 400px;
+}
+
+/* 可拖拽元素 */
+.draggable {
+  cursor: move;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+}
