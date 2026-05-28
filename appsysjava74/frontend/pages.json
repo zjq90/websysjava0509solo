@@ -1,0 +1,147 @@
+{
+    "pages": [
+        {
+            "path": "pages/login/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "活动列表",
+                "enablePullDownRefresh": true
+            }
+        },
+        {
+            "path": "pages/activity/detail",
+            "style": {
+                "navigationBarTitleText": "活动详情"
+            }
+        },
+        {
+            "path": "pages/activity/publish",
+            "style": {
+                "navigationBarTitleText": "发布活动"
+            }
+        },
+        {
+            "path": "pages/activity/edit",
+            "style": {
+                "navigationBarTitleText": "编辑活动"
+            }
+        },
+        {
+            "path": "pages/activity/archived",
+            "style": {
+                "navigationBarTitleText": "历史活动",
+                "enablePullDownRefresh": true
+            }
+        },
+        {
+            "path": "pages/registration/list",
+            "style": {
+                "navigationBarTitleText": "报名管理"
+            }
+        },
+        {
+            "path": "pages/signin/qrcode",
+            "style": {
+                "navigationBarTitleText": "签到二维码"
+            }
+        },
+        {
+            "path": "pages/signin/list",
+            "style": {
+                "navigationBarTitleText": "签到管理"
+            }
+        },
+        {
+            "path": "pages/signin/statistics",
+            "style": {
+                "navigationBarTitleText": "签到统计"
+            }
+        },
+        {
+            "path": "pages/signin/makeup",
+            "style": {
+                "navigationBarTitleText": "手动补签"
+            }
+        },
+        {
+            "path": "pages/summary/publish",
+            "style": {
+                "navigationBarTitleText": "发布总结"
+            }
+        },
+        {
+            "path": "pages/summary/detail",
+            "style": {
+                "navigationBarTitleText": "活动总结"
+            }
+        },
+        {
+            "path": "pages/rating/submit",
+            "style": {
+                "navigationBarTitleText": "活动评价"
+            }
+        },
+        {
+            "path": "pages/rating/list",
+            "style": {
+                "navigationBarTitleText": "评价列表"
+            }
+        },
+        {
+            "path": "pages/user/center",
+            "style": {
+                "navigationBarTitleText": "个人中心"
+            }
+        },
+        {
+            "path": "pages/user/my-registrations",
+            "style": {
+                "navigationBarTitleText": "我的报名"
+            }
+        },
+        {
+            "path": "pages/scan/scan",
+            "style": {
+                "navigationBarTitleText": "扫码签到"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "社团管理",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "tabBar": {
+        "color": "#7A7E83",
+        "selectedColor": "#3c9cff",
+        "borderStyle": "black",
+        "backgroundColor": "#ffffff",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "iconPath": "static/tabbar/home.png",
+                "selectedIconPath": "static/tabbar/home-active.png",
+                "text": "活动"
+            },
+            {
+                "pagePath": "pages/activity/archived",
+                "iconPath": "static/tabbar/history.png",
+                "selectedIconPath": "static/tabbar/history-active.png",
+                "text": "历史"
+            },
+            {
+                "pagePath": "pages/user/center",
+                "iconPath": "static/tabbar/mine.png",
+                "selectedIconPath": "static/tabbar/mine-active.png",
+                "text": "我的"
+            }
+        ]
+    }
+}

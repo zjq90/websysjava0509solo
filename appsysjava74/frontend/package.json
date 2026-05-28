@@ -1,0 +1,29 @@
+{
+  "name": "club-management-frontend",
+  "version": "1.0.0",
+  "description": "大学生社团管理端APP",
+  "main": "main.js",
+  "scripts": {
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "dev:app": "uni -p app",
+    "build:app": "uni build -p app",
+    "dev:h5": "uni",
+    "build:h5": "uni build",
+    "install:dep": "npm install"
+  },
+  "dependencies": {
+    "vue": "^3.3.13",
+    "vuex": "^4.1.0",
+    "uview-plus": "3.2.15",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2"
+  },
+  "browserslist": [
+    "Android >= 4.4",
+    "ios >= 9"
+  ]
+}
