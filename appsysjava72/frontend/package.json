@@ -1,0 +1,49 @@
+{
+  "name": "club-management-app",
+  "version": "1.0.0",
+  "description": "大学生社团管理成员端APP",
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development UNI_PLATFORM=h5 UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/dev/h5 vue-cli-service uni-serve",
+    "build": "cross-env NODE_ENV=production UNI_PLATFORM=h5 UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/build/h5 vue-cli-service uni-build",
+    "dev:mp-weixin": "cross-env NODE_ENV=development UNI_PLATFORM=mp-weixin UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/dev/mp-weixin vue-cli-service uni-build --watch",
+    "build:mp-weixin": "cross-env NODE_ENV=production UNI_PLATFORM=mp-weixin UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/build/mp-weixin vue-cli-service uni-build",
+    "dev:app": "cross-env NODE_ENV=development UNI_PLATFORM=app-plus UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/dev/app vue-cli-service uni-build --watch",
+    "build:app": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus UNI_CLI_CONTEXT=./ UNI_INPUT_DIR=./src UNI_OUTPUT_DIR=./dist/build/app vue-cli-service uni-build"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-app-plus": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-h5": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-mp-weixin": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-stat": "2.0.2-alpha-3061720230111001",
+    "core-js": "^3.8.3",
+    "dayjs": "^1.11.7",
+    "uuid": "^9.0.0",
+    "uview-plus": "^3.8.39",
+    "vue": "^3.2.31",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.3.2",
+    "@dcloudio/uni-automator": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-cli-i18n": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-cli-shared": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-i18n": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-migration": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/uni-template-compiler": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/vue-cli-plugin-uni": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/webpack-uni-mp-loader": "2.0.2-alpha-3061720230111001",
+    "@dcloudio/webpack-uni-pages-loader": "2.0.2-alpha-3061720230111001",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "cross-env": "^7.0.3",
+    "fs-extra": "^11.3.5",
+    "sass": "^1.58.0",
+    "sass-loader": "^13.2.0"
+  },
+  "browserslist": [
+    "Android >= 4.4",
+    "ios >= 9"
+  ]
+}

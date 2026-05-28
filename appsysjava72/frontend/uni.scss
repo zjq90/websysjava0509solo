@@ -1,0 +1,81 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ * uni-app 官方扩展插件及插件市场上很多三方插件均用到了这里面的变量
+ */
+
+/* 颜色变量 */
+$primary-color: #5677fc;
+$success-color: #4cd964;
+$warning-color: #f0ad4e;
+$error-color: #dd524d;
+$info-color: #909399;
+
+$main-color: #333333;
+$content-color: #666666;
+$tips-color: #999999;
+$light-color: #cccccc;
+$border-color: #e5e5e5;
+$bg-color: #f8f8f8;
+
+/* 行为相关颜色 */
+$uni-color-primary: $primary-color;
+$uni-color-success: $success-color;
+$uni-color-warning: $warning-color;
+$uni-color-error: $error-color;
+
+/* 文字基本颜色 */
+$uni-text-color: $main-color;
+$uni-text-color-secondary: $content-color;
+$uni-text-color-placeholder: $tips-color;
+$uni-text-color-disable: $light-color;
+
+/* 背景颜色 */
+$uni-bg-color: #ffffff;
+$uni-bg-color-grey: $bg-color;
+$uni-bg-color-hover: #f1f1f1;
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4);
+
+/* 边框颜色 */
+$uni-border-color: $border-color;
+
+/* 尺寸变量 */
+$uni-font-size-sm: 24rpx;
+$uni-font-size-base: 28rpx;
+$uni-font-size-lg: 32rpx;
+
+$uni-spacing-sm: 16rpx;
+$uni-spacing-base: 24rpx;
+$uni-spacing-lg: 32rpx;
+
+/* 图片尺寸 */
+$uni-img-size-sm: 40rpx;
+$uni-img-size-base: 260rpx;
+$uni-img-size-lg: 340rpx;
+
+/* Border Radius */
+$uni-border-radius-sm: 4rpx;
+$uni-border-radius-base: 8rpx;
+$uni-border-radius-lg: 16rpx;
+$uni-border-radius-circle: 50%;
+
+/* 水平间距 */
+$uni-spacing-col-sm: 8rpx;
+$uni-spacing-col-base: 16rpx;
+$uni-spacing-col-lg: 24rpx;
+
+/* 垂直间距 */
+$uni-spacing-row-sm: 10rpx;
+$uni-spacing-row-base: 20rpx;
+$uni-spacing-row-lg: 30rpx;
+
+/* 透明度 */
+$uni-opacity-disabled: 0.3;
+
+/* 文章场景相关 */
+$uni-color-title: $main-color;
+$uni-color-content: $content-color;
+$uni-color-hint: $tips-color;
+$uni-font-size-title: 36rpx;
+$uni-font-size-subtitle: 30rpx;
+$uni-font-size-body: 28rpx;
+$uni-font-size-small: 26rpx;
