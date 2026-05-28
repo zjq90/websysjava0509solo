@@ -1,0 +1,306 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/message/index",
+      "style": {
+        "navigationBarTitleText": "消息通知",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/message/system",
+      "style": {
+        "navigationBarTitleText": "系统消息",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/message/chat-list",
+      "style": {
+        "navigationBarTitleText": "群聊列表",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/message/chat",
+      "style": {
+        "navigationBarTitleText": "群聊",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/message/private-chat",
+      "style": {
+        "navigationBarTitleText": "私聊",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/message/read-status",
+      "style": {
+        "navigationBarTitleText": "已读状态",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/index",
+      "style": {
+        "navigationBarTitleText": "广场",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/activity",
+      "style": {
+        "navigationBarTitleText": "活动圈",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/activity-detail",
+      "style": {
+        "navigationBarTitleText": "动态详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/publish-activity",
+      "style": {
+        "navigationBarTitleText": "发布动态",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/topic",
+      "style": {
+        "navigationBarTitleText": "话题",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/topic-detail",
+      "style": {
+        "navigationBarTitleText": "话题详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/publish-topic-post",
+      "style": {
+        "navigationBarTitleText": "发布帖子",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/senior",
+      "style": {
+        "navigationBarTitleText": "学长分享",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/square/senior-detail",
+      "style": {
+        "navigationBarTitleText": "分享详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/index",
+      "style": {
+        "navigationBarTitleText": "经费管理",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/record",
+      "style": {
+        "navigationBarTitleText": "经费流水",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/record-detail",
+      "style": {
+        "navigationBarTitleText": "经费详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/add-record",
+      "style": {
+        "navigationBarTitleText": "添加记录",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/reimbursement",
+      "style": {
+        "navigationBarTitleText": "报销申请",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/reimbursement-detail",
+      "style": {
+        "navigationBarTitleText": "报销详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/submit-reimbursement",
+      "style": {
+        "navigationBarTitleText": "提交报销",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/fund/statistics",
+      "style": {
+        "navigationBarTitleText": "经费统计",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/index",
+      "style": {
+        "navigationBarTitleText": "资源共享",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/share",
+      "style": {
+        "navigationBarTitleText": "资料分享",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/share-detail",
+      "style": {
+        "navigationBarTitleText": "资源详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/upload",
+      "style": {
+        "navigationBarTitleText": "上传资源",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/cooperation",
+      "style": {
+        "navigationBarTitleText": "校企对接",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/cooperation-detail",
+      "style": {
+        "navigationBarTitleText": "对接详情",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/resource/apply-cooperation",
+      "style": {
+        "navigationBarTitleText": "申请对接",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#4A90E2",
+        "navigationBarTextStyle": "white"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "社团管理",
+    "navigationBarBackgroundColor": "#4A90E2",
+    "backgroundColor": "#F5F5F5",
+    "app-plus": {
+      "background": "#F5F5F5"
+    }
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90E2",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "static/tabbar/message.png",
+        "selectedIconPath": "static/tabbar/message-active.png"
+      },
+      {
+        "pagePath": "pages/square/index",
+        "text": "广场",
+        "iconPath": "static/tabbar/square.png",
+        "selectedIconPath": "static/tabbar/square-active.png"
+      },
+      {
+        "pagePath": "pages/fund/index",
+        "text": "经费",
+        "iconPath": "static/tabbar/fund.png",
+        "selectedIconPath": "static/tabbar/fund-active.png"
+      },
+      {
+        "pagePath": "pages/resource/index",
+        "text": "资源",
+        "iconPath": "static/tabbar/resource.png",
+        "selectedIconPath": "static/tabbar/resource-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/mine.png",
+        "selectedIconPath": "static/tabbar/mine-active.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}
