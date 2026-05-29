@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: music-platform
+  datasource:
+    url: jdbc:h2:file:./data/musicdb;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 3000
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      location: ${java.io.tmpdir}/music-uploads
+
+file:
+  upload:
+    dir: ./uploads
+    audio:
+      max-size: 104857600
+      allowed-types: mp3,wav,flac,aac,ogg,wma,m4a
+    cover:
+      max-size: 10485760
+      allowed-types: jpg,jpeg,png,gif,webp
+
+cache:
+  redis:
+    enabled: false
+    ttl: 3600
