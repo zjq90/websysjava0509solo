@@ -1,0 +1,102 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.page-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.status-tag-normal {
+  background-color: #f0f9eb;
+  color: #67c23a;
+}
+
+.status-tag-banned {
+  background-color: #fef0f0;
+  color: #f56c6c;
+}
+
+.status-tag-pending {
+  background-color: #fdf6ec;
+  color: #e6a23c;
+}
+
+.status-tag-passed {
+  background-color: #f0f9eb;
+  color: #67c23a;
+}
+
+.status-tag-deleted {
+  background-color: #fef0f0;
+  color: #f56c6c;
+}
+
+.member-tag-free {
+  background-color: #f4f4f5;
+  color: #909399;
+}
+
+.member-tag-vip {
+  background-color: #ecf5ff;
+  color: #409EFF;
+}
+
+.detail-card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #303133;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.behavior-timeline {
+  padding: 20px;
+}
